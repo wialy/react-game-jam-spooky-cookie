@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { updateDirection } from ".";
-import { Direction } from "../..";
+import { CELL_SIZE, Direction } from "../..";
 import { createPlayer } from "../create-player";
+import { getNextPosition } from "../get-next-position";
 
 describe("updateDirection", () => {
   it.each([["LEFT", "LEFT", "RIGHT", "RIGHT", "UP", "UP", "DOWN", "DOWN"]])(
@@ -10,6 +11,8 @@ describe("updateDirection", () => {
       const player1 = createPlayer({
         direction: direction as Direction,
         deferredDirection: deferredDirection as Direction,
+        deferredPosition: { x: 1, y: 1 },
+        position: { x: 1, y: 1 },
       });
 
       expect(
@@ -30,6 +33,7 @@ describe("updateDirection", () => {
       ).toEqual({
         ...player1,
         deferredDirection: undefined,
+        deferredPosition: undefined,
       });
     }
   );
@@ -49,6 +53,7 @@ describe("updateDirection", () => {
       const player1 = createPlayer({
         direction: direction as Direction,
         deferredDirection: deferredDirection as Direction,
+        deferredPosition: { x: 1, y: 1 },
         position: { x: 1, y: 1 },
       });
 
@@ -103,6 +108,55 @@ describe("updateDirection", () => {
         ...player1,
         direction: deferredDirection as Direction,
         deferredDirection: undefined,
+        deferredPosition: undefined,
+      });
+    }
+  );
+
+  it.each([
+    ["LEFT", "TOP"],
+    ["LEFT", "BOTTOM"],
+    ["RIGHT", "TOP"],
+    ["RIGHT", "BOTTOM"],
+    ["UP", "LEFT"],
+    ["UP", "RIGHT"],
+    ["DOWN", "LEFT"],
+    ["DOWN", "RIGHT"],
+  ])(
+    "should clear deferred values when went too far %s and deferred is %s",
+    (direction, deferredDirection) => {
+      const player1 = createPlayer({
+        direction: direction as Direction,
+        deferredDirection: deferredDirection as Direction,
+        deferredPosition: getNextPosition({
+          position: { x: 2, y: 2 },
+          direction: direction as Direction,
+          speed: CELL_SIZE * 2,
+        }),
+        position: { x: 2, y: 2 },
+      });
+
+      expect(
+        updateDirection({
+          player: player1,
+          game: {
+            players: {
+              ["player1"]: player1,
+            },
+            maze: [
+              [0, 0, 0, 0, 0],
+              [0, 0, 0, 0, 0],
+              [0, 0, 0, 0, 0],
+              [0, 0, 0, 0, 0],
+              [0, 0, 0, 0, 0],
+            ],
+            scores: {},
+          },
+        })
+      ).toEqual({
+        ...player1,
+        deferredDirection: undefined,
+        deferredPosition: undefined,
       });
     }
   );

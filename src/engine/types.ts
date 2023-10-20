@@ -7,6 +7,7 @@ export type Direction = keyof typeof DIRECTIONS;
 export type PlayerState = {
   direction: Direction;
   deferredDirection?: Direction | undefined;
+  deferredPosition?: Coordinates | undefined;
   position: Coordinates;
   speed: number;
 };

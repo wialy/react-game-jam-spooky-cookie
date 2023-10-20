@@ -17,7 +17,7 @@ export const Player = ({
         transition: `transform ${UPDATE_DURATION}ms linear`,
       }}
     >
-      {position.x}
+      &rarr;
     </div>
   );
 };

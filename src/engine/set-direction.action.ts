@@ -9,4 +9,5 @@ export const setDirection = (
   if (!player) return;
 
   player.deferredDirection = direction;
+  player.deferredPosition = player.position;
 };

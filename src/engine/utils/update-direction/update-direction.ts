@@ -12,10 +12,30 @@ export const updateDirection = ({
     return player;
   }
 
+  // Clear the deferred direction if too far from deferred position
+  if (
+    player.deferredPosition &&
+    (Math.abs(player.position.x - player.deferredPosition.x) > CELL_SIZE ||
+      Math.abs(player.position.y - player.deferredPosition.y) > CELL_SIZE)
+  ) {
+    return {
+      ...player,
+      deferredDirection: undefined,
+      deferredPosition: undefined,
+    };
+  }
+
+  const updatedPlayer = {
+    ...player,
+    direction: player.deferredDirection,
+    deferredDirection: undefined,
+    deferredPosition: undefined,
+  };
+
   // If the player is moving in the same direction, don't change direction
   // and clear the deferred direction
   if (player.direction === player.deferredDirection) {
-    return { ...player, deferredDirection: undefined };
+    return updatedPlayer;
   }
 
   // If the player is moving in the opposite direction, change direction immediately
@@ -25,11 +45,7 @@ export const updateDirection = ({
     (player.deferredDirection === "UP" && player.direction === "DOWN") ||
     (player.deferredDirection === "DOWN" && player.direction === "UP")
   ) {
-    return {
-      ...player,
-      direction: player.deferredDirection,
-      deferredDirection: undefined,
-    };
+    return updatedPlayer;
   }
 
   // If the player is not in a cell, don't change direction
@@ -48,12 +64,9 @@ export const updateDirection = ({
 
   // If the player is not going to hit a wall, change direction
   if (game.maze[nextPosition.y]?.[nextPosition.x] !== 1) {
-    return {
-      ...player,
-      direction: player.deferredDirection,
-      deferredDirection: undefined,
-    };
+    return updatedPlayer;
   }
 
+  // Return current player state
   return player;
 };
