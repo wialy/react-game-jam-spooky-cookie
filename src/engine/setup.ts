@@ -16,7 +16,7 @@ export const setup = (allPlayerIds: string[]): GameState => {
         direction: "RIGHT",
       }),
       [allPlayerIds[1]]: createPlayer({
-        position: { x: width - 1, y: height - 1 },
+        position: { x: width - 1, y: 0 },
         direction: "LEFT",
       }),
     },

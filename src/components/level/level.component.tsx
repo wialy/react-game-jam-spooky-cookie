@@ -8,6 +8,7 @@ export const Level = ({ children }: { children: ReactNode }) => {
   return (
     <div
       style={{
+        pointerEvents: "none",
         position: "fixed",
         top: "50%",
         left: "50%",
