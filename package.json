@@ -8,7 +8,8 @@
     "typecheck": "tsc --noEmit",
     "build": "npm run lint && tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -28,6 +29,7 @@
     "typescript": "^5.0.2",
     "vite": "^4.3.2",
     "vite-plugin-qrcode": "^0.2.2",
-    "vite-plugin-rune": "^0.1.1"
+    "vite-plugin-rune": "^0.1.1",
+    "vitest": "^0.34.6"
   }
 }

@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { GameState } from "./logic.ts";
+
+import { Level } from "./components/level";
+import { Maze } from "./components/maze";
+import { Player } from "./components/player";
+import { GameState } from "./engine/types";
 
 function App() {
   const [game, setGame] = useState<GameState>();
+
   useEffect(() => {
     Rune.initClient({
       onChange: ({ game }) => {
@@ -19,12 +24,13 @@ function App() {
   return (
     <>
       <div className="card">
-        <button onClick={() => Rune.actions.increment({ amount: 1 })}>
-          Increment
-        </button>
-        <pre>
-          <code>{JSON.stringify(game, null, 2)}</code>
-        </pre>
+        <Level>
+          <Maze maze={game.maze} />
+          {Object.entries(game.players).map(([id, player]) => (
+            <Player key={id} player={player} />
+          ))}
+        </Level>
+        <pre>{/* <code>{JSON.stringify(game.players, null, 2)}</code> */}</pre>
       </div>
     </>
   );

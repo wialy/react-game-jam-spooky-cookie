@@ -1,12 +1,7 @@
 import type { RuneClient } from "rune-games-sdk/multiplayer";
 
-export type GameState = {
-  scores: Record<string, number>;
-};
-
-type GameActions = {
-  increment: (params: { amount: number }) => void;
-};
+import { UPDATES_PER_SECOND, setup, update } from "./engine";
+import { GameActions, GameState } from "./engine/types";
 
 declare global {
   const Rune: RuneClient<GameState, GameActions>;
@@ -15,12 +10,12 @@ declare global {
 Rune.initLogic({
   minPlayers: 2,
   maxPlayers: 2,
-  setup: (): GameState => {
-    return { scores: {} };
-  },
+  setup,
+  update,
   actions: {
     increment: ({ amount }, { game, playerId }) => {
       game.scores[playerId] = (game.scores[playerId] ?? 0) + amount;
     },
   },
+  updatesPerSecond: UPDATES_PER_SECOND,
 });
