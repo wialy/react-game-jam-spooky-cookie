@@ -15,8 +15,8 @@ export const updateDirection = ({
   // Clear the deferred direction if too far from deferred position
   if (
     player.deferredPosition &&
-    (Math.abs(player.position.x - player.deferredPosition.x) > CELL_SIZE ||
-      Math.abs(player.position.y - player.deferredPosition.y) > CELL_SIZE)
+    (Math.abs(player.position.x - player.deferredPosition.x) > CELL_SIZE * 2 ||
+      Math.abs(player.position.y - player.deferredPosition.y) > CELL_SIZE * 2)
   ) {
     return {
       ...player,

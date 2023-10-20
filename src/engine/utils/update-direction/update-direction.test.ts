@@ -129,11 +129,11 @@ describe("updateDirection", () => {
         direction: direction as Direction,
         deferredDirection: deferredDirection as Direction,
         deferredPosition: getNextPosition({
-          position: { x: 2, y: 2 },
+          position: { x: 3, y: 3 },
           direction: direction as Direction,
-          speed: CELL_SIZE * 2,
+          speed: CELL_SIZE * 3,
         }),
-        position: { x: 2, y: 2 },
+        position: { x: 3, y: 3 },
       });
 
       expect(
@@ -144,11 +144,13 @@ describe("updateDirection", () => {
               ["player1"]: player1,
             },
             maze: [
-              [0, 0, 0, 0, 0],
-              [0, 0, 0, 0, 0],
-              [0, 0, 0, 0, 0],
-              [0, 0, 0, 0, 0],
-              [0, 0, 0, 0, 0],
+              [0, 0, 0, 0, 0, 0, 0],
+              [0, 0, 0, 0, 0, 0, 0],
+              [0, 0, 0, 0, 0, 0, 0],
+              [0, 0, 0, 0, 0, 0, 0],
+              [0, 0, 0, 0, 0, 0, 0],
+              [0, 0, 0, 0, 0, 0, 0],
+              [0, 0, 0, 0, 0, 0, 0],
             ],
             scores: {},
           },
