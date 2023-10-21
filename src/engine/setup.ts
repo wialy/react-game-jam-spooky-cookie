@@ -1,4 +1,4 @@
-import { CELL_SIZE, GameState, MAZE } from ".";
+import { GameState, MAZE } from ".";
 import { createPlayer } from "./utils/create-player";
 import { getMazeSize } from "./utils/get-maze-size";
 
@@ -10,17 +10,16 @@ export const setup = (allPlayerIds: string[]): GameState => {
   const collectibles: GameState["collectibles"] = [];
 
   // place dots where maze cell value is 0
-  for (let y = 1; y < height; y += 1) {
+  for (let y = 0; y < height; y += 1) {
     for (let x = 0; x < width; x += 1) {
       if (maze[y][x] === 0) {
         collectibles.push({
-          x: x + CELL_SIZE / 2,
-          y: y + CELL_SIZE / 2,
+          x,
+          y,
           score: 1,
         });
       }
     }
-    y = height;
   }
 
   // store spawn points where maze equals 2

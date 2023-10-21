@@ -7,6 +7,7 @@ export type Direction = keyof typeof DIRECTIONS;
 export type Collectible = Coordinates & {
   isCollected?: boolean;
   score: number;
+  collectedBy?: string;
 };
 
 export type PlayerState = {

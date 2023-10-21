@@ -12,18 +12,22 @@ export const Dot = ({
         position: "absolute",
         left: `${x * SCALE}px`,
         top: `${y * SCALE}px`,
-        transform: `translate(${-SIZE / 2}px, ${-SIZE / 2}px) scale(${
-          isCollected ? 5 : 1
-        })`,
-        width: SIZE,
-        height: SIZE,
+        width: `${CELL_SIZE * SCALE}px`,
+        height: `${CELL_SIZE * SCALE}px`,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        borderRadius: "50%",
-        backgroundColor: isCollected ? "transparent" : "orange",
-        transition: "all 0.2s ease-in",
       }}
-    />
+    >
+      <div
+        style={{
+          width: `${SIZE}px`,
+          height: `${SIZE}px`,
+          borderRadius: "50%",
+          backgroundColor: isCollected ? "transparent" : "orange",
+          transition: "all 0.2s ease-in",
+        }}
+      />
+    </div>
   );
 };

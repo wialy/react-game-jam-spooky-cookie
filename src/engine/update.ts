@@ -1,9 +1,19 @@
 import { InitLogicUpdate } from "rune-games-sdk";
-import { COLLECTIBLE_SIZE, type GameState } from ".";
+import { type GameState } from ".";
 import { movePlayer } from "./utils/move-player";
+import { updateCollectibles } from "./utils/update-collectibles";
 import { updateDirection } from "./utils/update-direction";
+import { updateScores } from "./utils/update-scores";
+import { updateIsEnded } from "./utils/update-is-ended";
 
+/**
+ * @todo: refactor players' directions and positions updates code
+ **/
 export const update: InitLogicUpdate<GameState> = (state) => {
+  if (!state.game.isRunning || state.game.isEnded) {
+    return;
+  }
+
   const updatedPlayers: GameState["players"] = {};
 
   for (const playerId of state.allPlayerIds) {
@@ -31,53 +41,22 @@ export const update: InitLogicUpdate<GameState> = (state) => {
     updatedPlayers
   );
 
-  state.game.collectibles = state.game.collectibles?.map((collectible) => {
-    if (collectible.isCollected) {
-      return collectible;
-    }
-
-    const playerAtCollectible = state.allPlayerIds.find(
-      (id) =>
-        Math.abs(
-          state.game.players[id].position.x - collectible.x + COLLECTIBLE_SIZE
-        ) < COLLECTIBLE_SIZE &&
-        Math.abs(
-          state.game.players[id].position.y - collectible.y + COLLECTIBLE_SIZE
-        ) < COLLECTIBLE_SIZE
-    );
-
-    if (playerAtCollectible) {
-      state.game.scores[playerAtCollectible] =
-        (state.game.scores[playerAtCollectible] ?? 0) + collectible.score;
-
-      return {
-        ...collectible,
-        isCollected: true,
-      };
-    }
-
-    return collectible;
+  state.game.collectibles = updateCollectibles({
+    collectibles: state.game.collectibles,
+    allPlayerIds: state.allPlayerIds,
+    players: state.game.players,
   });
 
-  // check is all collectibles are collected
-  const isAllCollected = state.game.collectibles?.every(
-    (collectible) => collectible.isCollected
-  );
+  state.game.scores = updateScores({
+    scores: state.game.scores,
+    collectibles: state.game.collectibles,
+  });
 
-  if (isAllCollected) {
-    const [winnerId, looserId] = Object.entries(state.game.scores)
-      .sort((a, b) => b[1] - a[1])
-      .map(([id]) => id);
+  state.game.isEnded = updateIsEnded({
+    collectibles: state.game.collectibles,
+  });
 
-    state.game.isEnded = true;
+  if (state.game.isEnded) {
     state.game.isRunning = false;
-
-    Rune.gameOver({
-      players: {
-        [winnerId]: "WON",
-        [looserId]: "LOST",
-      },
-      delayPopUp: true,
-    });
   }
 };
