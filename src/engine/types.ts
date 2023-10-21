@@ -18,8 +18,8 @@ export type PlayerState = {
 };
 
 export type GameState = {
-  isRunning: boolean;
-  isEnded: boolean;
+  isRunning?: boolean;
+  isEnded?: boolean;
   scores: Record<string, number>;
   players: Record<string, PlayerState>;
   maze: number[][];
