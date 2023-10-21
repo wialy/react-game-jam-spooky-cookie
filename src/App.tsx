@@ -1,20 +1,26 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 
+import { Players } from "rune-games-sdk";
 import { Collectibles } from "./components/collectibles";
 import { Level } from "./components/level";
 import { Maze } from "./components/maze";
 import { Player } from "./components/player";
+import { ScoreUi } from "./components/score-ui";
 import { useControls } from "./engine/hooks/use-controls";
 import { GameState } from "./engine/types";
 
 function App() {
   const [game, setGame] = useState<GameState>();
+  const [runePlayers, setRunePlayers] = useState<Players>();
+  const [playerId, setPlayerId] = useState<string>();
 
   useEffect(() => {
     Rune.initClient({
-      onChange: ({ game }) => {
+      onChange: ({ game, players, yourPlayerId }) => {
         setGame(game);
+        setRunePlayers(players);
+        setPlayerId(yourPlayerId);
       },
     });
   }, []);
@@ -33,7 +39,7 @@ function App() {
         <Maze maze={maze} />
         <Collectibles collectibles={collectibles} />
         {Object.entries(players).map(([id, player]) => (
-          <Player key={id} player={player} />
+          <Player key={id} player={player} isCurrent={id === playerId} />
         ))}
       </Level>
       <div
@@ -47,6 +53,13 @@ function App() {
         }}
         {...swipeProps}
       />
+      {runePlayers && playerId && (
+        <ScoreUi
+          players={runePlayers}
+          scores={game.scores}
+          playerId={playerId}
+        />
+      )}
     </>
   );
 }
