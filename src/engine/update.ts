@@ -32,6 +32,10 @@ export const update: InitLogicUpdate<GameState> = (state) => {
   );
 
   state.game.collectibles = state.game.collectibles?.map((collectible) => {
+    if (collectible.isCollected) {
+      return collectible;
+    }
+
     const playerAtCollectible = state.allPlayerIds.find(
       (id) =>
         Math.abs(
@@ -54,4 +58,26 @@ export const update: InitLogicUpdate<GameState> = (state) => {
 
     return collectible;
   });
+
+  // check is all collectibles are collected
+  const isAllCollected = state.game.collectibles?.every(
+    (collectible) => collectible.isCollected
+  );
+
+  if (isAllCollected) {
+    const [winnerId, looserId] = Object.entries(state.game.scores)
+      .sort((a, b) => b[1] - a[1])
+      .map(([id]) => id);
+
+    state.game.isEnded = true;
+    state.game.isRunning = false;
+
+    Rune.gameOver({
+      players: {
+        [winnerId]: "WON",
+        [looserId]: "LOST",
+      },
+      delayPopUp: true,
+    });
+  }
 };

@@ -1,7 +1,7 @@
 import { PropsWithChildren } from "react";
 import { CELL_SIZE, SCALE, type Collectible } from "../../engine";
 
-const SIZE = CELL_SIZE * 0.5 * SCALE;
+const SIZE = CELL_SIZE * 0.33 * SCALE;
 
 export const Dot = ({
   config: { x, y, isCollected },
@@ -13,7 +13,7 @@ export const Dot = ({
         left: `${x * SCALE}px`,
         top: `${y * SCALE}px`,
         transform: `translate(${-SIZE / 2}px, ${-SIZE / 2}px) scale(${
-          isCollected ? 0 : 1
+          isCollected ? 5 : 1
         })`,
         width: SIZE,
         height: SIZE,

@@ -10,7 +10,7 @@ export const setup = (allPlayerIds: string[]): GameState => {
   const collectibles: GameState["collectibles"] = [];
 
   // place dots where maze cell value is 0
-  for (let y = 0; y < height; y += 1) {
+  for (let y = 1; y < height; y += 1) {
     for (let x = 0; x < width; x += 1) {
       if (maze[y][x] === 0) {
         collectibles.push({
@@ -20,6 +20,7 @@ export const setup = (allPlayerIds: string[]): GameState => {
         });
       }
     }
+    y = height;
   }
 
   // store spawn points where maze equals 2
@@ -34,6 +35,8 @@ export const setup = (allPlayerIds: string[]): GameState => {
   }, []);
 
   return {
+    isEnded: false,
+    isRunning: true,
     scores: {},
     maze,
     players: {
