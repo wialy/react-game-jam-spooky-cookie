@@ -18,7 +18,6 @@ const SWIPE_TO_DIRECTION: Record<SwipeDirections, Direction> = {
 
 export const useControls = () => {
   const lastActionTime = useRef<number>();
-  const lastAction = useRef<Direction>();
 
   const dispatchAction = useCallback((direction?: Direction) => {
     if (!direction) {
@@ -34,11 +33,6 @@ export const useControls = () => {
       return;
     }
 
-    if (lastAction.current === direction) {
-      return;
-    }
-
-    lastAction.current = direction;
     lastActionTime.current = now;
 
     Rune.actions.setDirection({ direction });
