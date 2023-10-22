@@ -1,21 +1,68 @@
 import { ActionContext } from "rune-games-sdk";
 import { GameState } from "../..";
-import { handleAddExplosive } from "./handle-add-explosive";
+import { isCharacter, isMovable, isSpace } from "../../types/entities";
+import { createEntity } from "../../utils/create-entity";
 
 export const addExplosive = (
   _: undefined,
   { game, playerId }: ActionContext<GameState>
 ) => {
-  const player = game.players[playerId];
+  const player = game.entities
+    .filter(isCharacter)
+    .find((entity) => entity.id === playerId);
 
   if (!player) {
     return;
   }
 
-  game.explosives = handleAddExplosive({
-    player,
-    playerId,
-    explosives: game.explosives,
-    time: Rune.gameTime(),
-  });
+  const { position, velocity } = player;
+  const [x, y] = position;
+  const [vx, vy] = velocity;
+
+  const possiblePositions = [
+    [x - vx, y - vy],
+    [x + 1, y],
+    [x - 1, y],
+    [x, y + 1],
+    [x, y - 1],
+  ];
+
+  while (possiblePositions.length) {
+    const position = possiblePositions.shift();
+
+    if (!position) {
+      continue;
+    }
+
+    const [px, py] = position;
+
+    const space = game.entities
+      .filter(isSpace)
+      .find((entity) => entity.position[0] === px && entity.position[1] === py);
+
+    if (!space) {
+      continue;
+    }
+
+    const movable = game.entities
+      .filter(isMovable)
+      .find((entity) => entity.position[0] === px && entity.position[1] === py);
+
+    if (movable) {
+      continue;
+    }
+
+    const velocity: [number, number] = [0, 0];
+
+    game.entities.push(
+      createEntity({
+        type: "movable",
+        position: [px, py],
+        id: `movable-${game.entitiesCounter++}`,
+        velocity,
+      })
+    );
+
+    break;
+  }
 };

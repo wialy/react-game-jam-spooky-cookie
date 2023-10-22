@@ -3,30 +3,35 @@ import { Coordinates, Velocity } from "./types/physics";
 // @todo: remove
 export const DEBUG = false;
 
-export const UPDATES_PER_SECOND = 8;
+export const UPDATES_PER_SECOND = 4;
 export const UPDATE_DURATION = 1000 / UPDATES_PER_SECOND;
 
-export const SCALE = 32;
+export const SCALE = 48;
 
 // array of strings
 // '.' - empty
 // '#  - wall
 // '@' - player spawn
 
+// @ moves on dots and can't move on walls
+// movement mechanics is dash-like: @ cant's stop in the middle of the cell
+// @ can't move diagonally
+// @ can't move through walls
+// @ can't move through other players
+
 export const HALF_MAZE = [
-  ".........",
-  "....@....",
-  ".#.#.#..#",
+  "@......##",
+  "..#......",
+  "..#...##.",
+  "....#..#.",
+  "#........",
+  "...#.....",
   ".#.#.#.#.",
-  ".###.#.#.",
-  ".........",
-  "##.##.##.",
-  "...#...#.",
 ];
 
 export const MAZE = [...HALF_MAZE];
 
-for (let i = HALF_MAZE.length - 1; i >= 0; i--) {
+for (let i = HALF_MAZE.length - 2; i >= 0; i--) {
   MAZE.push(HALF_MAZE[i].split("").reverse().join(""));
 }
 

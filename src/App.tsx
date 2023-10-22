@@ -7,12 +7,13 @@ import { ScoreUi } from "./components/score-ui";
 import { SCALE, UPDATE_DURATION } from "./engine";
 import { useControls } from "./engine/hooks/use-controls";
 import { GameState } from "./engine/types";
-import {
-  Entity,
-  isCharacter,
-  isMovable,
-  isSpace,
-} from "./engine/types/entities";
+import { Entity, isCharacter, isMovable } from "./engine/types/entities";
+
+const TYPE_TO_COLOR = {
+  space: "#eee",
+  character: ["blue", "red"],
+  movable: "orange",
+};
 
 function App() {
   const [game, setGame] = useState<GameState>();
@@ -54,8 +55,11 @@ function App() {
     });
   }
 
-  const displayLayers = ["space", "movable", "character"];
-  const displayEntities = displayLayers.map((layer) => layers[layer]).flat();
+  const displayLayers = ["space", "character", "movable"];
+  const displayEntities = displayLayers
+    .map((layer) => layers[layer])
+    .flat()
+    .filter(Boolean);
 
   return (
     <>
@@ -66,19 +70,25 @@ function App() {
               key={entity.id}
               style={{
                 position: "absolute",
-                left: entity.position[0] * SCALE,
-                top: entity.position[1] * SCALE,
+                left: 0,
+                top: 0,
+                transform: `translate(${entity.position[0] * SCALE}px, ${
+                  entity.position[1] * SCALE
+                }px)`,
                 width: SCALE,
                 height: SCALE,
-                borderRadius: isMovable(entity) ? "50%" : 0,
-                transition: `all ${UPDATE_DURATION}ms linear`,
-                backgroundColor: isSpace(entity)
-                  ? "#eee"
-                  : isMovable(entity)
+                borderRadius: isMovable(entity)
                   ? isCharacter(entity)
-                    ? "red"
-                    : "orange"
-                  : "#black",
+                    ? "12%"
+                    : "50%"
+                  : 0,
+                transition: `all ${UPDATE_DURATION}ms linear`,
+                textAlign: "center",
+                backgroundColor: isCharacter(entity)
+                  ? TYPE_TO_COLOR["character"][entity.id === playerId ? 0 : 1]
+                  : (TYPE_TO_COLOR[
+                      entity.type as keyof typeof TYPE_TO_COLOR
+                    ] as string),
               }}
             >
               {isMovable(entity) ? (entity.velocity.join(":") as string) : null}

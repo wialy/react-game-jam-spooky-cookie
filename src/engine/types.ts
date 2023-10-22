@@ -1,10 +1,8 @@
-import { DIRECTIONS } from ".";
 import { Entity } from "./types/entities";
 import { Velocity } from "./types/physics";
 
-export type Direction = keyof typeof DIRECTIONS;
-
 export type GameState = {
+  entitiesCounter: number;
   isRunning?: boolean;
   isEnded?: boolean;
   scores: Record<string, number>;

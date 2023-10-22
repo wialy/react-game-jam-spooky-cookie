@@ -28,6 +28,7 @@ body {
   place-items: center;
   min-height: 100vh;
   overflow-x: hidden;
+  touch-action: none;
 }
 
 h1 {

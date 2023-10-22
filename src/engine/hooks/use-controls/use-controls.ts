@@ -32,7 +32,7 @@ const performSetDirection =
   };
 
 const performAddExplosive = (): Action => () => {
-  // Rune.actions.addExplosive();
+  Rune.actions.addExplosive();
 
   return true;
 };
