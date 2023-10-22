@@ -1,5 +1,5 @@
 import { ActionContext } from "rune-games-sdk";
-import { GameActions, GameState } from ".";
+import { GameActions, GameState } from "../..";
 
 export const setDirection = (
   { direction }: Parameters<GameActions["setDirection"]>[0],

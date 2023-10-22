@@ -36,4 +36,6 @@ export const PLAYER_SIZE = 1;
 export const CELL_SIZE = 1;
 export const COLLECTIBLE_SIZE = 0.5;
 
-export const PLAYER_SPEED = 0.25;
+export const PLAYER_SPEED = 1;
+
+export const EXPLOSIVE_DELAY = 3000;

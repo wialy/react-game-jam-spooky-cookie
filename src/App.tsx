@@ -3,6 +3,7 @@ import "./App.css";
 
 import { Players } from "rune-games-sdk";
 import { Collectibles } from "./components/collectibles";
+import { Explosives } from "./components/explosives/explosives.component";
 import { Level } from "./components/level";
 import { Maze } from "./components/maze";
 import { Player } from "./components/player";
@@ -38,6 +39,7 @@ function App() {
       <Level>
         <Maze maze={maze} />
         <Collectibles collectibles={collectibles} />
+        <Explosives explosives={game.explosives} />
         {Object.entries(players).map(([id, player]) => (
           <Player key={id} player={player} isCurrent={id === playerId} />
         ))}

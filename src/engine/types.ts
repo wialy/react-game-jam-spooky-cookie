@@ -10,6 +10,10 @@ export type Collectible = Coordinates & {
   collectedBy?: string;
 };
 
+export type Explosive = Coordinates & {
+  timer: number;
+};
+
 export type PlayerState = {
   direction: Direction;
   deferredDirection?: Direction | undefined;
@@ -25,8 +29,10 @@ export type GameState = {
   players: Record<string, PlayerState>;
   maze: number[][];
   collectibles?: Collectible[];
+  explosives?: Explosive[];
 };
 
 export type GameActions = {
   setDirection: (params: { direction: Direction }) => void;
+  addExplosive: () => void;
 };

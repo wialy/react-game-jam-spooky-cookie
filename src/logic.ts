@@ -1,12 +1,12 @@
 import type { RuneClient } from "rune-games-sdk/multiplayer";
 
 import {
-  type GameActions,
-  type GameState,
   UPDATES_PER_SECOND,
-  setDirection,
+  actions,
   setup,
   update,
+  type GameActions,
+  type GameState,
 } from "./engine";
 
 declare global {
@@ -18,8 +18,6 @@ Rune.initLogic({
   maxPlayers: 2,
   setup,
   update,
-  actions: {
-    setDirection: setDirection,
-  },
+  actions,
   updatesPerSecond: UPDATES_PER_SECOND,
 });

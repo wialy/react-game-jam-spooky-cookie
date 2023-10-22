@@ -16,14 +16,30 @@ const SWIPE_TO_DIRECTION: Record<SwipeDirections, Direction> = {
   Left: "LEFT",
 };
 
+type Action = () => boolean;
+
+const performSetDirection =
+  (direction?: Direction): Action =>
+  () => {
+    if (!direction) {
+      return false;
+    }
+
+    Rune.actions.setDirection({ direction });
+
+    return true;
+  };
+
+const performAddExplosive = (): Action => () => {
+  Rune.actions.addExplosive();
+
+  return true;
+};
+
 export const useControls = () => {
   const lastActionTime = useRef<number>();
 
-  const dispatchAction = useCallback((direction?: Direction) => {
-    if (!direction) {
-      return;
-    }
-
+  const dispatchAction = useCallback((action: Action) => {
     const now = Date.now();
 
     if (
@@ -33,17 +49,19 @@ export const useControls = () => {
       return;
     }
 
-    lastActionTime.current = now;
+    const wasExecuted = action();
 
-    Rune.actions.setDirection({ direction });
+    if (wasExecuted) {
+      lastActionTime.current = now;
+    }
   }, []);
 
   const swipeProps = useSwipeable({
     onSwiped: ({ dir }) => {
-      dispatchAction(SWIPE_TO_DIRECTION[dir]);
+      dispatchAction(performSetDirection(SWIPE_TO_DIRECTION[dir]));
     },
     onTap: () => {
-      //
+      dispatchAction(performAddExplosive());
     },
     trackMouse: true,
     trackTouch: true,
@@ -51,7 +69,15 @@ export const useControls = () => {
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      dispatchAction(KEY_TO_DIRECTION[event.key]);
+      event.preventDefault();
+
+      if (event.key === " ") {
+        console.log("boom");
+        dispatchAction(performAddExplosive());
+        return;
+      }
+
+      dispatchAction(performSetDirection(KEY_TO_DIRECTION[event.key]));
     };
 
     window.addEventListener("keydown", onKeyDown);
