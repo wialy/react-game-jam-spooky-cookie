@@ -1,9 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { Coordinates, VELOCITIES } from "../../types/physics";
+import { VELOCITIES } from "../..";
+import { isMovable } from "../../types/entities";
+import { Coordinates } from "../../types/physics";
 import { createEntity } from "../create-entity/create-entity";
 import { createSpaces } from "../create-spaces";
 import { processMove } from "./process-move";
-import { isMovable, isSpace } from "../../types/entities";
 
 describe("processMove", () => {
   it("should not move entities with zero velocity", () => {
