@@ -1,6 +1,6 @@
+import { DEBUG } from "../..";
 import { Entity, Movable, isMovable, isSpace } from "../../types/entities";
 
-const DEBUG = true;
 const log = (...args: unknown[]) => {
   if (DEBUG) {
     console.log(...args);

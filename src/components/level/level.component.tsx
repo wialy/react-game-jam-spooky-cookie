@@ -1,10 +1,9 @@
 import { ReactNode } from "react";
-import { getMazeSize } from "../../engine/utils/get-maze-size";
-import { MAZE, SCALE } from "../../engine";
+import { SCALE } from "../../engine";
+
+const SIZE = 11;
 
 export const Level = ({ children }: { children: ReactNode }) => {
-  const { width, height } = getMazeSize({ maze: MAZE });
-
   return (
     <div
       style={{
@@ -12,8 +11,8 @@ export const Level = ({ children }: { children: ReactNode }) => {
         position: "fixed",
         top: "50%",
         left: "50%",
-        transform: `translate(${(-width * SCALE) / 2}px, ${
-          (-height * SCALE) / 2
+        transform: `translate(${(-SIZE * SCALE) / 2}px, ${
+          (-SIZE * SCALE) / 2
         }px)`,
       }}
     >

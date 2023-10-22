@@ -1,6 +1,6 @@
 import { ActionContext } from "rune-games-sdk";
 import { GameActions, GameState, VELOCITIES } from "../..";
-import { isMovable } from "../../types/entities";
+import { isMovable, isSpace } from "../../types/entities";
 
 export const setDirection = (
   { velocity }: Parameters<GameActions["setDirection"]>[0],
@@ -14,5 +14,9 @@ export const setDirection = (
     return;
   }
 
-  character.velocity = VELOCITIES[velocity];
+  const [vx, vy] = character.velocity;
+
+  if (vx === 0 && vy === 0) {
+    character.velocity = VELOCITIES[velocity];
+  }
 };

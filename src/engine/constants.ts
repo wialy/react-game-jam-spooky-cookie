@@ -1,35 +1,33 @@
 import { Coordinates, Velocity } from "./types/physics";
 
-export const UPDATES_PER_SECOND = 5;
+// @todo: remove
+export const DEBUG = false;
+
+export const UPDATES_PER_SECOND = 8;
 export const UPDATE_DURATION = 1000 / UPDATES_PER_SECOND;
 
 export const SCALE = 32;
 
-export const DIRECTIONS = {
-  RIGHT: 0,
-  UP: -Math.PI / 2,
-  LEFT: Math.PI,
-  DOWN: Math.PI / 2,
-};
+// array of strings
+// '.' - empty
+// '#  - wall
+// '@' - player spawn
 
-// 0 - empty
-// 1 - wall
-// 2 - player spawn
-
-const HALF_MAZE = [
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-  [1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 1],
-  [1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1],
-  [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-  [1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-  [1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1],
-  [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1],
+export const HALF_MAZE = [
+  ".........",
+  "....@....",
+  ".#.#.#..#",
+  ".#.#.#.#.",
+  ".###.#.#.",
+  ".........",
+  "##.##.##.",
+  "...#...#.",
 ];
+
 export const MAZE = [...HALF_MAZE];
 
 for (let i = HALF_MAZE.length - 1; i >= 0; i--) {
-  MAZE.push([...HALF_MAZE[i]].reverse());
+  MAZE.push(HALF_MAZE[i].split("").reverse().join(""));
 }
 
 // PLAYER_SIZE and CELL_SIZE are set to 1
