@@ -17,19 +17,6 @@ export const setup = (allPlayerIds: string[]): GameState => {
               id: `space-${x}-${y}`,
             })
           );
-          if (Math.random() > 0.999999) {
-            entities.push(
-              createEntity({
-                type: "movable",
-                position: [x, y],
-                id: `movable-${x}-${y}`,
-                velocity: [
-                  Math.random() > 0.5 ? 1 : -1,
-                  Math.random() > 0.5 ? 1 : -1,
-                ],
-              })
-            );
-          }
           break;
         }
         case "#": {

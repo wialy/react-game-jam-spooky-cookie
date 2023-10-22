@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import { SwipeDirections, useSwipeable } from "react-swipeable";
-import { UPDATE_DURATION } from "../..";
+import { MIN_UPDATE_DELAY } from "../..";
 import { Velocity } from "../../types/physics";
 
 const KEY_TO_DIRECTION: Record<string, Velocity> = {
@@ -45,7 +45,7 @@ export const useControls = () => {
 
     if (
       lastActionTime.current &&
-      now - lastActionTime.current < UPDATE_DURATION
+      now - lastActionTime.current < MIN_UPDATE_DELAY
     ) {
       return;
     }

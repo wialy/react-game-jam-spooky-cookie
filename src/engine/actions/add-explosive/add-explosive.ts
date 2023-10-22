@@ -15,17 +15,12 @@ export const addExplosive = (
     return;
   }
 
-  const { position, velocity } = player;
+  const { position, velocity, previousPosition } = player;
   const [x, y] = position;
   const [vx, vy] = velocity;
+  const [prevX, prevY] = previousPosition || [x - vx, y - vy];
 
-  const possiblePositions = [
-    [x - vx, y - vy],
-    [x + 1, y],
-    [x - 1, y],
-    [x, y + 1],
-    [x, y - 1],
-  ];
+  const possiblePositions = [[prevX, prevY]];
 
   while (possiblePositions.length) {
     const position = possiblePositions.shift();
@@ -56,9 +51,9 @@ export const addExplosive = (
 
     game.entities.push(
       createEntity({
-        type: "movable",
+        type: "explosive",
         position: [px, py],
-        id: `movable-${game.entitiesCounter++}`,
+        id: `explosive-${game.entitiesCounter++}`,
         velocity,
       })
     );

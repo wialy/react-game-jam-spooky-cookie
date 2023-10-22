@@ -74,6 +74,7 @@ export const processMove = ({
     // if no movable, resolve
     if (!nextMovable) {
       // log(`[${entity.id}] no next movable`);
+      entity.previousPosition = [...entity.position];
       entity.position = [nextX, nextY];
       // locked.add(entity.id);
       resolved.push(entity);

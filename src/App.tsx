@@ -4,15 +4,20 @@ import "./App.css";
 import { Players } from "rune-games-sdk";
 import { Level } from "./components/level";
 import { ScoreUi } from "./components/score-ui";
-import { SCALE, UPDATE_DURATION } from "./engine";
+import { SCALE, UPDATES_PER_SECOND, UPDATE_DURATION } from "./engine";
 import { useControls } from "./engine/hooks/use-controls";
 import { GameState } from "./engine/types";
-import { Entity, isCharacter, isMovable } from "./engine/types/entities";
+import {
+  Entity,
+  isCharacter,
+  isExplosive,
+  isSpace,
+} from "./engine/types/entities";
 
 const TYPE_TO_COLOR = {
   space: "#eee",
   character: ["blue", "red"],
-  movable: "orange",
+  explosive: "orange",
 };
 
 function App() {
@@ -55,7 +60,7 @@ function App() {
     });
   }
 
-  const displayLayers = ["space", "character", "movable"];
+  const displayLayers = ["space", "character", "explosive"];
   const displayEntities = displayLayers
     .map((layer) => layers[layer])
     .flat()
@@ -65,6 +70,8 @@ function App() {
     <>
       <Level>
         {displayEntities.map((entity) => {
+          const size = isExplosive(entity) ? 0.9 : 1;
+
           return (
             <div
               key={entity.id}
@@ -72,26 +79,47 @@ function App() {
                 position: "absolute",
                 left: 0,
                 top: 0,
-                transform: `translate(${entity.position[0] * SCALE}px, ${
+                transform: `translate3d(${entity.position[0] * SCALE}px, ${
                   entity.position[1] * SCALE
-                }px)`,
+                }px, 1px)`,
+                backfaceVisibility: "hidden",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                border: isSpace(entity) ? "3px solid rgba(0,0,0,0.05)" : "none",
+                borderRadius: isSpace(entity) ? "25%" : 0,
                 width: SCALE,
                 height: SCALE,
-                borderRadius: isMovable(entity)
-                  ? isCharacter(entity)
-                    ? "12%"
-                    : "50%"
-                  : 0,
+                color: "white",
                 transition: `all ${UPDATE_DURATION}ms linear`,
-                textAlign: "center",
-                backgroundColor: isCharacter(entity)
-                  ? TYPE_TO_COLOR["character"][entity.id === playerId ? 0 : 1]
-                  : (TYPE_TO_COLOR[
-                      entity.type as keyof typeof TYPE_TO_COLOR
-                    ] as string),
               }}
             >
-              {isMovable(entity) ? (entity.velocity.join(":") as string) : null}
+              <div
+                style={{
+                  overflow: "hidden",
+                  textAlign: "center",
+                  backgroundColor: isCharacter(entity)
+                    ? TYPE_TO_COLOR["character"][entity.id === playerId ? 0 : 1]
+                    : (TYPE_TO_COLOR[
+                        entity.type as keyof typeof TYPE_TO_COLOR
+                      ] as string),
+                  width: SCALE * size,
+                  height: SCALE * size,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: isExplosive(entity)
+                    ? "50%"
+                    : isCharacter(entity)
+                    ? "25%"
+                    : "5%",
+                }}
+              >
+                {/* {isMovable(entity) ? (entity.velocity.join(":") as string) : null} */}
+                {isExplosive(entity)
+                  ? Math.ceil(entity.timer / UPDATES_PER_SECOND)
+                  : null}
+              </div>
             </div>
           );
         })}
