@@ -1,38 +1,17 @@
 import { DIRECTIONS } from ".";
-
-export type Coordinates = { x: number; y: number };
+import { Entity } from "./types/entities";
+import { Velocity } from "./types/physics";
 
 export type Direction = keyof typeof DIRECTIONS;
-
-export type Collectible = Coordinates & {
-  isCollected?: boolean;
-  score: number;
-  collectedBy?: string;
-};
-
-export type Explosive = Coordinates & {
-  timer: number;
-};
-
-export type PlayerState = {
-  direction: Direction;
-  deferredDirection?: Direction | undefined;
-  deferredPosition?: Coordinates | undefined;
-  position: Coordinates;
-  speed: number;
-};
 
 export type GameState = {
   isRunning?: boolean;
   isEnded?: boolean;
   scores: Record<string, number>;
-  players: Record<string, PlayerState>;
-  maze: number[][];
-  collectibles?: Collectible[];
-  explosives?: Explosive[];
+  entities: Entity[];
 };
 
 export type GameActions = {
-  setDirection: (params: { direction: Direction }) => void;
+  setDirection: (params: { velocity: Velocity }) => void;
   addExplosive: () => void;
 };

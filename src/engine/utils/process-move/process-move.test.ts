@@ -1,24 +1,9 @@
 import { describe, expect, it } from "vitest";
+import { Coordinates, VELOCITIES } from "../../types/physics";
+import { createEntity } from "../create-entity/create-entity";
+import { createSpaces } from "../create-spaces";
 import { processMove } from "./process-move";
-import { createEntity } from "./create-entity";
-import { VELOCITIES, Coordinates } from "./types";
-
-const createSpaces = (width = 1, height = 1) => {
-  const spaces = [];
-
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++)
-      spaces.push(
-        createEntity({
-          id: `space-${x}:${y}`,
-          type: "space",
-          position: [x, y],
-        })
-      );
-  }
-
-  return spaces;
-};
+import { isMovable, isSpace } from "../../types/entities";
 
 describe("processMove", () => {
   it("should not move entities with zero velocity", () => {
@@ -249,7 +234,7 @@ describe("processMove", () => {
     );
   });
 
-  it.only("should not move two entities in the same direction when there is no space", () => {
+  it("should not move two entities in the same direction when there is no space", () => {
     const { entities } = processMove({
       entities: [
         createEntity({
@@ -282,7 +267,7 @@ describe("processMove", () => {
         id: "b",
         type: "movable",
         position: [1, 0],
-        velocity: [1, 0],
+        velocity: [0, 0],
       })
     );
   });
@@ -306,7 +291,7 @@ describe("processMove", () => {
       ],
     });
 
-    expect(entities).toHaveLength(4);
+    expect(entities).toHaveLength(5);
     expect(entities).toContainEqual(
       createEntity({
         id: "a",
@@ -319,7 +304,7 @@ describe("processMove", () => {
       createEntity({
         id: "b",
         type: "movable",
-        position: [1, 0],
+        position: [2, 0],
         velocity: [1, 0],
       })
     );
@@ -359,6 +344,185 @@ describe("processMove", () => {
         type: "movable",
         position: [2, 0],
         velocity: [1, 0],
+      })
+    );
+  });
+
+  it("should move two entities in the same direction when there is space between them", () => {
+    const { entities } = processMove({
+      entities: [
+        createEntity({
+          id: "a",
+          type: "movable",
+          position: [0, 0],
+          velocity: [1, 0],
+        }),
+        createEntity({
+          id: "b",
+          type: "movable",
+          position: [2, 0],
+          velocity: [1, 0],
+        }),
+        ...createSpaces(5),
+      ],
+    });
+
+    expect(entities).toHaveLength(7);
+    expect(entities).toContainEqual(
+      createEntity({
+        id: "a",
+        type: "movable",
+        position: [1, 0],
+        velocity: [1, 0],
+      })
+    );
+    expect(entities).toContainEqual(
+      createEntity({
+        id: "b",
+        type: "movable",
+        position: [3, 0],
+        velocity: [1, 0],
+      })
+    );
+  });
+
+  it("should pass velocity to the next two entities", () => {
+    const { entities } = processMove({
+      entities: [
+        createEntity({
+          id: "a",
+          type: "movable",
+          position: [0, 0],
+          velocity: [1, 0],
+        }),
+        createEntity({
+          id: "b",
+          type: "movable",
+          position: [1, 0],
+          velocity: [0, 0],
+        }),
+        createEntity({
+          id: "c",
+          type: "movable",
+          position: [2, 0],
+          velocity: [0, 0],
+        }),
+        ...createSpaces(5),
+      ],
+    });
+    expect(entities).toHaveLength(8);
+    expect(entities).toContainEqual(
+      createEntity({
+        id: "a",
+        type: "movable",
+        position: [0, 0],
+        velocity: [0, 0],
+      })
+    );
+    expect(entities).toContainEqual(
+      createEntity({
+        id: "b",
+        type: "movable",
+        position: [1, 0],
+        velocity: [0, 0],
+      })
+    );
+    expect(entities).toContainEqual(
+      createEntity({
+        id: "c",
+        type: "movable",
+        position: [3, 0],
+        velocity: [1, 0],
+      })
+    );
+  });
+
+  it("should not pass velocity to the next two entities separated with empty space", () => {
+    const { entities } = processMove({
+      entities: [
+        createEntity({
+          id: "a",
+          type: "movable",
+          position: [0, 0],
+          velocity: [1, 0],
+        }),
+        createEntity({
+          id: "b",
+          type: "movable",
+          position: [2, 0],
+          velocity: [0, 0],
+        }),
+        createEntity({
+          id: "c",
+          type: "movable",
+          position: [3, 0],
+          velocity: [0, 0],
+        }),
+        ...createSpaces(5),
+      ],
+    });
+    expect(entities).toHaveLength(8);
+    const movables = entities.filter(isMovable);
+    expect(movables).toContainEqual(
+      createEntity({
+        id: "a",
+        type: "movable",
+        position: [1, 0],
+        velocity: [1, 0],
+      })
+    );
+    expect(movables).toContainEqual(
+      createEntity({
+        id: "b",
+        type: "movable",
+        position: [2, 0],
+        velocity: [0, 0],
+      })
+    );
+    expect(movables).toContainEqual(
+      createEntity({
+        id: "c",
+        type: "movable",
+        position: [3, 0],
+        velocity: [0, 0],
+      })
+    );
+  });
+
+  it("should prevent moving both to the single space between them", () => {
+    const { entities } = processMove({
+      entities: [
+        createEntity({
+          id: "a",
+          type: "movable",
+          position: [0, 0],
+          velocity: [1, 0],
+        }),
+        createEntity({
+          id: "b",
+          type: "movable",
+          position: [2, 0],
+          velocity: [-1, 0],
+        }),
+        ...createSpaces(3),
+      ],
+    });
+    expect(entities).toHaveLength(5);
+    const movables = entities.filter(isMovable);
+    expect(movables).toContainEqual(
+      createEntity({
+        id: "a",
+        type: "movable",
+        position: [1, 0],
+        velocity: [0, 0],
+      })
+    );
+    expect(movables).toContainEqual(
+      createEntity({
+        id: "b",
+        type: "movable",
+        position: [2, 0],
+        velocity: [0, 0],
       })
     );
   });

@@ -1,13 +1,18 @@
 import { ActionContext } from "rune-games-sdk";
-import { GameActions, GameState } from "../..";
+import { GameActions, GameState, VELOCITIES } from "../..";
+import { isMovable } from "../../types/entities";
 
 export const setDirection = (
-  { direction }: Parameters<GameActions["setDirection"]>[0],
+  { velocity }: Parameters<GameActions["setDirection"]>[0],
   { game, playerId }: ActionContext<GameState>
 ) => {
-  const player = game.players[playerId];
-  if (!player) return;
+  const character = game.entities
+    .filter(isMovable)
+    .find(({ id }) => id === playerId);
 
-  player.deferredDirection = direction;
-  player.deferredPosition = player.position;
+  if (!character) {
+    return;
+  }
+
+  character.velocity = VELOCITIES[velocity];
 };

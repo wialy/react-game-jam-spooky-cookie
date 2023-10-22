@@ -1,4 +1,5 @@
-import { Character, Coordinates, Movable, Space, Wall } from "./types";
+import { Character, Movable, Space, Wall } from "../../types/entities";
+import { Coordinates } from "../../types/physics";
 
 export function createEntity(params: {
   id: string;

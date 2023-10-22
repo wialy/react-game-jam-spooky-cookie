@@ -1,15 +1,16 @@
 import { useCallback, useEffect, useRef } from "react";
 import { SwipeDirections, useSwipeable } from "react-swipeable";
-import { Direction, UPDATES_PER_SECOND } from "../..";
+import { UPDATE_DURATION } from "../..";
+import { Velocity } from "../../types/physics";
 
-const KEY_TO_DIRECTION: Record<string, Direction> = {
+const KEY_TO_DIRECTION: Record<string, Velocity> = {
   ArrowUp: "UP",
   ArrowRight: "RIGHT",
   ArrowDown: "DOWN",
   ArrowLeft: "LEFT",
 };
 
-const SWIPE_TO_DIRECTION: Record<SwipeDirections, Direction> = {
+const SWIPE_TO_DIRECTION: Record<SwipeDirections, Velocity> = {
   Up: "UP",
   Right: "RIGHT",
   Down: "DOWN",
@@ -19,19 +20,19 @@ const SWIPE_TO_DIRECTION: Record<SwipeDirections, Direction> = {
 type Action = () => boolean;
 
 const performSetDirection =
-  (direction?: Direction): Action =>
+  (velocity?: Velocity): Action =>
   () => {
-    if (!direction) {
+    if (!velocity) {
       return false;
     }
 
-    Rune.actions.setDirection({ direction });
+    Rune.actions.setDirection({ velocity });
 
     return true;
   };
 
 const performAddExplosive = (): Action => () => {
-  Rune.actions.addExplosive();
+  // Rune.actions.addExplosive();
 
   return true;
 };
@@ -44,7 +45,7 @@ export const useControls = () => {
 
     if (
       lastActionTime.current &&
-      now - lastActionTime.current < 1000 / UPDATES_PER_SECOND
+      now - lastActionTime.current < UPDATE_DURATION
     ) {
       return;
     }

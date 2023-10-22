@@ -1,13 +1,4 @@
-export type Coordinates = [number, number];
-
-export const VELOCITIES = {
-  UP: [0, -1],
-  DOWN: [0, 1],
-  LEFT: [-1, 0],
-  RIGHT: [1, 0],
-} as const;
-
-export type Velocity = (typeof VELOCITIES)[keyof typeof VELOCITIES];
+import { Coordinates } from "./physics";
 
 export type Entity = {
   id: string;
@@ -43,3 +34,6 @@ export const isMovable = (entity: Entity): entity is Movable => {
 export type Character = Movable & {
   type: "character";
 };
+
+export const isCharacter = (entity: Entity): entity is Character =>
+  entity.type === "character";

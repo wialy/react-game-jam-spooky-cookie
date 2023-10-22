@@ -1,4 +1,11 @@
-import { Entity, Movable, isMovable, isSpace } from "./types";
+import { Entity, Movable, isMovable, isSpace } from "../../types/entities";
+
+const DEBUG = true;
+const log = (...args: unknown[]) => {
+  if (DEBUG) {
+    console.log(...args);
+  }
+};
 
 export const processMove = ({
   entities,
@@ -9,17 +16,28 @@ export const processMove = ({
   const movableEntities = entities.filter(isMovable);
 
   const toResolve = [...movableEntities];
-  const resolved: Movable[] = [];
+  let resolved: Movable[] = [];
   // move what can be moved
 
+  const locked: Set<string> = new Set();
+
+  const operations = 0;
+
   while (toResolve.length > 0) {
-    const entity = { ...toResolve.pop() } as Movable;
+    if (operations > 100) {
+      log("break");
+      // throw new Error("break");
+    }
+
+    const entity = { ...toResolve.shift() } as Movable;
 
     const isResolved = resolved.some((e) => e.id === entity.id);
+    const isLocked = locked.has(entity.id);
 
     // if already resolved, skip
-    if (isResolved) {
-      console.log(`[${entity.id}] already resolved`);
+    if (isResolved || isLocked) {
+      log(`[${entity.id}] already resolved / locked`);
+
       continue;
     }
 
@@ -28,8 +46,9 @@ export const processMove = ({
 
     // if no velocity, resolve
     if (vx === 0 && vy === 0) {
-      console.log(`[${entity.id}] no velocity`);
+      // log(`[${entity.id}] no velocity`);
       resolved.push(entity);
+
       continue;
     }
 
@@ -43,9 +62,10 @@ export const processMove = ({
 
     // if no space, resolve
     if (!nextSpace) {
-      console.log(`[${entity.id}] no space`);
+      // log(`[${entity.id}] no space`);
       entity.velocity = [0, 0];
       resolved.push(entity);
+
       continue;
     }
 
@@ -53,19 +73,44 @@ export const processMove = ({
 
     // if no movable, resolve
     if (!nextMovable) {
-      console.log(`[${entity.id}] no next movable`);
+      // log(`[${entity.id}] no next movable`);
       entity.position = [nextX, nextY];
+      // locked.add(entity.id);
       resolved.push(entity);
+
       continue;
     }
 
     const isNextMovableResolved = resolved.some((e) => e.id === nextMovable.id);
+    const isNextMovableLocked = locked.has(nextMovable.id);
 
     if (isNextMovableResolved) {
-      console.log(`[${entity.id}] next movable already resolved`);
-      nextMovable.velocity = entity.velocity;
+      log(`[${entity.id}] next movable already resolved`);
+
+      if (isNextMovableLocked) {
+        continue;
+      }
+
+      // locked.add(nextMovable.id);
+
+      const [nextMovableVelocityX, nextMovableVelocityY] = [
+        ...nextMovable.velocity,
+      ];
+
+      // pass speed to next only if it is not moving into opposite direction
+
+      nextMovable.velocity = [
+        vx !== 0 && nextMovableVelocityX === 0 ? vx : 0,
+        vy !== 0 && nextMovableVelocityY === 0 ? vy : 0,
+      ];
+
       entity.velocity = [0, 0];
       resolved.push(entity);
+
+      resolved = [...resolved.filter((e) => e.id !== nextMovable.id)];
+
+      toResolve.push(nextMovable);
+
       continue;
     }
 
@@ -74,17 +119,18 @@ export const processMove = ({
     // stop both when moving into opposite directions
 
     if (nextMovableVx === -vx && nextMovableVy === -vy) {
-      console.log(`[${entity.id}] opposite direction`);
+      log(`[${entity.id}] opposite direction`);
       entity.velocity = [0, 0];
       nextMovable.velocity = [0, 0];
 
       resolved.push(entity);
       resolved.push(nextMovable);
+
       continue;
     }
 
     // if next movable is not resolved, queue current entity
-    console.log(`[${entity.id}] queueing`);
+    log(`[${entity.id}] queueing`);
     toResolve.push(entity);
   }
 

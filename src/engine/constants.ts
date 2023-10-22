@@ -1,4 +1,6 @@
-export const UPDATES_PER_SECOND = 10;
+import { Coordinates, Velocity } from "./types/physics";
+
+export const UPDATES_PER_SECOND = 5;
 export const UPDATE_DURATION = 1000 / UPDATES_PER_SECOND;
 
 export const SCALE = 32;
@@ -39,3 +41,10 @@ export const COLLECTIBLE_SIZE = 0.5;
 export const PLAYER_SPEED = 1;
 
 export const EXPLOSIVE_DELAY = 3000;
+
+export const VELOCITIES: Record<Velocity, Coordinates> = {
+  UP: [0, -1],
+  DOWN: [0, 1],
+  LEFT: [-1, 0],
+  RIGHT: [1, 0],
+};
