@@ -58,6 +58,17 @@ export const processMove = ({
       continue;
     }
 
+    // resolve if other movable is on same position
+    const movable = movableEntities.find(
+      (e) => e.id !== entity.id && e.position[0] === x && e.position[1] === y
+    );
+    if (movable && !isCharacter(entity)) {
+      // log(`[${entity.id}] movable on same position`);
+      resolved.push(entity);
+
+      continue;
+    }
+
     const [nextX, nextY] = [x + vx, y + vy];
 
     const nextEntities = [...resolved, ...toResolve, ...staticEntities].filter(
