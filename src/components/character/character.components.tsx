@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Coordinates } from "../../engine/types/physics";
 import { CharacterBlue } from "./character-blue";
 import { CharacterRed } from "./character-red";
+
+import styles from "./styles.module.css";
 import { TILE_SIZE_VW } from "../../engine";
 
 export type CharacterState = "run" | "stand";
@@ -25,12 +27,12 @@ export const Character = ({
 
   return (
     <div
+      className={styles.container}
       style={{
-        position: "absolute",
+        width: `${1.25 * TILE_SIZE_VW}vw`,
+        height: `${1.25 * TILE_SIZE_VW}vw`,
+        bottom: `${TILE_SIZE_VW / 8}vw`,
         transform: `scaleX(${scale}) rotate(${y === 0 ? 0 : y * 20}deg)`,
-        width: `${1.5 * TILE_SIZE_VW}vw`,
-        height: `${1.5 * TILE_SIZE_VW}vw`,
-        bottom: 0,
       }}
     >
       {isCurrent ? (

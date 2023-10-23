@@ -25,6 +25,11 @@
   }
 }
 
+.container {
+  position: absolute;
+  left: -12.5%;
+}
+
 .swing {
   animation: run 0.25s infinite linear;
   transform-origin: center center;

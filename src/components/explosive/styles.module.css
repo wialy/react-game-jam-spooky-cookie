@@ -1,0 +1,36 @@
+@keyframes jelly {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scaleX(0.9) scaleY(1.1);
+  }
+  50% {
+    transform: scale(1);
+  }
+  75% {
+    transform: scaleX(1.1) scaleY(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.jelly {
+  animation: jelly 0.5s infinite ease-in-out;
+  transform-origin: center bottom;
+}
+
+@keyframes knot {
+  0% {
+    transform: "scale(1)";
+  }
+  100% {
+    transform: "scale(0)";
+  }
+}
+
+.knot {
+  animation: knot 1s infinite ease-in-out;
+  transform-origin: center bottom;
+}
