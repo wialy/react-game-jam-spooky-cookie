@@ -60,7 +60,7 @@ function App() {
     });
   }
 
-  const displayLayers = ["space", "character", "explosive"];
+  const displayLayers = ["space", "explosive", "character"];
   const displayEntities = displayLayers
     .map((layer) => layers[layer])
     .flat()
@@ -70,7 +70,11 @@ function App() {
     <>
       <Level>
         {displayEntities.map((entity) => {
-          const size = isExplosive(entity) ? 0.9 : 1;
+          const size = isExplosive(entity)
+            ? 0.8
+            : isCharacter(entity)
+            ? 0.9
+            : 1;
 
           return (
             <div
@@ -82,12 +86,9 @@ function App() {
                 transform: `translate(${entity.position[0] * TILE_SIZE_VW}vw, ${
                   entity.position[1] * TILE_SIZE_VW
                 }vw)`,
-                backfaceVisibility: "hidden",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                border: isSpace(entity) ? "3px solid rgba(0,0,0,0.05)" : "none",
-                borderRadius: isSpace(entity) ? "25%" : 0,
                 width: `${TILE_SIZE_VW}vw`,
                 height: `${TILE_SIZE_VW}vw`,
                 color: "white",
@@ -100,11 +101,14 @@ function App() {
                   textAlign: "center",
                   backgroundColor: isCharacter(entity)
                     ? TYPE_TO_COLOR["character"][entity.id === playerId ? 0 : 1]
+                    : isSpace(entity)
+                    ? "white"
                     : (TYPE_TO_COLOR[
                         entity.type as keyof typeof TYPE_TO_COLOR
                       ] as string),
                   width: `${100 * size}%`,
                   height: `${100 * size}%`,
+                  transition: `all ${UPDATE_DURATION}ms linear`,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -112,12 +116,17 @@ function App() {
                     ? "50%"
                     : isCharacter(entity)
                     ? "25%"
-                    : "5%",
+                    : "0",
+                  fontSize: `${TILE_SIZE_VW * 0.5}vw`,
                 }}
               >
                 {/* {isMovable(entity) ? (entity.velocity.join(":") as string) : null} */}
                 {isExplosive(entity)
                   ? Math.ceil(entity.timer / UPDATES_PER_SECOND)
+                  : isSpace(entity) && entity.playerId === undefined
+                  ? "🍪"
+                  : isCharacter(entity)
+                  ? entity.velocity.join(":")
                   : null}
               </div>
             </div>

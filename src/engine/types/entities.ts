@@ -8,6 +8,7 @@ export type Entity = {
 
 export type Space = Entity & {
   type: "space";
+  playerId?: string;
 };
 
 export const isSpace = (entity: Entity): entity is Space =>

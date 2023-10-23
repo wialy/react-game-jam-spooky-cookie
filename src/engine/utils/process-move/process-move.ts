@@ -1,5 +1,11 @@
 import { DEBUG } from "../..";
-import { Entity, Movable, isMovable, isSpace } from "../../types/entities";
+import {
+  Entity,
+  Movable,
+  isCharacter,
+  isMovable,
+  isSpace,
+} from "../../types/entities";
 
 const log = (...args: unknown[]) => {
   if (DEBUG) {
@@ -24,9 +30,9 @@ export const processMove = ({
   const operations = 0;
 
   while (toResolve.length > 0) {
-    if (operations > 100) {
+    if (operations > 300) {
       log("break");
-      // throw new Error("break");
+      break;
     }
 
     const entity = { ...toResolve.shift() } as Movable;
@@ -136,6 +142,22 @@ export const processMove = ({
   }
 
   const result = [...staticEntities, ...resolved];
+
+  const characters = result.filter(isCharacter);
+  for (const character of characters) {
+    const space = result.filter(isSpace).find((space) => {
+      const [x, y] = space.position;
+      const [cx, cy] = character.position;
+
+      return x === cx && y === cy;
+    });
+
+    if (!space) {
+      continue;
+    }
+
+    space.playerId = character.id;
+  }
 
   return { entities: result };
 };

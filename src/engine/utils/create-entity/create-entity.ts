@@ -25,6 +25,7 @@ export function createEntity(params: {
   id: string;
   position: Coordinates;
   type: "space";
+  playerId?: string;
 }): Space;
 
 export function createEntity(params: {

@@ -3,7 +3,7 @@ import { Coordinates, Velocity } from "./types/physics";
 // @todo: remove
 export const DEBUG = false;
 
-export const UPDATES_PER_SECOND = 8;
+export const UPDATES_PER_SECOND = 16;
 export const UPDATE_DURATION = 1000 / UPDATES_PER_SECOND;
 
 export const MIN_UPDATE_DELAY = 300;
@@ -22,13 +22,12 @@ export const SCALE = 32;
 // @ can't move through other players
 
 export const HALF_MAZE = [
-  "#.......#",
-  ".........",
-  ".........",
-  "....@....",
-  ".........",
-  ".........",
-  ".#.#.#.#.",
+  "..##...",
+  "......#",
+  "#..@...",
+  ".....#.",
+  ".#.....",
+  ".#.#.#.",
 ];
 
 export const MAZE = [...HALF_MAZE];

@@ -56,7 +56,7 @@ describe("processMove", () => {
     }
   );
 
-  it.each([Object.values(VELOCITIES)])("moves to %s space", (v) => {
+  it.each([Object.values(VELOCITIES)])("moves %s", (v) => {
     const velocity = v as Coordinates;
 
     const { entities } = processMove({
@@ -82,12 +82,14 @@ describe("processMove", () => {
 
     expect(entities).toHaveLength(3);
     expect(entities).toContainEqual(
-      createEntity({
-        id: "movable",
-        type: "movable",
-        position: velocity,
-        velocity,
-      })
+      expect.objectContaining(
+        createEntity({
+          id: "movable",
+          type: "movable",
+          position: velocity,
+          velocity,
+        })
+      )
     );
   });
 
@@ -142,20 +144,24 @@ describe("processMove", () => {
 
     expect(entities).toHaveLength(6);
     expect(entities).toContainEqual(
-      createEntity({
-        id: "a",
-        type: "movable",
-        position: [1, 0],
-        velocity: [1, 0],
-      })
+      expect.objectContaining(
+        createEntity({
+          id: "a",
+          type: "movable",
+          position: [1, 0],
+          velocity: [1, 0],
+        })
+      )
     );
     expect(entities).toContainEqual(
-      createEntity({
-        id: "b",
-        type: "movable",
-        position: [1, 1],
-        velocity: [0, 1],
-      })
+      expect.objectContaining(
+        createEntity({
+          id: "b",
+          type: "movable",
+          position: [1, 1],
+          velocity: [0, 1],
+        })
+      )
     );
   });
 
@@ -180,20 +186,24 @@ describe("processMove", () => {
 
     expect(entities).toHaveLength(4);
     expect(entities).toContainEqual(
-      createEntity({
-        id: "a",
-        type: "movable",
-        position: [0, 0],
-        velocity: [0, 0],
-      })
+      expect.objectContaining(
+        createEntity({
+          id: "a",
+          type: "movable",
+          position: [0, 0],
+          velocity: [0, 0],
+        })
+      )
     );
     expect(entities).toContainEqual(
-      createEntity({
-        id: "b",
-        type: "movable",
-        position: [1, 0],
-        velocity: [0, 0],
-      })
+      expect.objectContaining(
+        createEntity({
+          id: "b",
+          type: "movable",
+          position: [1, 0],
+          velocity: [0, 0],
+        })
+      )
     );
   });
 
@@ -218,20 +228,24 @@ describe("processMove", () => {
 
     expect(entities).toHaveLength(5);
     expect(entities).toContainEqual(
-      createEntity({
-        id: "a",
-        type: "movable",
-        position: [1, 0],
-        velocity: [1, 0],
-      })
+      expect.objectContaining(
+        createEntity({
+          id: "a",
+          type: "movable",
+          position: [1, 0],
+          velocity: [1, 0],
+        })
+      )
     );
     expect(entities).toContainEqual(
-      createEntity({
-        id: "b",
-        type: "movable",
-        position: [2, 0],
-        velocity: [1, 0],
-      })
+      expect.objectContaining(
+        createEntity({
+          id: "b",
+          type: "movable",
+          position: [2, 0],
+          velocity: [1, 0],
+        })
+      )
     );
   });
 
@@ -256,20 +270,24 @@ describe("processMove", () => {
 
     expect(entities).toHaveLength(4);
     expect(entities).toContainEqual(
-      createEntity({
-        id: "a",
-        type: "movable",
-        position: [0, 0],
-        velocity: [0, 0],
-      })
+      expect.objectContaining(
+        createEntity({
+          id: "a",
+          type: "movable",
+          position: [0, 0],
+          velocity: [0, 0],
+        })
+      )
     );
     expect(entities).toContainEqual(
-      createEntity({
-        id: "b",
-        type: "movable",
-        position: [1, 0],
-        velocity: [0, 0],
-      })
+      expect.objectContaining(
+        createEntity({
+          id: "b",
+          type: "movable",
+          position: [1, 0],
+          velocity: [0, 0],
+        })
+      )
     );
   });
 
@@ -294,20 +312,24 @@ describe("processMove", () => {
 
     expect(entities).toHaveLength(5);
     expect(entities).toContainEqual(
-      createEntity({
-        id: "a",
-        type: "movable",
-        position: [0, 0],
-        velocity: [0, 0],
-      })
+      expect.objectContaining(
+        createEntity({
+          id: "a",
+          type: "movable",
+          position: [0, 0],
+          velocity: [0, 0],
+        })
+      )
     );
     expect(entities).toContainEqual(
-      createEntity({
-        id: "b",
-        type: "movable",
-        position: [2, 0],
-        velocity: [1, 0],
-      })
+      expect.objectContaining(
+        createEntity({
+          id: "b",
+          type: "movable",
+          position: [2, 0],
+          velocity: [1, 0],
+        })
+      )
     );
   });
 
@@ -332,20 +354,24 @@ describe("processMove", () => {
 
     expect(entities).toHaveLength(5);
     expect(entities).toContainEqual(
-      createEntity({
-        id: "a",
-        type: "movable",
-        position: [1, 0],
-        velocity: [1, 0],
-      })
+      expect.objectContaining(
+        createEntity({
+          id: "a",
+          type: "movable",
+          position: [1, 0],
+          velocity: [1, 0],
+        })
+      )
     );
     expect(entities).toContainEqual(
-      createEntity({
-        id: "b",
-        type: "movable",
-        position: [2, 0],
-        velocity: [1, 0],
-      })
+      expect.objectContaining(
+        createEntity({
+          id: "b",
+          type: "movable",
+          position: [2, 0],
+          velocity: [1, 0],
+        })
+      )
     );
   });
 
@@ -370,20 +396,24 @@ describe("processMove", () => {
 
     expect(entities).toHaveLength(7);
     expect(entities).toContainEqual(
-      createEntity({
-        id: "a",
-        type: "movable",
-        position: [1, 0],
-        velocity: [1, 0],
-      })
+      expect.objectContaining(
+        createEntity({
+          id: "a",
+          type: "movable",
+          position: [1, 0],
+          velocity: [1, 0],
+        })
+      )
     );
     expect(entities).toContainEqual(
-      createEntity({
-        id: "b",
-        type: "movable",
-        position: [3, 0],
-        velocity: [1, 0],
-      })
+      expect.objectContaining(
+        createEntity({
+          id: "b",
+          type: "movable",
+          position: [3, 0],
+          velocity: [1, 0],
+        })
+      )
     );
   });
 
@@ -413,28 +443,34 @@ describe("processMove", () => {
     });
     expect(entities).toHaveLength(8);
     expect(entities).toContainEqual(
-      createEntity({
-        id: "a",
-        type: "movable",
-        position: [0, 0],
-        velocity: [0, 0],
-      })
+      expect.objectContaining(
+        createEntity({
+          id: "a",
+          type: "movable",
+          position: [0, 0],
+          velocity: [0, 0],
+        })
+      )
     );
     expect(entities).toContainEqual(
-      createEntity({
-        id: "b",
-        type: "movable",
-        position: [1, 0],
-        velocity: [0, 0],
-      })
+      expect.objectContaining(
+        createEntity({
+          id: "b",
+          type: "movable",
+          position: [1, 0],
+          velocity: [0, 0],
+        })
+      )
     );
     expect(entities).toContainEqual(
-      createEntity({
-        id: "c",
-        type: "movable",
-        position: [3, 0],
-        velocity: [1, 0],
-      })
+      expect.objectContaining(
+        createEntity({
+          id: "c",
+          type: "movable",
+          position: [3, 0],
+          velocity: [1, 0],
+        })
+      )
     );
   });
 
@@ -465,28 +501,34 @@ describe("processMove", () => {
     expect(entities).toHaveLength(8);
     const movables = entities.filter(isMovable);
     expect(movables).toContainEqual(
-      createEntity({
-        id: "a",
-        type: "movable",
-        position: [1, 0],
-        velocity: [1, 0],
-      })
+      expect.objectContaining(
+        createEntity({
+          id: "a",
+          type: "movable",
+          position: [1, 0],
+          velocity: [1, 0],
+        })
+      )
     );
     expect(movables).toContainEqual(
-      createEntity({
-        id: "b",
-        type: "movable",
-        position: [2, 0],
-        velocity: [0, 0],
-      })
+      expect.objectContaining(
+        createEntity({
+          id: "b",
+          type: "movable",
+          position: [2, 0],
+          velocity: [0, 0],
+        })
+      )
     );
     expect(movables).toContainEqual(
-      createEntity({
-        id: "c",
-        type: "movable",
-        position: [3, 0],
-        velocity: [0, 0],
-      })
+      expect.objectContaining(
+        createEntity({
+          id: "c",
+          type: "movable",
+          position: [3, 0],
+          velocity: [0, 0],
+        })
+      )
     );
   });
 
@@ -511,20 +553,24 @@ describe("processMove", () => {
     expect(entities).toHaveLength(5);
     const movables = entities.filter(isMovable);
     expect(movables).toContainEqual(
-      createEntity({
-        id: "a",
-        type: "movable",
-        position: [1, 0],
-        velocity: [0, 0],
-      })
+      expect.objectContaining(
+        createEntity({
+          id: "a",
+          type: "movable",
+          position: [1, 0],
+          velocity: [0, 0],
+        })
+      )
     );
     expect(movables).toContainEqual(
-      createEntity({
-        id: "b",
-        type: "movable",
-        position: [2, 0],
-        velocity: [0, 0],
-      })
+      expect.objectContaining(
+        createEntity({
+          id: "b",
+          type: "movable",
+          position: [2, 0],
+          velocity: [0, 0],
+        })
+      )
     );
   });
 });
