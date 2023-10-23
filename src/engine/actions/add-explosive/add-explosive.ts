@@ -20,7 +20,7 @@ export const addExplosive = (
   const [vx, vy] = velocity;
   const [prevX, prevY] = previousPosition || [x - vx, y - vy];
 
-  const possiblePositions = [[prevX, prevY]];
+  const possiblePositions = [[x, y]];
 
   while (possiblePositions.length) {
     const position = possiblePositions.shift();
@@ -44,7 +44,7 @@ export const addExplosive = (
       .find((entity) => entity.position[0] === px && entity.position[1] === py);
 
     if (movable) {
-      continue;
+      // continue;
     }
 
     const velocity: [number, number] = [0, 0];

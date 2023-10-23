@@ -4,7 +4,7 @@ import "./App.css";
 import { Players } from "rune-games-sdk";
 import { Level } from "./components/level";
 import { ScoreUi } from "./components/score-ui";
-import { SCALE, UPDATES_PER_SECOND, UPDATE_DURATION } from "./engine";
+import { TILE_SIZE_VW, UPDATES_PER_SECOND, UPDATE_DURATION } from "./engine";
 import { useControls } from "./engine/hooks/use-controls";
 import { GameState } from "./engine/types";
 import {
@@ -79,17 +79,17 @@ function App() {
                 position: "absolute",
                 left: 0,
                 top: 0,
-                transform: `translate3d(${entity.position[0] * SCALE}px, ${
-                  entity.position[1] * SCALE
-                }px, 1px)`,
+                transform: `translate(${entity.position[0] * TILE_SIZE_VW}vw, ${
+                  entity.position[1] * TILE_SIZE_VW
+                }vw)`,
                 backfaceVisibility: "hidden",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 border: isSpace(entity) ? "3px solid rgba(0,0,0,0.05)" : "none",
                 borderRadius: isSpace(entity) ? "25%" : 0,
-                width: SCALE,
-                height: SCALE,
+                width: `${TILE_SIZE_VW}vw`,
+                height: `${TILE_SIZE_VW}vw`,
                 color: "white",
                 transition: `all ${UPDATE_DURATION}ms linear`,
               }}
@@ -103,8 +103,8 @@ function App() {
                     : (TYPE_TO_COLOR[
                         entity.type as keyof typeof TYPE_TO_COLOR
                       ] as string),
-                  width: SCALE * size,
-                  height: SCALE * size,
+                  width: `${100 * size}%`,
+                  height: `${100 * size}%`,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",

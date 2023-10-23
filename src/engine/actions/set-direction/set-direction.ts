@@ -1,10 +1,11 @@
 import { ActionContext } from "rune-games-sdk";
 import { GameActions, GameState, VELOCITIES } from "../..";
-import { isMovable, isSpace } from "../../types/entities";
+import { isMovable } from "../../types/entities";
+import { addExplosive } from "../add-explosive";
 
 export const setDirection = (
   { velocity }: Parameters<GameActions["setDirection"]>[0],
-  { game, playerId }: ActionContext<GameState>
+  { game, playerId, allPlayerIds }: ActionContext<GameState>
 ) => {
   const character = game.entities
     .filter(isMovable)
@@ -18,5 +19,7 @@ export const setDirection = (
 
   if (vx === 0 && vy === 0) {
     character.velocity = VELOCITIES[velocity];
+
+    addExplosive(undefined, { allPlayerIds, game, playerId });
   }
 };

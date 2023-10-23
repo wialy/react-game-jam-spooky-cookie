@@ -3,12 +3,12 @@ import { Coordinates, Velocity } from "./types/physics";
 // @todo: remove
 export const DEBUG = false;
 
-export const UPDATES_PER_SECOND = 3;
+export const UPDATES_PER_SECOND = 8;
 export const UPDATE_DURATION = 1000 / UPDATES_PER_SECOND;
 
 export const MIN_UPDATE_DELAY = 300;
 
-export const SCALE = 48;
+export const SCALE = 32;
 
 // array of strings
 // '.' - empty
@@ -22,12 +22,12 @@ export const SCALE = 48;
 // @ can't move through other players
 
 export const HALF_MAZE = [
-  ".......##",
-  "..#......",
-  "..#...##.",
-  "....@..#.",
-  "#........",
-  "...#.....",
+  "#.......#",
+  ".........",
+  ".........",
+  "....@....",
+  ".........",
+  ".........",
   ".#.#.#.#.",
 ];
 
@@ -36,6 +36,11 @@ export const MAZE = [...HALF_MAZE];
 for (let i = HALF_MAZE.length - 2; i >= 0; i--) {
   MAZE.push(HALF_MAZE[i].split("").reverse().join(""));
 }
+
+export const MAZE_WIDTH = MAZE[0].length;
+export const MAZE_HEIGHT = MAZE.length;
+
+export const TILE_SIZE_VW = 100 / (MAZE_WIDTH + 1);
 
 // PLAYER_SIZE and CELL_SIZE are set to 1
 // since the idea of making player size lower than cell size proved to be bad
