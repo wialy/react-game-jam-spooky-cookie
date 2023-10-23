@@ -16,21 +16,36 @@
   }
 }
 
+@keyframes knot {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+
+@keyframes hot {
+  0% {
+    color: #7d3822;
+  }
+  100% {
+    color: #c23034;
+  }
+}
+
 .jelly {
   animation: jelly 0.5s infinite ease-in-out;
   transform-origin: center bottom;
 }
 
-@keyframes knot {
-  0% {
-    transform: "scale(1)";
-  }
-  100% {
-    transform: "scale(0)";
-  }
+/* explosive timer */
+.knot {
+  animation: knot 3s ease-in-out;
+  transform-origin: center 40%;
 }
 
-.knot {
-  animation: knot 1s infinite ease-in-out;
-  transform-origin: center bottom;
+.hot {
+  animation: hot 3s ease-in-out;
+  transform-origin: center 40%;
 }

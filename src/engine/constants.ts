@@ -23,13 +23,12 @@ export const SCALE = 32;
 // @ can't move through other players
 
 export const HALF_MAZE = [
-  "..#...#..",
-  ".........",
-  "#........",
-  "....@....",
-  "........#",
-  ".#.......",
-  "...#.#...",
+  ".......",
+  "..#.#..",
+  "...@...",
+  ".#...#.",
+  ".......",
+  "...#...",
 ];
 
 export const MAZE = [...HALF_MAZE];

@@ -17,6 +17,17 @@ export const addExplosive = (
     return;
   }
 
+  const explosive = game.entities.find(
+    (entity) =>
+      entity.type === "explosive" &&
+      entity.position[0] === x &&
+      entity.position[1] === y
+  );
+
+  if (explosive) {
+    return;
+  }
+
   game.entities.push(
     createEntity({
       type: "explosive",

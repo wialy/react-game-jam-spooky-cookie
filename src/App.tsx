@@ -68,8 +68,6 @@ function App() {
     <>
       <Level>
         {displayEntities.map((entity) => {
-          const size = isExplosive(entity) ? 0.8 : isCharacter(entity) ? 1 : 1;
-
           if (isCharacter(entity)) {
             charactersCount++;
           }
