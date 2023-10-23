@@ -43,3 +43,7 @@
 .reverse {
   animation-direction: reverse;
 }
+
+.pumpkin {
+  transform: translate(25%, 58%) scale(1.1);
+}

@@ -25,6 +25,18 @@
   }
 }
 
+@keyframes blow {
+  0% {
+    transform: scale(0.5);
+  }
+  95% {
+    transform: scale(0.8);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 @keyframes hot {
   0% {
     color: #7d3822;
@@ -34,6 +46,10 @@
   }
 }
 
+.container {
+  transform-origin: center 90%;
+}
+
 .jelly {
   animation: jelly 0.5s infinite ease-in-out;
   transform-origin: center bottom;
@@ -41,11 +57,16 @@
 
 /* explosive timer */
 .knot {
-  animation: knot 3s ease-in-out;
+  animation: knot 3s linear forwards;
   transform-origin: center 40%;
 }
 
 .hot {
-  animation: hot 3s ease-in-out;
-  transform-origin: center 40%;
+  color: #7d3822;
+
+  animation: hot 3s linear forwards;
+}
+
+.blow {
+  animation: blow 3s linear forwards;
 }

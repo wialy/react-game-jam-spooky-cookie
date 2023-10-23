@@ -11,7 +11,7 @@ export const Explosive = () => {
         height: `${1 * TILE_SIZE_VW}vw`,
         bottom: "1vw",
       }}
-      className={styles.hot}
+      className={[styles.hot, styles.container, styles.blow].join(" ")}
     >
       <svg
         width="100%"
