@@ -40,7 +40,8 @@ export const CharacterBlue = ({ state }: { state: CharacterState }) => {
               d="M35.5 48C34.6464 48 33.8012 47.8189 33.0126 47.4672C32.2239 47.1154 31.5074 46.5998 30.9038 45.9497C30.3002 45.2997 29.8214 44.5281 29.4948 43.6788C29.1681 42.8295 29 41.9193 29 41C29 40.0807 29.1681 39.1705 29.4948 38.3212C29.8214 37.4719 30.3002 36.7003 30.9038 36.0503C31.5074 35.4002 32.2239 34.8846 33.0126 34.5328C33.8012 34.1811 34.6464 34 35.5 34L35.5 41L35.5 48Z"
               fill="#F8B5A0"
             />
-            <g className={styles.pumpkin}>
+
+            {/* <g className={styles.pumpkin}>
               <ellipse
                 cx="21.6728"
                 cy="20.8836"
@@ -81,7 +82,7 @@ export const CharacterBlue = ({ state }: { state: CharacterState }) => {
                 ry="4.31436"
                 fill="#672B18"
               />
-            </g>
+            </g> */}
 
             <rect x="50" y="34" width="10" height="13" rx="5" fill="white" />
             <rect x="52" y="36" width="6" height="9" rx="3" fill="#3037DE" />

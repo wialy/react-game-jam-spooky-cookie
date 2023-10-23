@@ -6,6 +6,7 @@ import {
   isMovable,
   isSpace,
 } from "../../types/entities";
+import { isEqualPosition } from "../is-equal-position";
 
 const log = (...args: unknown[]) => {
   if (LOG) {
@@ -155,13 +156,12 @@ export const processMove = ({
   const result = [...staticEntities, ...resolved];
 
   const characters = result.filter(isCharacter);
-  for (const character of characters) {
-    const space = result.filter(isSpace).find((space) => {
-      const [x, y] = space.position;
-      const [cx, cy] = character.position;
+  const spaces = result.filter(isSpace);
 
-      return x === cx && y === cy;
-    });
+  for (const character of characters) {
+    const space = spaces.find((space) =>
+      isEqualPosition(space.position, character.position)
+    );
 
     if (!space) {
       continue;

@@ -4,7 +4,7 @@ import { Coordinates, Direction } from "./types/physics";
 export const DEBUG = true;
 export const LOG = false;
 
-export const UPDATES_PER_SECOND = 3;
+export const UPDATES_PER_SECOND = 1;
 export const UPDATE_DURATION = 1000 / UPDATES_PER_SECOND;
 
 export const MIN_UPDATE_DELAY = 300;
@@ -25,9 +25,9 @@ export const SCALE = 32;
 export const HALF_MAZE = [
   ".......",
   ".#..#..",
-  "...@...",
-  ".#...#.",
-  "...#...",
+  ".#.@...",
+  "....#..",
+  ".#.....",
 ];
 
 export const MAZE = [...HALF_MAZE];

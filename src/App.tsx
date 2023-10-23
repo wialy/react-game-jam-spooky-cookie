@@ -14,6 +14,7 @@ import {
   isCharacter,
   isExplosive,
   isSpace,
+  type Character as ICharacter,
 } from "./engine/types/entities";
 
 function App() {
@@ -31,7 +32,13 @@ function App() {
     });
   }, []);
 
-  const { swipeProps } = useControls();
+  const playerCharacter = game?.entities.find((entity) => {
+    return entity.id === playerId;
+  });
+
+  const { swipeProps } = useControls({
+    character: playerCharacter as ICharacter,
+  });
 
   if (!game) {
     return <div>Loading...</div>;

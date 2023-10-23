@@ -73,7 +73,7 @@ export function createEntity(entity: any) {
       return {
         position: [0, 0],
         velocity: [0, 0],
-        timer: UPDATES_PER_SECOND * 3,
+        timer: UPDATES_PER_SECOND * 4,
         ...entity,
       } as Explosive;
     }

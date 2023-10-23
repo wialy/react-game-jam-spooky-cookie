@@ -44,10 +44,10 @@ export const setDirection = (
   const [vx, vy] = character.velocity;
 
   if (vx === 0 && vy === 0) {
-    addExplosive(
-      { position: character.position },
-      { allPlayerIds, game, playerId }
-    );
+    // addExplosive(
+    //   { position: character.position },
+    //   { allPlayerIds, game, playerId }
+    // );
   }
   character.velocity = VELOCITIES[velocity];
 };

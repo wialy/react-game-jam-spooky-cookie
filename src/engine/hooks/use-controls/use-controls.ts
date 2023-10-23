@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef } from "react";
 import { SwipeDirections, useSwipeable } from "react-swipeable";
 import { MIN_UPDATE_DELAY } from "../..";
-import { Direction } from "../../types/physics";
+import { Coordinates, Direction } from "../../types/physics";
+import { Character } from "../../types/entities";
 
 const KEY_TO_DIRECTION: Record<string, Direction> = {
   ArrowUp: "UP",
@@ -31,16 +32,15 @@ const performSetDirection =
     return true;
   };
 
-// not used since explosive in put when player makes a move
-// const performAddExplosive =
-//   ({ position }: { position: Coordinates }): Action =>
-//   () => {
-//     Rune.actions.addExplosive({ position });
+const performAddExplosive =
+  ({ position }: { position: Coordinates }): Action =>
+  () => {
+    Rune.actions.addExplosive({ position });
 
-//     return true;
-//   };
+    return true;
+  };
 
-export const useControls = () => {
+export const useControls = ({ character }: { character?: Character }) => {
   const lastActionTime = useRef<number>();
 
   const dispatchAction = useCallback((action: Action) => {
@@ -60,12 +60,25 @@ export const useControls = () => {
     }
   }, []);
 
+  const velocity = character?.velocity;
+
+  const hasVelocity = velocity
+    ? velocity[0] !== 0 || velocity[1] !== 0
+    : undefined;
+  const previousPosition = character?.previousPosition;
+
+  const position =
+    hasVelocity && previousPosition ? previousPosition : character?.position;
+
   const swipeProps = useSwipeable({
     onSwiped: ({ dir }) => {
       dispatchAction(performSetDirection(SWIPE_TO_DIRECTION[dir]));
     },
     onTap: () => {
-      //
+      if (!position) {
+        return;
+      }
+      dispatchAction(performAddExplosive({ position: position }));
     },
     trackMouse: true,
     trackTouch: true,
@@ -76,6 +89,14 @@ export const useControls = () => {
       event.preventDefault();
 
       dispatchAction(performSetDirection(KEY_TO_DIRECTION[event.key]));
+
+      if (!position) {
+        return;
+      }
+
+      if (event.key === " ") {
+        dispatchAction(performAddExplosive({ position: position }));
+      }
     };
 
     window.addEventListener("keydown", onKeyDown);
@@ -83,7 +104,7 @@ export const useControls = () => {
     return () => {
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [dispatchAction]);
+  }, [dispatchAction, position]);
 
   return { swipeProps };
 };
