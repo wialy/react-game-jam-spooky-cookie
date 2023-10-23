@@ -2,9 +2,15 @@ import { useEffect, useState } from "react";
 import "./App.css";
 
 import { Players } from "rune-games-sdk";
+import { Character } from "./components/character";
 import { Level } from "./components/level";
 import { ScoreUi } from "./components/score-ui";
-import { TILE_SIZE_VW, UPDATES_PER_SECOND, UPDATE_DURATION } from "./engine";
+import {
+  MAZE_WIDTH,
+  TILE_SIZE_VW,
+  UPDATES_PER_SECOND,
+  UPDATE_DURATION,
+} from "./engine";
 import { useControls } from "./engine/hooks/use-controls";
 import { GameState } from "./engine/types";
 import {
@@ -66,6 +72,8 @@ function App() {
     .flat()
     .filter(Boolean);
 
+  let charactersCount = 0;
+
   return (
     <>
       <Level>
@@ -75,6 +83,10 @@ function App() {
             : isCharacter(entity)
             ? 0.9
             : 1;
+
+          if (isCharacter(entity)) {
+            charactersCount++;
+          }
 
           return (
             <div
@@ -93,14 +105,16 @@ function App() {
                 height: `${TILE_SIZE_VW}vw`,
                 color: "white",
                 transition: `all ${UPDATE_DURATION}ms linear`,
+                zIndex: isCharacter(entity)
+                  ? entity.position[1] * MAZE_WIDTH + entity.position[0]
+                  : 0,
               }}
             >
               <div
                 style={{
-                  overflow: "hidden",
                   textAlign: "center",
                   backgroundColor: isCharacter(entity)
-                    ? TYPE_TO_COLOR["character"][entity.id === playerId ? 0 : 1]
+                    ? "transparent"
                     : isSpace(entity)
                     ? "white"
                     : (TYPE_TO_COLOR[
@@ -118,6 +132,7 @@ function App() {
                     ? "25%"
                     : "0",
                   fontSize: `${TILE_SIZE_VW * 0.5}vw`,
+                  position: "relative",
                 }}
               >
                 {/* {isMovable(entity) ? (entity.velocity.join(":") as string) : null} */}
@@ -128,6 +143,12 @@ function App() {
                   : isCharacter(entity)
                   ? entity.velocity.join(":")
                   : null}
+                {isCharacter(entity) && (
+                  <Character
+                    velocity={entity.velocity}
+                    isCurrent={charactersCount === 1}
+                  />
+                )}
               </div>
             </div>
           );

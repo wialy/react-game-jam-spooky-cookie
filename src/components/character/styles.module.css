@@ -1,0 +1,40 @@
+@keyframes run {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(30deg);
+  }
+  75% {
+    transform: rotate(-30deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(3%);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+.swing {
+  animation: run 0.25s infinite linear;
+  transform-origin: center center;
+}
+
+.bounce {
+  animation: bounce 0.5s infinite ease-in-out;
+  transform-origin: center center;
+}
+
+.reverse {
+  animation-direction: reverse;
+}
