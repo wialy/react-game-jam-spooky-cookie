@@ -1,14 +1,27 @@
 import { ActionContext } from "rune-games-sdk";
-import { GameActions, GameState, VELOCITIES } from "../..";
-import { isMovable } from "../../types/entities";
+import { DEBUG, GameActions, GameState, VELOCITIES } from "../..";
+import { isCharacter } from "../../types/entities";
 import { addExplosive } from "../add-explosive";
 
 export const setDirection = (
   { velocity }: Parameters<GameActions["setDirection"]>[0],
   { game, playerId, allPlayerIds }: ActionContext<GameState>
 ) => {
+  if (DEBUG) {
+    const otherCharacter = game.entities
+      .filter(isCharacter)
+      .find(({ id }) => id !== playerId);
+
+    if (otherCharacter) {
+      otherCharacter.velocity = [
+        -VELOCITIES[velocity][0],
+        VELOCITIES[velocity][1],
+      ];
+    }
+  }
+
   const character = game.entities
-    .filter(isMovable)
+    .filter(isCharacter)
     .find(({ id }) => id === playerId);
 
   if (!character) {

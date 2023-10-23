@@ -1,7 +1,8 @@
 import { Coordinates, Velocity } from "./types/physics";
 
 // @todo: remove
-export const DEBUG = false;
+export const DEBUG = true;
+export const LOG = false;
 
 export const UPDATES_PER_SECOND = 8;
 export const UPDATE_DURATION = 1000 / UPDATES_PER_SECOND;

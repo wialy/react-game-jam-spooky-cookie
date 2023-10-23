@@ -1,4 +1,4 @@
-import { DEBUG } from "../..";
+import { LOG } from "../..";
 import {
   Entity,
   Movable,
@@ -8,7 +8,7 @@ import {
 } from "../../types/entities";
 
 const log = (...args: unknown[]) => {
-  if (DEBUG) {
+  if (LOG) {
     console.log(...args);
   }
 };
