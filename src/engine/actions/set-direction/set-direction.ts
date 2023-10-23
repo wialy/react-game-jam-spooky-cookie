@@ -13,10 +13,18 @@ export const setDirection = (
       .find(({ id }) => id !== playerId);
 
     if (otherCharacter) {
-      otherCharacter.velocity = [
-        -VELOCITIES[velocity][0],
-        VELOCITIES[velocity][1],
-      ];
+      otherCharacter.velocity = [...VELOCITIES[velocity]];
+
+      addExplosive(
+        {
+          position: otherCharacter.position,
+        },
+        {
+          allPlayerIds,
+          game,
+          playerId,
+        }
+      );
     }
   }
 
@@ -33,6 +41,9 @@ export const setDirection = (
   if (vx === 0 && vy === 0) {
     character.velocity = VELOCITIES[velocity];
 
-    addExplosive(undefined, { allPlayerIds, game, playerId });
+    addExplosive(
+      { position: character.position },
+      { allPlayerIds, game, playerId }
+    );
   }
 };

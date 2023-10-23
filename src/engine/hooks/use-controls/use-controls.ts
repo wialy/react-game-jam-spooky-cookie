@@ -1,16 +1,16 @@
 import { useCallback, useEffect, useRef } from "react";
 import { SwipeDirections, useSwipeable } from "react-swipeable";
 import { MIN_UPDATE_DELAY } from "../..";
-import { Velocity } from "../../types/physics";
+import { Direction } from "../../types/physics";
 
-const KEY_TO_DIRECTION: Record<string, Velocity> = {
+const KEY_TO_DIRECTION: Record<string, Direction> = {
   ArrowUp: "UP",
   ArrowRight: "RIGHT",
   ArrowDown: "DOWN",
   ArrowLeft: "LEFT",
 };
 
-const SWIPE_TO_DIRECTION: Record<SwipeDirections, Velocity> = {
+const SWIPE_TO_DIRECTION: Record<SwipeDirections, Direction> = {
   Up: "UP",
   Right: "RIGHT",
   Down: "DOWN",
@@ -20,7 +20,7 @@ const SWIPE_TO_DIRECTION: Record<SwipeDirections, Velocity> = {
 type Action = () => boolean;
 
 const performSetDirection =
-  (velocity?: Velocity): Action =>
+  (velocity?: Direction): Action =>
   () => {
     if (!velocity) {
       return false;
@@ -31,11 +31,14 @@ const performSetDirection =
     return true;
   };
 
-const performAddExplosive = (): Action => () => {
-  Rune.actions.addExplosive();
+// not used since explosive in put when player makes a move
+// const performAddExplosive =
+//   ({ position }: { position: Coordinates }): Action =>
+//   () => {
+//     Rune.actions.addExplosive({ position });
 
-  return true;
-};
+//     return true;
+//   };
 
 export const useControls = () => {
   const lastActionTime = useRef<number>();
@@ -62,7 +65,7 @@ export const useControls = () => {
       dispatchAction(performSetDirection(SWIPE_TO_DIRECTION[dir]));
     },
     onTap: () => {
-      dispatchAction(performAddExplosive());
+      //
     },
     trackMouse: true,
     trackTouch: true,
@@ -71,12 +74,6 @@ export const useControls = () => {
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       event.preventDefault();
-
-      if (event.key === " ") {
-        console.log("boom");
-        dispatchAction(performAddExplosive());
-        return;
-      }
 
       dispatchAction(performSetDirection(KEY_TO_DIRECTION[event.key]));
     };

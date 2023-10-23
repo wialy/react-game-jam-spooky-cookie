@@ -1,5 +1,5 @@
 import { Entity } from "./types/entities";
-import { Velocity } from "./types/physics";
+import { Coordinates, Direction } from "./types/physics";
 
 export type GameState = {
   entitiesCounter: number;
@@ -10,6 +10,6 @@ export type GameState = {
 };
 
 export type GameActions = {
-  setDirection: (params: { velocity: Velocity }) => void;
-  addExplosive: () => void;
+  setDirection: (params: { velocity: Direction }) => void;
+  addExplosive: (params: { position: Coordinates }) => void;
 };

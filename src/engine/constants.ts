@@ -1,10 +1,10 @@
-import { Coordinates, Velocity } from "./types/physics";
+import { Coordinates, Direction } from "./types/physics";
 
 // @todo: remove
 export const DEBUG = true;
 export const LOG = false;
 
-export const UPDATES_PER_SECOND = 8;
+export const UPDATES_PER_SECOND = 6;
 export const UPDATE_DURATION = 1000 / UPDATES_PER_SECOND;
 
 export const MIN_UPDATE_DELAY = 300;
@@ -53,7 +53,7 @@ export const PLAYER_SPEED = 1;
 
 export const EXPLOSIVE_DELAY = 3000;
 
-export const VELOCITIES: Record<Velocity, Coordinates> = {
+export const VELOCITIES: Record<Direction, Coordinates> = {
   UP: [0, -1],
   DOWN: [0, 1],
   LEFT: [-1, 0],

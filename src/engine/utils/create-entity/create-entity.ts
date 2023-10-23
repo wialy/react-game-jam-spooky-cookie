@@ -43,6 +43,14 @@ export function createEntity(params: {
   type: "explosive";
 }): Explosive;
 
+export function createEntity(params: {
+  id: string;
+  position: Coordinates;
+  velocity?: Coordinates;
+  timer?: number;
+  type: "damage";
+}): Explosive;
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function createEntity(entity: any) {
   switch (entity.type) {
