@@ -3,10 +3,10 @@
     transform: scale(1, 1);
   }
   33% {
-    transform: scale(1.05, 0.95);
+    transform: scale(1.1, 0.9);
   }
   66% {
-    transform: scale(0.95, 1.05);
+    transform: scale(0.9, 1.2);
   }
   100% {
     transform: scale(1, 1);
@@ -14,6 +14,6 @@
 }
 
 .container {
-  animation: jelly 1s infinite;
-  transform-origin: center bottom;
+  animation: jelly 1s infinite ease-in-out;
+  transform-origin: center center;
 }

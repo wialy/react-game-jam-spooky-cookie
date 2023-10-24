@@ -33,7 +33,7 @@ export const Explosive = () => {
         <path
           d="M17.435 47.5663L23.1454 51.1208L27.166 47.5663L31.7693 51.1208L37.0718 47.5663L40.6845 51.1208L46.3367 47.5663"
           stroke="currentColor"
-          stroke-width="5"
+          strokeWidth="5"
         />
         <ellipse
           cx="32"
@@ -79,8 +79,8 @@ export const Explosive = () => {
             y2="22.9037"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#CDCDCD" />
-            <stop offset="1" stop-color="#CDCDCD" stop-opacity="0" />
+            <stop stopColor="#CDCDCD" />
+            <stop offset="1" stopColor="#CDCDCD" stopOpacity="0" />
           </linearGradient>
         </defs>
       </svg>

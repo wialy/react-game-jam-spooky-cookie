@@ -1,6 +1,7 @@
-import { EXPLOSIVE_TIMER, UPDATES_PER_SECOND } from "../..";
+import { DAMAGE_TIMER, EXPLOSIVE_TIMER } from "../..";
 import {
   Character,
+  Damage,
   Explosive,
   Movable,
   Space,
@@ -46,10 +47,10 @@ export function createEntity(params: {
 export function createEntity(params: {
   id: string;
   position: Coordinates;
-  velocity?: Coordinates;
+  direction?: Coordinates;
   timer?: number;
   type: "damage";
-}): Explosive;
+}): Damage;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function createEntity(entity: any) {
@@ -76,6 +77,15 @@ export function createEntity(entity: any) {
         timer: EXPLOSIVE_TIMER,
         ...entity,
       } as Explosive;
+    }
+
+    case "damage": {
+      return {
+        position: [0, 0],
+        direction: [0, 0],
+        timer: DAMAGE_TIMER,
+        ...entity,
+      } as Damage;
     }
 
     default: {

@@ -44,3 +44,12 @@ export type Explosive = Omit<Movable, "type"> & {
 
 export const isExplosive = (entity: Entity): entity is Explosive =>
   entity.type === "explosive";
+
+export type Damage = Entity & {
+  type: "damage";
+  timer: number;
+  direction: Coordinates | null;
+};
+
+export const isDamage = (entity: Entity): entity is Damage =>
+  entity.type === "damage";

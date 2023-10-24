@@ -16,7 +16,9 @@ import {
   isExplosive,
   isSpace,
   type Character as ICharacter,
+  isDamage,
 } from "./engine/types/entities";
+import { Damage } from "./components/damage";
 
 function App() {
   const [game, setGame] = useState<GameState>();
@@ -64,7 +66,7 @@ function App() {
     });
   }
 
-  const displayLayers = ["space", "explosive", "character"];
+  const displayLayers = ["space", "explosive", "character", "damage"];
   const displayEntities = displayLayers
     .map((layer) => layers[layer])
     .flat()
@@ -112,6 +114,7 @@ function App() {
                   isCurrent={charactersCount === 1}
                 />
               )}
+              {isDamage(entity) && <Damage />}
             </div>
           );
         })}

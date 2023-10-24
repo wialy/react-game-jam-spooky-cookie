@@ -51,6 +51,9 @@ export const COLLECTIBLE_SIZE = 0.5;
 export const PLAYER_SPEED = 1;
 
 export const EXPLOSIVE_TIMER = UPDATES_PER_SECOND * 3;
+export const DAMAGE_TIMER = UPDATES_PER_SECOND * 1;
+
+export const DAMAGE_DISTANCE = 5;
 
 export const VELOCITIES: Record<Direction, Coordinates> = {
   UP: [0, -1],
