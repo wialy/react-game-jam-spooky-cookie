@@ -3,6 +3,7 @@ import "./App.css";
 
 import { Players } from "rune-games-sdk";
 import { Character } from "./components/character";
+import { Collectible } from "./components/collectible";
 import { Explosive } from "./components/explosive/explosive.component";
 import { Level } from "./components/level";
 import { ScoreUi } from "./components/score-ui";
@@ -86,6 +87,9 @@ function App() {
                 position: "absolute",
                 left: 0,
                 top: 0,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
                 transform: `translate(${entity.position[0] * TILE_SIZE_VW}vw, ${
                   entity.position[1] * TILE_SIZE_VW
                 }vw)`,
@@ -99,7 +103,9 @@ function App() {
               }}
             >
               {isExplosive(entity) && <Explosive />}
-              {isSpace(entity) && entity.playerId === undefined ? "🍪" : null}
+              {isSpace(entity) && entity.playerId === undefined ? (
+                <Collectible />
+              ) : null}
               {isCharacter(entity) && (
                 <Character
                   velocity={entity.velocity}

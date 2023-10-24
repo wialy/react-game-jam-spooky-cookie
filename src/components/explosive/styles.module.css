@@ -3,13 +3,13 @@
     transform: scale(1);
   }
   25% {
-    transform: scaleX(0.9) scaleY(1.1);
+    transform: scaleX(0.95) scaleY(1.05);
   }
   50% {
     transform: scale(1);
   }
   75% {
-    transform: scaleX(1.1) scaleY(0.9);
+    transform: scaleX(1.05) scaleY(0.95);
   }
   100% {
     transform: scale(1);
@@ -27,9 +27,12 @@
 
 @keyframes blow {
   0% {
-    transform: scale(0.5);
+    transform: scale(0.4);
   }
-  95% {
+  5% {
+    transform: scale(0.8);
+  }
+  99% {
     transform: scale(0.8);
   }
   100% {
@@ -39,19 +42,23 @@
 
 @keyframes hot {
   0% {
-    color: #7d3822;
+    color: #523822;
+  }
+  90% {
+    color: #cc0000;
   }
   100% {
-    color: #c23034;
+    color: white;
   }
 }
 
 .container {
   transform-origin: center 90%;
+  animation: hot 3s ease-in forwards, blow 3s ease-out forwards;
 }
 
 .jelly {
-  animation: jelly 0.5s infinite ease-in-out;
+  animation: jelly 1s infinite ease-in-out;
   transform-origin: center bottom;
 }
 
@@ -59,14 +66,4 @@
 .knot {
   animation: knot 3s linear forwards;
   transform-origin: center 40%;
-}
-
-.hot {
-  color: #7d3822;
-
-  animation: hot 3s linear forwards;
-}
-
-.blow {
-  animation: blow 3s linear forwards;
 }

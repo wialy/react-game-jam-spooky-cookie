@@ -4,7 +4,7 @@ import { Coordinates, Direction } from "./types/physics";
 export const DEBUG = true;
 export const LOG = false;
 
-export const UPDATES_PER_SECOND = 1;
+export const UPDATES_PER_SECOND = 2;
 export const UPDATE_DURATION = 1000 / UPDATES_PER_SECOND;
 
 export const MIN_UPDATE_DELAY = 300;
@@ -23,11 +23,12 @@ export const SCALE = 32;
 // @ can't move through other players
 
 export const HALF_MAZE = [
-  ".......",
-  ".#..#..",
-  ".#.@...",
-  "....#..",
-  ".#.....",
+  ".........",
+  ".#.###.#.",
+  ".#..@..#.",
+  ".#.#.#.#.",
+  ".........",
+  "#.#...#.#",
 ];
 
 export const MAZE = [...HALF_MAZE];
@@ -49,7 +50,7 @@ export const COLLECTIBLE_SIZE = 0.5;
 
 export const PLAYER_SPEED = 1;
 
-export const EXPLOSIVE_DELAY = 3000;
+export const EXPLOSIVE_TIMER = UPDATES_PER_SECOND * 3;
 
 export const VELOCITIES: Record<Direction, Coordinates> = {
   UP: [0, -1],

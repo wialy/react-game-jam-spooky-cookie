@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef } from "react";
 import { SwipeDirections, useSwipeable } from "react-swipeable";
 import { MIN_UPDATE_DELAY } from "../..";
-import { Coordinates, Direction } from "../../types/physics";
 import { Character } from "../../types/entities";
+import { Coordinates, Direction } from "../../types/physics";
 
 const KEY_TO_DIRECTION: Record<string, Direction> = {
   ArrowUp: "UP",
@@ -60,25 +60,23 @@ export const useControls = ({ character }: { character?: Character }) => {
     }
   }, []);
 
-  const velocity = character?.velocity;
-
-  const hasVelocity = velocity
-    ? velocity[0] !== 0 || velocity[1] !== 0
-    : undefined;
+  const position = character?.position;
   const previousPosition = character?.previousPosition;
 
-  const position =
-    hasVelocity && previousPosition ? previousPosition : character?.position;
+  const velocity = character?.velocity;
+  const isMoving = velocity && (velocity[0] !== 0 || velocity[1] !== 0);
+
+  const nextPosition = isMoving ? position : previousPosition;
 
   const swipeProps = useSwipeable({
     onSwiped: ({ dir }) => {
       dispatchAction(performSetDirection(SWIPE_TO_DIRECTION[dir]));
     },
     onTap: () => {
-      if (!position) {
+      if (!nextPosition) {
         return;
       }
-      dispatchAction(performAddExplosive({ position: position }));
+      dispatchAction(performAddExplosive({ position: nextPosition }));
     },
     trackMouse: true,
     trackTouch: true,

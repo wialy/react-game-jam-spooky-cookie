@@ -1,4 +1,4 @@
-import { UPDATES_PER_SECOND } from "../..";
+import { EXPLOSIVE_TIMER, UPDATES_PER_SECOND } from "../..";
 import {
   Character,
   Explosive,
@@ -73,7 +73,7 @@ export function createEntity(entity: any) {
       return {
         position: [0, 0],
         velocity: [0, 0],
-        timer: UPDATES_PER_SECOND * 4,
+        timer: EXPLOSIVE_TIMER,
         ...entity,
       } as Explosive;
     }
