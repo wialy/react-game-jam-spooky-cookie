@@ -3,39 +3,50 @@ import { Coordinates } from "../../engine/types/physics";
 import { CharacterBlue } from "./character-blue";
 import { CharacterRed } from "./character-red";
 
-import styles from "./styles.module.css";
 import { TILE_SIZE_VW } from "../../engine";
+import styles from "./styles.module.css";
 
-export type CharacterState = "run" | "stand";
+export type CharacterState = "run" | "idle" | "freeze" | "win";
 export const Character = ({
   velocity,
-  isCurrent,
-}: { velocity: Coordinates } & { isCurrent?: boolean }) => {
+  timer,
+  skin,
+  isWinner,
+}: {
+  velocity: Coordinates;
+  timer?: number;
+  skin?: string;
+  isWinner?: boolean;
+}) => {
   const [x, y] = velocity;
 
   const [scale, setScale] = useState(1);
 
   useEffect(() => {
-    if (x < 0) {
-      setScale(-1);
-    } else if (x > 0) {
-      setScale(1);
-    }
-  }, [x, y]);
+    setScale((scale) => (x < 0 ? -1 : x > 0 ? 1 : scale));
+  }, [x]);
 
-  const state: CharacterState = x !== 0 || y !== 0 ? "run" : "stand";
+  const state: CharacterState = timer
+    ? "freeze"
+    : isWinner
+    ? "win"
+    : x !== 0 || y !== 0
+    ? "run"
+    : "idle";
 
   return (
     <div
       className={styles.container}
       style={{
-        width: `${1.25 * TILE_SIZE_VW}vw`,
-        height: `${1.25 * TILE_SIZE_VW}vw`,
+        width: `${1.4 * TILE_SIZE_VW}vw`,
+        height: `${1.4 * TILE_SIZE_VW}vw`,
         bottom: `${TILE_SIZE_VW / 8}vw`,
-        transform: `scaleX(${scale}) rotate(${y === 0 ? 0 : y * 20}deg)`,
+        transform: `translateX(${
+          -TILE_SIZE_VW / 12
+        }vw) scaleX(${scale}) rotate(${y === 0 ? 0 : y * 20}deg)`,
       }}
     >
-      {isCurrent ? (
+      {skin === "blue" ? (
         <CharacterBlue state={state} />
       ) : (
         <CharacterRed state={state} />

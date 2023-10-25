@@ -32,6 +32,9 @@ export const isMovable = (entity: Entity): entity is Movable =>
 
 export type Character = Omit<Movable, "type"> & {
   type: "character";
+  // prevent character from moving for a short time after damage
+  timer: number;
+  skin?: "red" | "blue" | "green" | "yellow";
 };
 
 export const isCharacter = (entity: Entity): entity is Character =>

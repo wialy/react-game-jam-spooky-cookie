@@ -1,1 +1,1 @@
-export * from './Collectible.component';
+export * from "./collectible.component";

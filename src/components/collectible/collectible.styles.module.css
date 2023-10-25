@@ -1,19 +1,22 @@
-@keyframes jelly {
+@keyframes rotate {
   0% {
-    transform: scale(1, 1);
-  }
-  33% {
-    transform: scale(1.1, 0.9);
-  }
-  66% {
-    transform: scale(0.9, 1.2);
+    transform: rotate(0);
   }
   100% {
-    transform: scale(1, 1);
+    transform: rotate(360deg);
   }
 }
 
-.container {
-  animation: jelly 1s infinite ease-in-out;
+.cookie {
+  animation: rotate 6s infinite linear;
   transform-origin: center center;
+}
+
+.container {
+  transition: all 0.25s ease-in;
+  transform-origin: 50% 50%;
+}
+
+.collected {
+  transform: scale(0);
 }

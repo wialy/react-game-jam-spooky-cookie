@@ -1,29 +1,39 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./App.css";
 
 import { Players } from "rune-games-sdk";
 import { Character } from "./components/character";
 import { Collectible } from "./components/collectible";
+import { Damage } from "./components/damage";
 import { Explosive } from "./components/explosive/explosive.component";
 import { Level } from "./components/level";
 import { ScoreUi } from "./components/score-ui";
-import { MAZE_WIDTH, TILE_SIZE_VW, UPDATE_DURATION } from "./engine";
+import {
+  MAZE_WIDTH,
+  TILE_SIZE_VW,
+  UPDATE_DURATION,
+  ZERO_COORDINATES,
+} from "./engine";
 import { useControls } from "./engine/hooks/use-controls";
 import { GameState } from "./engine/types";
 import {
   Entity,
   isCharacter,
+  isDamage,
   isExplosive,
+  isMovable,
   isSpace,
   type Character as ICharacter,
-  isDamage,
 } from "./engine/types/entities";
-import { Damage } from "./components/damage";
 
 function App() {
   const [game, setGame] = useState<GameState>();
   const [runePlayers, setRunePlayers] = useState<Players>();
   const [playerId, setPlayerId] = useState<string>();
+
+  const isPopupVisible = useRef(false);
+
+  const isEnded = game?.isEnded;
 
   useEffect(() => {
     Rune.initClient({
@@ -35,12 +45,20 @@ function App() {
     });
   }, []);
 
+  useEffect(() => {
+    if (isEnded && !isPopupVisible.current) {
+      isPopupVisible.current = true;
+      Rune.showGameOverPopUp();
+    }
+  }, [isEnded]);
+
   const playerCharacter = game?.entities.find((entity) => {
     return entity.id === playerId;
   });
 
   const { swipeProps } = useControls({
     character: playerCharacter as ICharacter,
+    disabled: game?.isEnded,
   });
 
   if (!game) {
@@ -66,52 +84,49 @@ function App() {
     });
   }
 
+  const characters = layers["character"];
+
   const displayLayers = ["space", "explosive", "character", "damage"];
   const displayEntities = displayLayers
     .map((layer) => layers[layer])
     .flat()
     .filter(Boolean);
 
-  let charactersCount = 0;
-
   return (
     <>
       <Level>
         {displayEntities.map((entity) => {
-          if (isCharacter(entity)) {
-            charactersCount++;
-          }
-
           return (
             <div
               key={entity.id}
+              id="entities"
               style={{
-                position: "absolute",
-                left: 0,
-                top: 0,
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
                 transform: `translate(${entity.position[0] * TILE_SIZE_VW}vw, ${
                   entity.position[1] * TILE_SIZE_VW
                 }vw)`,
                 width: `${TILE_SIZE_VW}vw`,
                 height: `${TILE_SIZE_VW}vw`,
                 backgroundColor: isSpace(entity) ? "#2B3A3A" : "transparent",
-                transition: `all ${UPDATE_DURATION}ms linear`,
+                transition: isMovable(entity)
+                  ? `all ${UPDATE_DURATION}ms linear`
+                  : undefined,
                 zIndex: isCharacter(entity)
                   ? entity.position[1] * MAZE_WIDTH + entity.position[0]
-                  : 0,
+                  : isDamage(entity) || isExplosive(entity)
+                  ? entity.position[1] * MAZE_WIDTH + entity.position[0] + 1
+                  : undefined,
               }}
             >
               {isExplosive(entity) && <Explosive />}
-              {isSpace(entity) && entity.playerId === undefined ? (
-                <Collectible />
-              ) : null}
+              {isSpace(entity) && (
+                <Collectible isCollected={entity.playerId !== undefined} />
+              )}
               {isCharacter(entity) && (
                 <Character
-                  velocity={entity.velocity}
-                  isCurrent={charactersCount === 1}
+                  velocity={game.isEnded ? ZERO_COORDINATES : entity.velocity}
+                  timer={entity.timer}
+                  skin={entity.skin}
+                  isWinner={entity.id === game.winnerId}
                 />
               )}
               {isDamage(entity) && <Damage />}
@@ -119,22 +134,13 @@ function App() {
           );
         })}
       </Level>
-      <div
-        style={{
-          position: "fixed",
-          left: 0,
-          top: 0,
-          width: "100%",
-          height: "100%",
-          backgroundColor: "transparent",
-        }}
-        {...swipeProps}
-      />
+      <div id="touch" {...swipeProps} />
       {runePlayers && playerId && (
         <ScoreUi
           players={runePlayers}
           scores={game.scores}
           playerId={playerId}
+          playerSkins={characters}
         />
       )}
     </>

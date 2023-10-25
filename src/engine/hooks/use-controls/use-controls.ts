@@ -40,43 +40,57 @@ const performAddExplosive =
     return true;
   };
 
-export const useControls = ({ character }: { character?: Character }) => {
+export const useControls = ({
+  character,
+  disabled,
+}: {
+  character?: Character;
+  disabled?: boolean;
+}) => {
   const lastActionTime = useRef<number>();
 
-  const dispatchAction = useCallback((action: Action) => {
-    const now = Date.now();
+  const dispatchAction = useCallback(
+    (action: Action) => {
+      const now = Date.now();
 
-    if (
-      lastActionTime.current &&
-      now - lastActionTime.current < MIN_UPDATE_DELAY
-    ) {
-      return;
-    }
+      if (disabled) {
+        return;
+      }
 
-    const wasExecuted = action();
+      if (
+        lastActionTime.current &&
+        now - lastActionTime.current < MIN_UPDATE_DELAY
+      ) {
+        return;
+      }
 
-    if (wasExecuted) {
-      lastActionTime.current = now;
-    }
-  }, []);
+      const wasExecuted = action();
+
+      if (wasExecuted) {
+        lastActionTime.current = now;
+      }
+    },
+    [disabled]
+  );
 
   const position = character?.position;
   const previousPosition = character?.previousPosition;
 
   const velocity = character?.velocity;
   const isMoving = velocity && (velocity[0] !== 0 || velocity[1] !== 0);
+  const isDamaged = character?.timer && character.timer > 0;
 
-  const nextPosition = isMoving ? position : previousPosition;
+  const explosivePosition = isMoving ? previousPosition : position;
 
   const swipeProps = useSwipeable({
     onSwiped: ({ dir }) => {
       dispatchAction(performSetDirection(SWIPE_TO_DIRECTION[dir]));
     },
     onTap: () => {
-      if (!nextPosition) {
+      if (!explosivePosition || isDamaged) {
         return;
       }
-      dispatchAction(performAddExplosive({ position: nextPosition }));
+      dispatchAction(performAddExplosive({ position: explosivePosition }));
     },
     trackMouse: true,
     trackTouch: true,
@@ -86,11 +100,11 @@ export const useControls = ({ character }: { character?: Character }) => {
     const onKeyDown = (event: KeyboardEvent) => {
       event.preventDefault();
 
-      dispatchAction(performSetDirection(KEY_TO_DIRECTION[event.key]));
-
-      if (!position) {
+      if (!position || isDamaged) {
         return;
       }
+
+      dispatchAction(performSetDirection(KEY_TO_DIRECTION[event.key]));
 
       if (event.key === " ") {
         dispatchAction(performAddExplosive({ position: position }));
@@ -102,7 +116,7 @@ export const useControls = ({ character }: { character?: Character }) => {
     return () => {
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [dispatchAction, position]);
+  }, [dispatchAction, isDamaged, position]);
 
   return { swipeProps };
 };

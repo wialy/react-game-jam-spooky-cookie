@@ -34,6 +34,7 @@ export function createEntity(params: {
   position: Coordinates;
   velocity?: Coordinates;
   type: "character";
+  skin?: Character["skin"];
 }): Character;
 
 export function createEntity(params: {
@@ -66,6 +67,7 @@ export function createEntity(entity: any) {
       return {
         position: [0, 0],
         velocity: [0, 0],
+        timer: 0,
         ...entity,
       } as Character;
     }

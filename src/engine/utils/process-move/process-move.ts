@@ -6,6 +6,7 @@ import {
   isMovable,
   isSpace,
 } from "../../types/entities";
+import { Coordinates } from "../../types/physics";
 import { isEqualPosition } from "../is-equal-position";
 
 const log = (...args: unknown[]) => {
@@ -26,8 +27,6 @@ export const processMove = ({
   let resolved: Movable[] = [];
   // move what can be moved
 
-  const locked: Set<string> = new Set();
-
   const operations = 0;
 
   while (toResolve.length > 0) {
@@ -39,10 +38,9 @@ export const processMove = ({
     const entity = { ...toResolve.shift() } as Movable;
 
     const isResolved = resolved.some((e) => e.id === entity.id);
-    const isLocked = locked.has(entity.id);
 
     // if already resolved, skip
-    if (isResolved || isLocked) {
+    if (isResolved) {
       log(`[${entity.id}] already resolved / locked`);
 
       continue;
@@ -53,7 +51,8 @@ export const processMove = ({
 
     // if no velocity, resolve
     if (vx === 0 && vy === 0) {
-      // log(`[${entity.id}] no velocity`);
+      log(`[${entity.id}] no velocity`);
+
       resolved.push(entity);
 
       continue;
@@ -61,26 +60,28 @@ export const processMove = ({
 
     // resolve if other movable is on same position
     const movable = movableEntities.find(
-      (e) => e.id !== entity.id && e.position[0] === x && e.position[1] === y
+      (e) => e.id !== entity.id && isEqualPosition(e.position, entity.position)
     );
     if (movable && !isCharacter(entity)) {
-      // log(`[${entity.id}] movable on same position`);
+      log(`[${entity.id}] movable on same position`);
+
       resolved.push(entity);
 
       continue;
     }
 
-    const [nextX, nextY] = [x + vx, y + vy];
+    const nextPosition: Coordinates = [x + vx, y + vy];
 
     const nextEntities = [...resolved, ...toResolve, ...staticEntities].filter(
-      (e) => e.position[0] === nextX && e.position[1] === nextY
+      (e) => isEqualPosition(e.position, nextPosition)
     );
 
     const nextSpace = nextEntities.find(isSpace);
 
     // if no space, resolve
     if (!nextSpace) {
-      // log(`[${entity.id}] no space`);
+      log(`[${entity.id}] no space`);
+
       entity.velocity = [0, 0];
       resolved.push(entity);
 
@@ -91,26 +92,19 @@ export const processMove = ({
 
     // if no movable, resolve
     if (!nextMovable) {
-      // log(`[${entity.id}] no next movable`);
+      log(`[${entity.id}] no next movable`);
+
       entity.previousPosition = [...entity.position];
-      entity.position = [nextX, nextY];
-      // locked.add(entity.id);
+      entity.position = nextPosition;
       resolved.push(entity);
 
       continue;
     }
 
     const isNextMovableResolved = resolved.some((e) => e.id === nextMovable.id);
-    const isNextMovableLocked = locked.has(nextMovable.id);
 
     if (isNextMovableResolved) {
       log(`[${entity.id}] next movable already resolved`);
-
-      if (isNextMovableLocked) {
-        continue;
-      }
-
-      // locked.add(nextMovable.id);
 
       const [nextMovableVelocityX, nextMovableVelocityY] = [
         ...nextMovable.velocity,
@@ -139,6 +133,7 @@ export const processMove = ({
 
     if (nextMovableVx === -vx && nextMovableVy === -vy) {
       log(`[${entity.id}] opposite direction`);
+
       entity.velocity = [0, 0];
       nextMovable.velocity = [0, 0];
 
@@ -150,6 +145,7 @@ export const processMove = ({
 
     // if next movable is not resolved, queue current entity
     log(`[${entity.id}] queueing`);
+
     toResolve.push(entity);
   }
 

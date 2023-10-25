@@ -9,7 +9,7 @@ export const Explosive = () => {
         position: "absolute",
         width: `${1 * TILE_SIZE_VW}vw`,
         height: `${1 * TILE_SIZE_VW}vw`,
-        bottom: "1vw",
+        bottom: "0.5vw",
       }}
       className={[styles.hot, styles.container, styles.blow].join(" ")}
     >
@@ -21,7 +21,7 @@ export const Explosive = () => {
         xmlns="http://www.w3.org/2000/svg"
         className={styles.jelly}
       >
-        <ellipse cx="32" cy="33.747" rx="31.2467" ry="29.0618" fill="#D2741D" />
+        <ellipse cx="32" cy="33.747" rx="31.2467" ry="29.0618" fill="#ff8c00" />
         <path
           d="M30.5308 35.611C30.0817 37.2871 28.9181 38.6981 27.296 39.5337C25.6739 40.3694 23.7261 40.5611 21.8812 40.0668C20.0363 39.5724 18.4454 38.4325 17.4584 36.8978C16.4714 35.363 16.1692 33.5592 16.6184 31.8831L20.7921 33.0015C20.6125 33.6719 20.7333 34.3934 21.1281 35.0073C21.5229 35.6212 22.1593 36.0772 22.8972 36.2749C23.6352 36.4727 24.4143 36.396 25.0632 36.0617C25.712 35.7275 26.1774 35.163 26.3571 34.4926L30.5308 35.611Z"
           fill="currentColor"
@@ -35,13 +35,7 @@ export const Explosive = () => {
           stroke="currentColor"
           strokeWidth="5"
         />
-        <ellipse
-          cx="32"
-          cy="14.3511"
-          rx="14.3367"
-          ry="9.023"
-          fill="#D2741DCC"
-        />
+        <ellipse cx="32" cy="14.3511" rx="14.3367" ry="9.023" fill="#ff8c00" />
         <ellipse
           cx="32.0001"
           cy="16.6835"

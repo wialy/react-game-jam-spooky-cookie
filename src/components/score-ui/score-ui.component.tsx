@@ -1,11 +1,17 @@
 import { Players } from "rune-games-sdk";
-import { GameState } from "../../engine";
+import { GameState, SKIN_COLORS } from "../../engine";
+import { Character } from "../../engine/types/entities";
 
 export const ScoreUi = ({
   players,
   scores,
   playerId,
-}: { players: Players; playerId: string } & Pick<GameState, "scores">) => {
+  playerSkins: skins,
+}: {
+  players: Players;
+  playerId: string;
+  playerSkins: Array<Pick<Character, "id" | "skin">>;
+} & Pick<GameState, "scores">) => {
   // Sort players to show playerId first
   const sortedPlayers = Object.entries(players).sort(
     ([id1], [id2]) => (id1 === playerId ? -1 : 1) - (id2 === playerId ? -1 : 1)
@@ -19,61 +25,66 @@ export const ScoreUi = ({
         left: 0,
         right: 0,
         display: "flex",
-        alignItems: "center",
         overflow: "hidden",
       }}
     >
-      {sortedPlayers.map(([id, player]) => (
-        <div
-          key={id}
-          style={{
-            display: "flex",
-            flexDirection: id === playerId ? "row" : "row-reverse",
-            padding: 8,
-            flex: 1,
-            justifyContent: "space-between",
-            alignItems: "center",
-            backgroundColor: id === playerId ? "blue" : "red",
-            color: "white",
-            overflow: "hidden",
-            gap: 8,
-          }}
-        >
-          <img
-            src={player.avatarUrl}
-            alt=""
-            style={{
-              width: 32,
-              height: 32,
-              borderRadius: 16,
-            }}
-          />
-          <div
-            style={{
-              fontSize: 13,
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
-              flex: 1,
-              display: "flex",
-              justifyContent: id === playerId ? "flex-start" : "flex-end",
-            }}
-          >
-            {player.displayName}
-          </div>
+      {sortedPlayers.map(([id, player], index) => {
+        const skin = skins.find((skin) => skin.id === id)?.skin;
+        const score = scores[id] ?? 0;
 
+        return (
           <div
+            key={id}
             style={{
-              fontSize: 16,
-              fontWeight: "bold",
               display: "flex",
-              padding: "0 8px",
+              flexDirection: index === 0 ? "row" : "row-reverse",
+              padding: 8,
+              flex: 200 + score,
+              justifyContent: "space-between",
+              alignItems: "center",
+              backgroundColor: skin ? SKIN_COLORS[skin][0] : "black",
+              color: "white",
+              overflow: "hidden",
+              gap: 8,
+              transition: "flex 0.5s ease-in-out",
             }}
           >
-            {scores[id] ?? 0}
+            <img
+              src={player.avatarUrl}
+              alt=""
+              style={{
+                width: 32,
+                height: 32,
+                borderRadius: 16,
+              }}
+            />
+            <div
+              style={{
+                fontSize: 13,
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                flex: 1,
+                display: "flex",
+                justifyContent: id === playerId ? "flex-start" : "flex-end",
+              }}
+            >
+              {player.displayName}
+            </div>
+
+            <div
+              style={{
+                fontSize: 24,
+                fontWeight: "bold",
+                display: "flex",
+                padding: "0 8px",
+              }}
+            >
+              {score}
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };

@@ -1,8 +1,15 @@
-import { DAMAGE_DISTANCE, DAMAGE_TIMER, VELOCITIES } from "../..";
+import {
+  DAMAGE_DISTANCE,
+  DAMAGE_TIMER,
+  VELOCITIES,
+  ZERO_COORDINATES,
+} from "../..";
 import { Entity, isDamage, isExplosive, isSpace } from "../../types/entities";
 import { Coordinates } from "../../types/physics";
 import { createEntity } from "../create-entity";
 import { isEqualPosition } from "../is-equal-position";
+
+const DIRECTIONS = [ZERO_COORDINATES, ...Object.values(VELOCITIES)];
 
 export const processExplosives = ({
   entities,
@@ -17,42 +24,53 @@ export const processExplosives = ({
   for (const entity of entities) {
     if (isExplosive(entity)) {
       entity.timer--;
+
       if (entity.timer >= 0) {
         newEntities.push(entity);
-      } else {
-        for (const direction of Object.values(VELOCITIES)) {
-          for (let distance = 0; distance < DAMAGE_DISTANCE; distance++) {
-            const nextPosition: Coordinates = [
-              entity.position[0] + direction[0] * distance,
-              entity.position[1] + direction[1] * distance,
-            ];
+        continue;
+      }
 
-            const nextEntity = entities.find((e) =>
-              isEqualPosition(e.position, nextPosition)
-            );
+      for (const direction of DIRECTIONS) {
+        for (
+          let radiusMultiplier = 1;
+          radiusMultiplier < DAMAGE_DISTANCE;
+          radiusMultiplier++
+        ) {
+          const nextPosition: Coordinates = [
+            entity.position[0] + direction[0] * radiusMultiplier,
+            entity.position[1] + direction[1] * radiusMultiplier,
+          ];
 
-            if (!nextEntity || !isSpace(nextEntity)) {
-              break;
-            }
+          const nextEntities = entities.filter((nextEntity) =>
+            isEqualPosition(nextEntity.position, nextPosition)
+          );
 
-            newEntities.push(
-              createEntity({
-                type: "damage",
-                position: nextPosition,
-                direction: direction,
-                timer: DAMAGE_TIMER,
-                id: `damage-${nextPosition[0]}-${nextPosition[1]}-${
-                  entitiesCounter + entitiesAdded + 1
-                }`,
-              })
-            );
-            entitiesAdded++;
+          const space = nextEntities.find(isSpace);
+
+          if (!space) {
+            break;
           }
+
+          newEntities.push(
+            createEntity({
+              type: "damage",
+              position: nextPosition,
+              direction: direction,
+              timer: DAMAGE_TIMER,
+              id: `damage-${nextPosition[0]}-${nextPosition[1]}-${
+                entitiesCounter + entitiesAdded + 1
+              }`,
+            })
+          );
+
+          entitiesAdded++;
         }
       }
 
       continue;
-    } else if (isDamage(entity)) {
+    }
+
+    if (isDamage(entity)) {
       entity.timer--;
 
       if (entity.timer >= 0) {
@@ -63,19 +81,6 @@ export const processExplosives = ({
     }
 
     newEntities.push(entity);
-  }
-
-  for (const entity of newEntities) {
-    if (isDamage(entity)) {
-      for (const otherEntity of newEntities) {
-        if (
-          isExplosive(otherEntity) &&
-          isEqualPosition(entity.position, otherEntity.position)
-        ) {
-          otherEntity.timer = 0;
-        }
-      }
-    }
   }
 
   return { entities: newEntities, entitiesAdded };

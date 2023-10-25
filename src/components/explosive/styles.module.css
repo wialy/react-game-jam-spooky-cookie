@@ -18,10 +18,10 @@
 
 @keyframes knot {
   0% {
-    transform: scale(1);
+    transform: scale(2.5, 1);
   }
   100% {
-    transform: scale(0);
+    transform: scale(1, 0);
   }
 }
 
@@ -32,8 +32,11 @@
   5% {
     transform: scale(0.8);
   }
-  99% {
+  98% {
     transform: scale(0.8);
+  }
+  99% {
+    transform: scale(0.7);
   }
   100% {
     transform: scale(1);
@@ -42,10 +45,10 @@
 
 @keyframes hot {
   0% {
-    color: #523822;
+    color: darkred;
   }
-  90% {
-    color: #cc0000;
+  99% {
+    color: red;
   }
   100% {
     color: white;
@@ -54,7 +57,7 @@
 
 .container {
   transform-origin: center 90%;
-  animation: hot 3s ease-in forwards, blow 3s ease-out forwards;
+  animation: hot 3s ease-in forwards, blow 3s ease-in forwards;
 }
 
 .jelly {
@@ -65,5 +68,5 @@
 /* explosive timer */
 .knot {
   animation: knot 3s linear forwards;
-  transform-origin: center 40%;
+  transform-origin: center 38%;
 }

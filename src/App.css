@@ -2,3 +2,20 @@
   max-width: 1280px;
   margin: 0 auto;
 }
+
+#entities {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#touch {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}

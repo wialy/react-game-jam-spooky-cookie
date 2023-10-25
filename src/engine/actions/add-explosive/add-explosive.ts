@@ -1,17 +1,17 @@
 import { ActionContext } from "rune-games-sdk";
-import { GameState } from "../..";
-import { isSpace } from "../../types/entities";
+import { GameState, ZERO_COORDINATES } from "../..";
+import { isExplosive, isSpace } from "../../types/entities";
 import { Coordinates } from "../../types/physics";
 import { createEntity } from "../../utils/create-entity";
+import { isEqualPosition } from "../../utils/is-equal-position";
 
-const velocity: [number, number] = [0, 0];
 export const addExplosive = (
-  { position: [x, y] }: { position: Coordinates },
+  { position }: { position: Coordinates },
   { game }: ActionContext<GameState>
 ) => {
-  const space = game.entities
-    .filter(isSpace)
-    .find((entity) => entity.position[0] === x && entity.position[1] === y);
+  const space = game.entities.find(
+    (entity) => isSpace(entity) && isEqualPosition(entity.position, position)
+  );
 
   if (!space) {
     return;
@@ -19,9 +19,7 @@ export const addExplosive = (
 
   const explosive = game.entities.find(
     (entity) =>
-      entity.type === "explosive" &&
-      entity.position[0] === x &&
-      entity.position[1] === y
+      isExplosive(entity) && isEqualPosition(entity.position, position)
   );
 
   if (explosive) {
@@ -31,9 +29,9 @@ export const addExplosive = (
   game.entities.push(
     createEntity({
       type: "explosive",
-      position: [x, y],
+      position: [...position],
       id: `explosive-${game.entitiesCounter++}`,
-      velocity,
+      velocity: [...ZERO_COORDINATES],
     })
   );
 };

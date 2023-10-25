@@ -37,17 +37,9 @@ export const setDirection = (
     .filter(isCharacter)
     .find(({ id }) => id === playerId);
 
-  if (!character) {
+  if (!character || character.timer > 0) {
     return;
   }
 
-  const [vx, vy] = character.velocity;
-
-  if (vx === 0 && vy === 0) {
-    // addExplosive(
-    //   { position: character.position },
-    //   { allPlayerIds, game, playerId }
-    // );
-  }
   character.velocity = VELOCITIES[velocity];
 };

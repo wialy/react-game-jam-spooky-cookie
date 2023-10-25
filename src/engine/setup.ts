@@ -1,5 +1,5 @@
 import { GameState, MAZE } from ".";
-import { Entity } from "./types/entities";
+import { Character, Entity } from "./types/entities";
 import { createEntity } from "./utils/create-entity";
 
 export const setup = (allPlayerIds: string[]): GameState => {
@@ -34,7 +34,8 @@ export const setup = (allPlayerIds: string[]): GameState => {
             createEntity({
               type: "character",
               position: [x, y],
-              id: allPlayerIds[playersCounter++],
+              id: allPlayerIds[playersCounter],
+              skin: ["red", "blue"][playersCounter] as Character["skin"],
             })
           );
           entities.push(
@@ -44,6 +45,7 @@ export const setup = (allPlayerIds: string[]): GameState => {
               id: `space-${x}-${y}`,
             })
           );
+          playersCounter++;
           break;
         }
       }

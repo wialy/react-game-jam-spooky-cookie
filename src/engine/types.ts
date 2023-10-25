@@ -5,6 +5,7 @@ export type GameState = {
   entitiesCounter: number;
   isRunning?: boolean;
   isEnded?: boolean;
+  winnerId?: string;
   scores: Record<string, number>;
   entities: Entity[];
 };
