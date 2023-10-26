@@ -27,10 +27,10 @@ export const ZERO_COORDINATES: Coordinates = [0, 0];
 
 export const HALF_MAZE = [
   ".......",
-  ".#.#.#.",
-  ".......",
+  ".#$#$#.",
+  ".$...$.",
   ".#.@.#.",
-  ".......",
+  ".$.$.$.",
 ];
 // export const HALF_MAZE = [
 //   ".........",

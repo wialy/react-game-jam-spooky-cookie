@@ -29,6 +29,23 @@ export const setup = (allPlayerIds: string[]): GameState => {
           );
           break;
         }
+        case "$": {
+          entities.push(
+            createEntity({
+              type: "crate",
+              position: [x, y],
+              id: `crate-${x}-${y}`,
+            })
+          );
+          entities.push(
+            createEntity({
+              type: "space",
+              position: [x, y],
+              id: `space-${x}-${y}`,
+            })
+          );
+          break;
+        }
         case "@": {
           entities.push(
             createEntity({

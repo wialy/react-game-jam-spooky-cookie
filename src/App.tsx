@@ -25,8 +25,10 @@ import {
   isSpace,
   type Character as ICharacter,
   isWall,
+  isCrate,
 } from "./engine/types/entities";
 import { Wall } from "./components/wall";
+import { Crate } from "./components/crate";
 
 function App() {
   const [game, setGame] = useState<GameState>();
@@ -88,7 +90,14 @@ function App() {
 
   const characters = layers["character"];
 
-  const displayLayers = ["space", "wall", "explosive", "character", "damage"];
+  const displayLayers = [
+    "space",
+    "wall",
+    "crate",
+    "explosive",
+    "character",
+    "damage",
+  ];
   const displayEntities = displayLayers
     .map((layer) => layers[layer])
     .flat()
@@ -117,11 +126,14 @@ function App() {
                   ? entity.position[1] * MAZE_WIDTH + entity.position[0]
                   : isDamage(entity) || isExplosive(entity)
                   ? entity.position[1] * MAZE_WIDTH + entity.position[0] + 1
-                  : isWall(entity)
-                  ? (entity.position[1] - 1) * MAZE_WIDTH +
-                    entity.position[0] +
-                    3
-                  : undefined,
+                  : isWall(entity) || isCrate(entity)
+                  ? Math.max(
+                      0,
+                      (entity.position[1] - 1) * MAZE_WIDTH +
+                        entity.position[0] +
+                        3
+                    )
+                  : 0,
               }}
             >
               {isExplosive(entity) && <Explosive />}
@@ -138,6 +150,7 @@ function App() {
               )}
               {isDamage(entity) && <Damage />}
               {isWall(entity) && <Wall />}
+              {isCrate(entity) && <Crate />}
             </div>
           );
         })}

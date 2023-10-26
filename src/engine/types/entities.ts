@@ -56,3 +56,10 @@ export type Damage = Entity & {
 
 export const isDamage = (entity: Entity): entity is Damage =>
   entity.type === "damage";
+
+export type Crate = Omit<Movable, "type"> & {
+  type: "crate";
+};
+
+export const isCrate = (entity: Entity): entity is Crate =>
+  entity.type === "crate";

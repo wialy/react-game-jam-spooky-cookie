@@ -1,6 +1,7 @@
 import { DAMAGE_TIMER, EXPLOSIVE_TIMER } from "../..";
 import {
   Character,
+  Crate,
   Damage,
   Explosive,
   Movable,
@@ -53,9 +54,17 @@ export function createEntity(params: {
   type: "damage";
 }): Damage;
 
+export function createEntity(params: {
+  id: string;
+  position: Coordinates;
+  velocity?: Coordinates;
+  type: "crate";
+}): Crate;
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function createEntity(entity: any) {
   switch (entity.type) {
+    case "crate":
     case "movable": {
       return {
         velocity: [0, 0],

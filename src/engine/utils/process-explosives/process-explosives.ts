@@ -4,7 +4,13 @@ import {
   VELOCITIES,
   ZERO_COORDINATES,
 } from "../..";
-import { Entity, isDamage, isExplosive, isSpace } from "../../types/entities";
+import {
+  Entity,
+  isCrate,
+  isDamage,
+  isExplosive,
+  isSpace,
+} from "../../types/entities";
 import { Coordinates } from "../../types/physics";
 import { createEntity } from "../create-entity";
 import { isEqualPosition } from "../is-equal-position";
@@ -48,6 +54,12 @@ export const processExplosives = ({
           const space = nextEntities.find(isSpace);
 
           if (!space) {
+            break;
+          }
+
+          const crate = nextEntities.find(isCrate);
+
+          if (crate) {
             break;
           }
 
