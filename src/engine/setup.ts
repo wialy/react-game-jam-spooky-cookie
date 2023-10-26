@@ -2,10 +2,12 @@ import { GameState, MAZE } from ".";
 import { Character, Entity } from "./types/entities";
 import { createEntity } from "./utils/create-entity";
 
+const SKINS: Character["skin"][] = ["red", "blue"];
 export const setup = (allPlayerIds: string[]): GameState => {
   const entities: Entity[] = [];
 
   let playersCounter = 0;
+
   MAZE.forEach((row, y) => {
     row.split("").forEach((cell, x) => {
       switch (cell) {
@@ -47,22 +49,24 @@ export const setup = (allPlayerIds: string[]): GameState => {
           break;
         }
         case "@": {
-          entities.push(
-            createEntity({
-              type: "character",
-              position: [x, y],
-              id: allPlayerIds[playersCounter],
-              skin: ["red", "blue"][playersCounter] as Character["skin"],
-            })
-          );
-          entities.push(
-            createEntity({
-              type: "space",
-              position: [x, y],
-              id: `space-${x}-${y}`,
-            })
-          );
-          playersCounter++;
+          if (allPlayerIds.length > playersCounter) {
+            entities.push(
+              createEntity({
+                type: "character",
+                position: [x, y],
+                id: allPlayerIds[playersCounter],
+                skin: SKINS[playersCounter],
+              })
+            );
+            entities.push(
+              createEntity({
+                type: "space",
+                position: [x, y],
+                id: `space-${x}-${y}`,
+              })
+            );
+            playersCounter++;
+          }
           break;
         }
       }
@@ -73,7 +77,7 @@ export const setup = (allPlayerIds: string[]): GameState => {
     entitiesCounter: 0,
     isEnded: false,
     isRunning: true,
-    scores: {},
-    entities: [...entities],
+    scores: Object.fromEntries(allPlayerIds.map((id) => [id, 0])),
+    entities,
   };
 };
