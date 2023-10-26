@@ -14,7 +14,7 @@
 
 .container {
   transition: all 0.25s ease-in;
-  transform-origin: 50% 50%;
+  transform-origin: 50% 0%;
 }
 
 .collected {

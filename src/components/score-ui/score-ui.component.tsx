@@ -1,5 +1,5 @@
 import { Players } from "rune-games-sdk";
-import { GameState, SKIN_COLORS } from "../../engine";
+import { GameState, MAZE_HEIGHT, MAZE_WIDTH, SKIN_COLORS } from "../../engine";
 import { Character } from "../../engine/types/entities";
 
 export const ScoreUi = ({
@@ -21,11 +21,12 @@ export const ScoreUi = ({
     <div
       style={{
         position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
+        top: "0.5em",
+        left: "0.5em",
+        right: "0.5em",
         display: "flex",
         overflow: "hidden",
+        borderRadius: 32,
       }}
     >
       {sortedPlayers.map(([id, player], index) => {
@@ -38,8 +39,8 @@ export const ScoreUi = ({
             style={{
               display: "flex",
               flexDirection: index === 0 ? "row" : "row-reverse",
-              padding: 8,
-              flex: 200 + score,
+              padding: 2,
+              flex: MAZE_HEIGHT * MAZE_WIDTH + score,
               justifyContent: "space-between",
               alignItems: "center",
               backgroundColor: skin ? SKIN_COLORS[skin][0] : "black",
@@ -64,9 +65,11 @@ export const ScoreUi = ({
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",
+                fontWeight: "bold",
                 flex: 1,
                 display: "flex",
                 justifyContent: id === playerId ? "flex-start" : "flex-end",
+                textAlign: id === playerId ? "left" : "right",
               }}
             >
               {player.displayName}
@@ -75,6 +78,7 @@ export const ScoreUi = ({
             <div
               style={{
                 fontSize: 24,
+                lineHeight: "16px",
                 fontWeight: "bold",
                 display: "flex",
                 padding: "0 8px",

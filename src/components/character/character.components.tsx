@@ -38,11 +38,14 @@ export const Character = ({
     <div
       className={styles.container}
       style={{
-        width: `${1.4 * TILE_SIZE_VW}vw`,
-        height: `${1.4 * TILE_SIZE_VW}vw`,
-        bottom: `${TILE_SIZE_VW / 8}vw`,
-        transform: `translateX(${
-          -TILE_SIZE_VW / 12
+        width: `${1.5 * TILE_SIZE_VW}vw`,
+        height: `${1.5 * TILE_SIZE_VW}vw`,
+        bottom: 0,
+        left: "50%",
+        transformOrigin: "bottom center",
+        // border: "1px solid #00FFFF",
+        transform: `translate(${-TILE_SIZE_VW * 0.75}vw, ${
+          -TILE_SIZE_VW * 0.125
         }vw) scaleX(${scale}) rotate(${y === 0 ? 0 : y * 20}deg)`,
       }}
     >

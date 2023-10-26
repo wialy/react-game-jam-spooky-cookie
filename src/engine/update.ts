@@ -65,14 +65,25 @@ export const update: InitLogicUpdate<GameState> = (state) => {
   state.game.entitiesCounter += entitiesAdded;
 
   if (isEnded && !state.game.isEnded) {
-    state.game.isEnded = true;
-    state.game.winnerId = Object.entries(state.game.scores).reduce(
-      (acc, [key, value]) => (value > acc[1] ? [key, value] : acc),
-      ["", 0]
-    )[0];
+    const maxScore = Object.entries(state.game.scores).reduce(
+      (acc, [_, value]) => (value > acc ? value : acc),
+      0
+    );
 
+    state.game.winnerId = Object.entries(state.game.scores).find(
+      ([_, value]) => value === maxScore
+    )?.[0];
+
+    state.game.isEnded = true;
+
+    // Determine WIN or LOST
     Rune.gameOver({
-      players: scores,
+      players: Object.fromEntries(
+        Object.entries(state.game.scores).map(([key, value]) => [
+          key,
+          value === maxScore ? "WON" : "LOST",
+        ])
+      ),
       delayPopUp: true,
     });
   }

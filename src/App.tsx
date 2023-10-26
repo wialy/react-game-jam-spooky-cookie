@@ -24,7 +24,9 @@ import {
   isMovable,
   isSpace,
   type Character as ICharacter,
+  isWall,
 } from "./engine/types/entities";
+import { Wall } from "./components/wall";
 
 function App() {
   const [game, setGame] = useState<GameState>();
@@ -86,7 +88,7 @@ function App() {
 
   const characters = layers["character"];
 
-  const displayLayers = ["space", "explosive", "character", "damage"];
+  const displayLayers = ["space", "wall", "explosive", "character", "damage"];
   const displayEntities = displayLayers
     .map((layer) => layers[layer])
     .flat()
@@ -106,7 +108,8 @@ function App() {
                 }vw)`,
                 width: `${TILE_SIZE_VW}vw`,
                 height: `${TILE_SIZE_VW}vw`,
-                backgroundColor: isSpace(entity) ? "#2B3A3A" : "transparent",
+                backgroundColor:
+                  isSpace(entity) || isWall(entity) ? "#2B3A3A" : "transparent",
                 transition: isMovable(entity)
                   ? `all ${UPDATE_DURATION}ms linear`
                   : undefined,
@@ -114,6 +117,10 @@ function App() {
                   ? entity.position[1] * MAZE_WIDTH + entity.position[0]
                   : isDamage(entity) || isExplosive(entity)
                   ? entity.position[1] * MAZE_WIDTH + entity.position[0] + 1
+                  : isWall(entity)
+                  ? (entity.position[1] - 1) * MAZE_WIDTH +
+                    entity.position[0] +
+                    3
                   : undefined,
               }}
             >
@@ -130,6 +137,7 @@ function App() {
                 />
               )}
               {isDamage(entity) && <Damage />}
+              {isWall(entity) && <Wall />}
             </div>
           );
         })}

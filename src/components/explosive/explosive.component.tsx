@@ -9,7 +9,7 @@ export const Explosive = () => {
         position: "absolute",
         width: `${1 * TILE_SIZE_VW}vw`,
         height: `${1 * TILE_SIZE_VW}vw`,
-        bottom: "0.5vw",
+        bottom: `${TILE_SIZE_VW * 0.0625}vw`,
       }}
       className={[styles.hot, styles.container, styles.blow].join(" ")}
     >
