@@ -161,7 +161,7 @@ function App() {
               )}
               {isDamage(entity) && <Damage />}
               {isWall(entity) && <Wall />}
-              {isCrate(entity) && <Crate />}
+              {isCrate(entity) && <Crate health={entity.health} />}
             </div>
           );
         })}

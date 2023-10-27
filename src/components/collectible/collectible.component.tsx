@@ -10,7 +10,7 @@ export const Collectible = ({ isCollected }: { isCollected: boolean }) => {
       height={size}
       viewBox="0 0 64 64"
       fill="none"
-      style={{ position: "absolute", bottom: `${TILE_SIZE_VW * 0.25}vw` }}
+      style={{ position: "absolute", bottom: `${TILE_SIZE_VW * 0.5}vw` }}
       className={
         isCollected
           ? `${styles.container} ${styles.collected}`
