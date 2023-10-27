@@ -35,6 +35,7 @@ export type Character = Omit<Movable, "type"> & {
   // prevent character from moving for a short time after damage
   timer: number;
   skin?: "red" | "blue" | "green" | "yellow";
+  isPlacementLocked?: boolean;
 };
 
 export const isCharacter = (entity: Entity): entity is Character =>
@@ -57,9 +58,27 @@ export type Damage = Entity & {
 export const isDamage = (entity: Entity): entity is Damage =>
   entity.type === "damage";
 
-export type Crate = Omit<Movable, "type"> & {
-  type: "crate";
+export type Destroyable = Entity & {
+  health: number;
 };
+
+export const isDestroyable = (entity: Entity): entity is Destroyable =>
+  "health" in entity;
+
+export type Crate = Omit<Movable, "type"> &
+  Destroyable & {
+    type: "crate";
+  };
 
 export const isCrate = (entity: Entity): entity is Crate =>
   entity.type === "crate";
+
+export type Ghost = Entity & {
+  type: "ghost";
+  frequency: number;
+  timer: number;
+  isVisible: boolean;
+};
+
+export const isGhost = (entity: Entity): entity is Ghost =>
+  entity.type === "ghost";

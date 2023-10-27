@@ -8,6 +8,7 @@ export type GameState = {
   winnerId?: string;
   scores: Record<string, number>;
   entities: Entity[];
+  tick?: number;
 };
 
 export type GameActions = {

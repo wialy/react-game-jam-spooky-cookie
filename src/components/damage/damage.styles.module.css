@@ -1,17 +1,17 @@
 @keyframes smoke {
   0% {
-    transform: scale(0);
+    transform: translateY(0) scale(0);
   }
   20% {
-    transform: scale(1);
+    transform: translateY(0) scale(1);
   }
   100% {
-    transform: scale(0);
+    transform: translateY(-1vw) scale(0);
   }
 }
 
 .smoke {
-  animation: smoke 1s ease-in-out forwards;
+  animation: smoke 1s ease-out forwards;
   transform: scale(0);
   transform-origin: center center;
 }

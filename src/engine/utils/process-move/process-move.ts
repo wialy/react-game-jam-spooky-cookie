@@ -102,32 +102,30 @@ export const processMove = ({
     }
 
     const isNextMovableResolved = resolved.some((e) => e.id === nextMovable.id);
+    const [nextMovableVx, nextMovableVy] = nextMovable.velocity;
 
     if (isNextMovableResolved) {
       log(`[${entity.id}] next movable already resolved`);
 
-      const [nextMovableVelocityX, nextMovableVelocityY] = [
-        ...nextMovable.velocity,
-      ];
-
       // pass speed to next only if it is not moving into opposite direction
 
-      nextMovable.velocity = [
-        vx !== 0 && nextMovableVelocityX === 0 ? vx : 0,
-        vy !== 0 && nextMovableVelocityY === 0 ? vy : 0,
-      ];
+      if (vx !== 0 && nextMovableVx !== -vx) {
+        nextMovable.velocity[0] = vx;
+        nextMovable.velocity[1] = 0;
+      } else if (vy !== 0 && nextMovableVy !== -vy) {
+        nextMovable.velocity[0] = 0;
+        nextMovable.velocity[1] = vy;
+      }
 
       entity.velocity = [0, 0];
-      resolved.push(entity);
-
-      resolved = [...resolved.filter((e) => e.id !== nextMovable.id)];
 
       toResolve.push(nextMovable);
 
+      resolved = [...resolved.filter((e) => e.id !== nextMovable.id)];
+      resolved.push(entity);
+
       continue;
     }
-
-    const [nextMovableVx, nextMovableVy] = nextMovable.velocity;
 
     // stop both when moving into opposite directions
 
@@ -163,7 +161,9 @@ export const processMove = ({
       continue;
     }
 
-    space.playerId = character.id;
+    if (space.playerId === undefined) {
+      space.playerId = character.id;
+    }
   }
 
   return { entities: result };

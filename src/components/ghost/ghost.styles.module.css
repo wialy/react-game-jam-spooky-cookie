@@ -1,0 +1,37 @@
+@keyframes chew {
+  0% {
+    transform: rotate(0) scaleY(1);
+  }
+  50% {
+    transform: rotate(1deg) scaleY(1.5);
+  }
+  100% {
+    transform: rotate(0) scaleY(1);
+  }
+}
+
+.walk {
+  animation: walk 1s forwards linear;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(1.1);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+.pulse {
+  animation: pulse 1s infinite linear;
+  transform-origin: center bottom;
+}
+
+.chew {
+  animation: chew 0.5s infinite linear;
+  transform-origin: 50% 40%;
+}

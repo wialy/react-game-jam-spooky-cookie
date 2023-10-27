@@ -1,14 +1,22 @@
 import { ActionContext } from "rune-games-sdk";
 import { GameState, ZERO_COORDINATES } from "../..";
-import { isExplosive, isSpace } from "../../types/entities";
+import { Character, isExplosive, isSpace } from "../../types/entities";
 import { Coordinates } from "../../types/physics";
 import { createEntity } from "../../utils/create-entity";
 import { isEqualPosition } from "../../utils/is-equal-position";
 
 export const addExplosive = (
   { position }: { position: Coordinates },
-  { game }: ActionContext<GameState>
+  { game, playerId }: ActionContext<GameState>
 ) => {
+  const character = game.entities.find(
+    (entity) => entity.id === playerId
+  ) as Character;
+
+  if (character.isPlacementLocked) {
+    return;
+  }
+
   const space = game.entities.find(
     (entity) => isSpace(entity) && isEqualPosition(entity.position, position)
   );

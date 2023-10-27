@@ -1,0 +1,25 @@
+@keyframes blink {
+  0% {
+    opacity: 0;
+    filter: brightness(1.5);
+  }
+
+  50% {
+    opacity: 0;
+    filter: brightness(1.5);
+  }
+
+  51% {
+    opacity: 1;
+    filter: brightness(1.5);
+  }
+
+  100% {
+    opacity: 1;
+    filter: brightness(1.5);
+  }
+}
+
+.blink {
+  animation: blink 125ms linear infinite;
+}

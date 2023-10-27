@@ -20,6 +20,7 @@ const DEFAULT_GAME_STATE: GameState = {
   isRunning: false,
   isEnded: false,
   winnerId: undefined,
+  tick: 0,
 };
 
 const reset = ({
@@ -38,10 +39,11 @@ const reset = ({
   game.isRunning = newSetup.isRunning ?? DEFAULT_GAME_STATE.isRunning;
   game.isEnded = newSetup.isEnded ?? DEFAULT_GAME_STATE.isEnded;
   game.winnerId = newSetup.winnerId ?? DEFAULT_GAME_STATE.winnerId;
+  game.tick = newSetup.tick ?? DEFAULT_GAME_STATE.tick;
 };
 
 Rune.initLogic({
-  minPlayers: 2,
+  minPlayers: 1,
   maxPlayers: 2,
   setup,
   update,

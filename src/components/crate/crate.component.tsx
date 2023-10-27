@@ -1,31 +1,28 @@
 import { TILE_SIZE_VW } from "../../engine";
+import { Destroyable } from "../../engine/types/entities";
+import { woodenPurple } from "./crate.skins";
 
-const RADIUS = TILE_SIZE_VW / 8;
-export const Crate = () => {
+import styles from "./crate.styles.module.css";
+
+export const Crate = ({ health }: Pick<Destroyable, "health">) => {
   return (
-    <div
-      style={{
-        width: `${TILE_SIZE_VW}vw`,
-        height: `${TILE_SIZE_VW * 1.25}vw`,
-        position: "absolute",
-        bottom: 0,
-        left: 0,
-        backgroundColor: "#3F1B40",
-        borderRadius: `${RADIUS}vw`,
-      }}
-    >
-      <div
+    <>
+      <svg
+        width="100%"
+        height="100%"
+        viewBox="0 0 64 80"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
         style={{
-          borderRadius: `${RADIUS}vw`,
-          width: `${TILE_SIZE_VW}vw`,
-          height: `${TILE_SIZE_VW}vw`,
-          backgroundColor: "#6F3271",
           position: "absolute",
-          top: 0,
-          left: 0,
-          boxShadow: `inset 0 0 0 ${TILE_SIZE_VW / 32}vw #3F1B40`,
+          bottom: 0,
+          width: `${TILE_SIZE_VW * 1.01}vw`,
+          height: `${TILE_SIZE_VW * 1.25}vw`,
         }}
-      />
-    </div>
+        className={health <= 0 ? styles.blink : undefined}
+      >
+        {woodenPurple}
+      </svg>
+    </>
   );
 };

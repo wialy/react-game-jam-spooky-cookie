@@ -1,9 +1,10 @@
-import { DAMAGE_TIMER, EXPLOSIVE_TIMER } from "../..";
+import { DAMAGE_TIMER, EXPLOSIVE_TIMER, UPDATES_PER_SECOND } from "../..";
 import {
   Character,
   Crate,
   Damage,
   Explosive,
+  Ghost,
   Movable,
   Space,
   Wall,
@@ -61,10 +62,23 @@ export function createEntity(params: {
   type: "crate";
 }): Crate;
 
+export function createEntity(params: {
+  id: string;
+  position: Coordinates;
+  type: "ghost";
+  frequency?: number;
+}): Ghost;
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function createEntity(entity: any) {
   switch (entity.type) {
-    case "crate":
+    case "crate": {
+      return {
+        velocity: [0, 0],
+        health: 1,
+        ...entity,
+      } as Crate;
+    }
     case "movable": {
       return {
         velocity: [0, 0],
@@ -77,6 +91,7 @@ export function createEntity(entity: any) {
         position: [0, 0],
         velocity: [0, 0],
         timer: 0,
+        isPlacementLocked: false,
         ...entity,
       } as Character;
     }
@@ -97,6 +112,16 @@ export function createEntity(entity: any) {
         timer: DAMAGE_TIMER,
         ...entity,
       } as Damage;
+    }
+
+    case "ghost": {
+      return {
+        position: [0, 0],
+        frequency: 10 * UPDATES_PER_SECOND,
+        isVisible: false,
+        timer: 4,
+        ...entity,
+      } as Ghost;
     }
 
     default: {

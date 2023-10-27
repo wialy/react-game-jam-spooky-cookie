@@ -1,31 +1,22 @@
 import { TILE_SIZE_VW } from "../../engine";
+import { bricks } from "./wall.skins";
 
-const RADIUS = TILE_SIZE_VW / 8;
 export const Wall = () => {
   return (
-    <div
+    <svg
+      width={"100%"}
+      height={"100%"}
       style={{
-        width: `${TILE_SIZE_VW}vw`,
-        height: `${TILE_SIZE_VW * 1.25}vw`,
         position: "absolute",
         bottom: 0,
-        left: 0,
-        backgroundColor: "#1B212A",
-        borderRadius: `${RADIUS}vw`,
+        width: `${TILE_SIZE_VW * 1.01}vw`,
+        height: `${TILE_SIZE_VW * 1.55}vw`,
       }}
+      viewBox="0 0 64 97"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
     >
-      <div
-        style={{
-          borderRadius: `${RADIUS}vw`,
-          width: `${TILE_SIZE_VW}vw`,
-          height: `${TILE_SIZE_VW}vw`,
-          backgroundColor: "#1E2632",
-          position: "absolute",
-          top: 0,
-          left: 0,
-          boxShadow: `inset 0 0 0 ${TILE_SIZE_VW / 32}vw #1B212A`,
-        }}
-      />
-    </div>
+      {bricks}
+    </svg>
   );
 };

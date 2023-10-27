@@ -3,6 +3,8 @@ import { type GameState } from ".";
 import { isSpace } from "./types/entities";
 import { processDamage } from "./utils/process-damage/process-damage";
 import { processExplosives } from "./utils/process-explosives";
+import { processGhosts } from "./utils/process-ghosts";
+import { processHealth } from "./utils/process-health/process-health";
 import { processMove } from "./utils/process-move";
 
 export const update: InitLogicUpdate<GameState> = (state) => {
@@ -12,8 +14,12 @@ export const update: InitLogicUpdate<GameState> = (state) => {
 
   const { entities, entitiesCounter, scores } = state.game;
 
-  const { entities: processedExplosives, entitiesAdded } = processExplosives({
+  const { entities: processedHealth } = processHealth({
     entities,
+  });
+
+  const { entities: processedExplosives, entitiesAdded } = processExplosives({
+    entities: processedHealth,
     entitiesCounter,
   });
 
@@ -25,7 +31,12 @@ export const update: InitLogicUpdate<GameState> = (state) => {
     entities: processedMove,
   });
 
-  const processedEntities = processedDamage;
+  const { entities: processedGhosts } = processGhosts({
+    entities: processedDamage,
+    tick: state.game.tick,
+  });
+
+  const processedEntities = processedGhosts;
 
   state.game.scores = processedEntities.reduce((acc, entity) => {
     if (!isSpace(entity)) {
@@ -38,11 +49,7 @@ export const update: InitLogicUpdate<GameState> = (state) => {
       return acc;
     }
 
-    if (!acc[playerId]) {
-      acc[playerId] = 0;
-    }
-
-    acc[playerId]++;
+    acc[playerId] = (acc[playerId] ?? 0) + 1;
 
     return acc;
   }, Object.fromEntries(Object.entries(scores).map(([key]) => [key, 0])));
@@ -64,27 +71,22 @@ export const update: InitLogicUpdate<GameState> = (state) => {
   state.game.entities = processedEntities;
   state.game.entitiesCounter += entitiesAdded;
 
+  state.game.tick = (state.game.tick ?? 0) + 1;
+
   if (isEnded && !state.game.isEnded) {
-    const maxScore = Object.entries(state.game.scores).reduce(
-      (acc, [_, value]) => (value > acc ? value : acc),
+    const maxScore = Object.values(state.game.scores).reduce(
+      (acc, value) => (value > acc ? value : acc),
       0
     );
 
-    state.game.winnerId = Object.entries(state.game.scores).find(
-      ([_, value]) => value === maxScore
-    )?.[0];
+    state.game.winnerId = Object.keys(state.game.scores).find(
+      (id) => state.game.scores[id] === maxScore
+    );
 
     state.game.isEnded = true;
 
-    // Determine WIN or LOST
     Rune.gameOver({
-      players: Object.fromEntries(
-        Object.entries(state.game.scores).map(([key, value]) => [
-          key,
-          value === maxScore ? "WON" : "LOST",
-        ])
-      ),
-      delayPopUp: true,
+      players: state.game.scores,
     });
   }
 };

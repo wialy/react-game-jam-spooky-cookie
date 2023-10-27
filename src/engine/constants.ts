@@ -26,12 +26,34 @@ export const ZERO_COORDINATES: Coordinates = [0, 0];
 // @ can't move through other players
 
 export const HALF_MAZE = [
-  ".......",
-  ".#$#$#.",
-  ".$...$.",
-  ".#.@.#.",
-  ".$.$.$.",
+  ".........",
+  ".#..#..#.",
+  ".$..@..$.",
+  ".###.###.",
+  ".........",
+  "#$#$$$#$#",
+  "$$#$$$#$$",
 ];
+// export const HALF_MAZE = [
+//   ".........",
+//   ".#$#$#$#.",
+//   ".$..@..$.",
+//   "....#..#.",
+//   "$#.......",
+//   "$##$#$##$",
+// ];
+
+// ".$.$.$.",
+// ".#$#$#$",
+// ".$.@.$.",
+// "$#$#$#$",
+// ".$.$.$.",
+// ".......",
+// ".#$#$#.",
+// ".$...$.",
+// ".#.@.#.",
+// ".$.$.$.",
+
 // export const HALF_MAZE = [
 //   ".........",
 //   ".#..#....",
@@ -57,7 +79,7 @@ export const CELL_SIZE = 1;
 export const EXPLOSIVE_TIMER = 6;
 export const DAMAGE_TIMER = 1;
 
-export const DAMAGE_DISTANCE = 4;
+export const DAMAGE_DISTANCE = 3;
 
 export const FREEZE_TIMER = 3;
 
