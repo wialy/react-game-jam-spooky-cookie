@@ -64,7 +64,13 @@ export function createEntity(params: {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function createEntity(entity: any) {
   switch (entity.type) {
-    case "crate":
+    case "crate": {
+      return {
+        velocity: [0, 0],
+        health: 1,
+        ...entity,
+      } as Crate;
+    }
     case "movable": {
       return {
         velocity: [0, 0],
@@ -77,6 +83,7 @@ export function createEntity(entity: any) {
         position: [0, 0],
         velocity: [0, 0],
         timer: 0,
+        isPlacementLocked: false,
         ...entity,
       } as Character;
     }

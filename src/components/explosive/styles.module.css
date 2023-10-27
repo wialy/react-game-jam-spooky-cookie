@@ -30,13 +30,13 @@
     transform: scale(0.4);
   }
   5% {
-    transform: scale(0.8);
+    transform: scale(0.9);
   }
   98% {
     transform: scale(0.8);
   }
   99% {
-    transform: scale(0.7);
+    transform: scale(0.75);
   }
   100% {
     transform: scale(1);

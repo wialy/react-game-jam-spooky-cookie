@@ -74,20 +74,22 @@ export const useControls = ({
   );
 
   const position = character?.position;
-  const previousPosition = character?.previousPosition;
+  // const previousPosition = character?.previousPosition;
 
   const velocity = character?.velocity;
   const isMoving = velocity && (velocity[0] !== 0 || velocity[1] !== 0);
   const isDamaged = character?.timer && character.timer > 0;
 
-  const explosivePosition = isMoving ? previousPosition : position;
+  const isPlacementLocked = character?.isPlacementLocked;
+
+  const explosivePosition = isMoving ? position : position;
 
   const swipeProps = useSwipeable({
     onSwiped: ({ dir }) => {
       dispatchAction(performSetDirection(SWIPE_TO_DIRECTION[dir]));
     },
     onTap: () => {
-      if (!explosivePosition || isDamaged) {
+      if (!explosivePosition || isDamaged || isPlacementLocked) {
         return;
       }
       dispatchAction(performAddExplosive({ position: explosivePosition }));

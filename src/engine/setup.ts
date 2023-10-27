@@ -2,7 +2,8 @@ import { GameState, MAZE } from ".";
 import { Character, Entity } from "./types/entities";
 import { createEntity } from "./utils/create-entity";
 
-const SKINS: Character["skin"][] = ["red", "blue"];
+const SKINS: Character["skin"][] =
+  Math.random() > 0.5 ? ["blue", "red"] : ["red", "blue"];
 export const setup = (allPlayerIds: string[]): GameState => {
   const entities: Entity[] = [];
 
@@ -58,15 +59,15 @@ export const setup = (allPlayerIds: string[]): GameState => {
                 skin: SKINS[playersCounter],
               })
             );
-            entities.push(
-              createEntity({
-                type: "space",
-                position: [x, y],
-                id: `space-${x}-${y}`,
-              })
-            );
             playersCounter++;
           }
+          entities.push(
+            createEntity({
+              type: "space",
+              position: [x, y],
+              id: `space-${x}-${y}`,
+            })
+          );
           break;
         }
       }
@@ -79,5 +80,6 @@ export const setup = (allPlayerIds: string[]): GameState => {
     isRunning: true,
     scores: Object.fromEntries(allPlayerIds.map((id) => [id, 0])),
     entities,
+    tick: 0,
   };
 };

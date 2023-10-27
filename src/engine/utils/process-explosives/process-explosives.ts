@@ -60,6 +60,7 @@ export const processExplosives = ({
           const crate = nextEntities.find(isCrate);
 
           if (crate) {
+            crate.health--;
             break;
           }
 
