@@ -60,18 +60,18 @@ export const update: InitLogicUpdate<GameState> = (state) => {
     return acc;
   }, Object.fromEntries(Object.entries(scores).map(([key]) => [key, 0])));
 
-  const isEnded = processedEntities.every((entity) => {
+  const shouldContinue = processedEntities.some((entity) => {
     if (!isSpace(entity)) {
-      return true;
+      return false;
     }
 
     const { playerId } = entity;
 
     if (playerId) {
-      return true;
+      return false;
     }
 
-    return false;
+    return true;
   });
 
   state.game.entities = processedEntities;
@@ -79,7 +79,7 @@ export const update: InitLogicUpdate<GameState> = (state) => {
 
   state.game.tick = (state.game.tick ?? 0) + 1;
 
-  if (isEnded && !state.game.isEnded) {
+  if (!shouldContinue && !state.game.isEnded) {
     const maxScore = Object.values(state.game.scores).reduce(
       (acc, value) => (value > acc ? value : acc),
       0
@@ -91,8 +91,15 @@ export const update: InitLogicUpdate<GameState> = (state) => {
 
     state.game.isEnded = true;
 
+    const playerScores = Object.fromEntries(
+      Object.entries(state.game.scores).filter(([key]) =>
+        state.allPlayerIds.includes(key)
+      )
+    );
+
     Rune.gameOver({
-      players: state.game.scores,
+      players: playerScores,
+      delayPopUp: true,
     });
   }
 };
