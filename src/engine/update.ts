@@ -6,6 +6,7 @@ import { processExplosives } from "./utils/process-explosives";
 import { processGhosts } from "./utils/process-ghosts";
 import { processHealth } from "./utils/process-health/process-health";
 import { processMove } from "./utils/process-move";
+import { processBots } from "./utils/process-bots";
 
 export const update: InitLogicUpdate<GameState> = (state) => {
   if (!state.game.isRunning || state.game.isEnded) {
@@ -36,7 +37,12 @@ export const update: InitLogicUpdate<GameState> = (state) => {
     tick: state.game.tick,
   });
 
-  const processedEntities = processedGhosts;
+  const { entities: processedBots } = processBots({
+    entities: processedGhosts,
+    tick: state.game.tick ?? 0,
+  });
+
+  const processedEntities = processedBots;
 
   state.game.scores = processedEntities.reduce((acc, entity) => {
     if (!isSpace(entity)) {

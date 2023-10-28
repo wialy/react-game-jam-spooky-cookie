@@ -94,3 +94,5 @@ export const SKIN_COLORS: Record<string, string[]> = {
   red: ["#DE3030"],
   blue: ["#2128BE"],
 };
+
+export const BOT_ID = "bot";

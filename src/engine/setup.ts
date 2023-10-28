@@ -1,4 +1,4 @@
-import { GameState, MAZE } from ".";
+import { BOT_ID, GameState, MAZE } from ".";
 import { Character, Entity } from "./types/entities";
 import { createEntity } from "./utils/create-entity";
 
@@ -88,7 +88,7 @@ export const setup = (allPlayerIds: string[]): GameState => {
       createEntity({
         type: "character",
         position: spawns[1]?.position ?? [0, 0],
-        id: "bot",
+        id: BOT_ID,
         skin: SKINS[1],
       })
     );
