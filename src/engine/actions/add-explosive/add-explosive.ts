@@ -14,7 +14,7 @@ export const addExplosive = (
   ) as Character;
 
   if (character.isPlacementLocked) {
-    return;
+    throw Rune.invalidAction();
   }
 
   const space = game.entities.find(
@@ -22,7 +22,7 @@ export const addExplosive = (
   );
 
   if (!space) {
-    return;
+    throw Rune.invalidAction();
   }
 
   const explosive = game.entities.find(
@@ -31,7 +31,7 @@ export const addExplosive = (
   );
 
   if (explosive) {
-    return;
+    throw Rune.invalidAction();
   }
 
   game.entities.push(
