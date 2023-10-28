@@ -44,7 +44,6 @@ export const Character = ({
         bottom: 0,
         left: "50%",
         transformOrigin: "center center",
-        // border: "1px solid #00FFFF",
         transform: `translate(${-TILE_SIZE_VW * 0.65}vw, ${
           -TILE_SIZE_VW * 0.125
         }vw) scaleX(${scale}) rotate(${y === 0 ? 0 : y * 20}deg)`,

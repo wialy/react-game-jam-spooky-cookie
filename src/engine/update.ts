@@ -3,9 +3,9 @@ import { type GameState } from ".";
 import { isSpace } from "./types/entities";
 import { processDamage } from "./utils/process-damage/process-damage";
 import { processExplosives } from "./utils/process-explosives";
+import { processGhosts } from "./utils/process-ghosts";
 import { processHealth } from "./utils/process-health/process-health";
 import { processMove } from "./utils/process-move";
-import { processGhosts } from "./utils/process-ghosts";
 
 export const update: InitLogicUpdate<GameState> = (state) => {
   if (!state.game.isRunning || state.game.isEnded) {
@@ -85,15 +85,8 @@ export const update: InitLogicUpdate<GameState> = (state) => {
 
     state.game.isEnded = true;
 
-    // Determine WIN or LOST
     Rune.gameOver({
-      players: Object.fromEntries(
-        Object.entries(state.game.scores).map(([key, value]) => [
-          key,
-          value === maxScore ? "WON" : "LOST",
-        ])
-      ),
-      delayPopUp: true,
+      players: state.game.scores,
     });
   }
 };

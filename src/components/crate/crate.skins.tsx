@@ -156,3 +156,55 @@ export const woodenGreen = (
     <circle cx="47.9561" cy="48.4755" r="2" fill="#0A451E" />
   </>
 );
+
+export const woodenPurple = (
+  <>
+    <rect y="24.548" width="64" height="56" rx="8" fill="#40045C" />
+    <rect
+      x="1"
+      y="1.54785"
+      width="62"
+      height="62"
+      rx="7"
+      fill="#5C0088"
+      stroke="#40045C"
+      stroke-width="2"
+    />
+    <rect
+      x="8"
+      y="8.54785"
+      width="16"
+      height="48"
+      rx="4"
+      fill="#5C0088"
+      stroke="#40045C"
+      stroke-width="2"
+    />
+    <rect
+      x="24"
+      y="8.54785"
+      width="16"
+      height="48"
+      rx="4"
+      fill="#5C0088"
+      stroke="#40045C"
+      stroke-width="2"
+    />
+    <rect
+      x="40"
+      y="8.54785"
+      width="16"
+      height="48"
+      rx="4"
+      fill="#5C0088"
+      stroke="#40045C"
+      stroke-width="2"
+    />
+    <circle cx="16.0438" cy="16.618" r="2" fill="#40045C" />
+    <circle cx="16.0438" cy="48.4755" r="2" fill="#40045C" />
+    <circle cx="32" cy="16.618" r="2" fill="#40045C" />
+    <circle cx="32" cy="48.4755" r="2" fill="#40045C" />
+    <circle cx="47.9561" cy="16.618" r="2" fill="#40045C" />
+    <circle cx="47.9561" cy="48.4755" r="2" fill="#40045C" />
+  </>
+);

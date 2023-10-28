@@ -117,7 +117,7 @@ export function createEntity(entity: any) {
     case "ghost": {
       return {
         position: [0, 0],
-        frequency: 5 * UPDATES_PER_SECOND,
+        frequency: 10 * UPDATES_PER_SECOND,
         isVisible: false,
         timer: 4,
         ...entity,

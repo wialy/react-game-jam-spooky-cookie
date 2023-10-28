@@ -122,7 +122,7 @@ function App() {
     .flat()
     .filter(Boolean);
 
-  const { lights } = getLights({ entities, maxDistance: 2 });
+  const { lights } = getLights({ entities, maxDistance: 3 });
 
   return (
     <>
@@ -132,7 +132,7 @@ function App() {
 
           const lightness = isSpace(entity) ? lights[entity.id] : 0;
           const backgroundColor = isSpace(entity)
-            ? `hsl(180, 50%, ${Math.max(0, 8 + lightness * 2)}%)`
+            ? `hsl(180, 50%, ${Math.max(0, 8 + lightness * 3)}%)`
             : undefined;
 
           return (
