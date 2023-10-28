@@ -5,6 +5,7 @@ import { processDamage } from "./utils/process-damage/process-damage";
 import { processExplosives } from "./utils/process-explosives";
 import { processHealth } from "./utils/process-health/process-health";
 import { processMove } from "./utils/process-move";
+import { processGhosts } from "./utils/process-ghosts";
 
 export const update: InitLogicUpdate<GameState> = (state) => {
   if (!state.game.isRunning || state.game.isEnded) {
@@ -30,7 +31,12 @@ export const update: InitLogicUpdate<GameState> = (state) => {
     entities: processedMove,
   });
 
-  const processedEntities = processedDamage;
+  const { entities: processedGhosts } = processGhosts({
+    entities: processedDamage,
+    tick: state.game.tick,
+  });
+
+  const processedEntities = processedGhosts;
 
   state.game.scores = processedEntities.reduce((acc, entity) => {
     if (!isSpace(entity)) {
@@ -43,11 +49,7 @@ export const update: InitLogicUpdate<GameState> = (state) => {
       return acc;
     }
 
-    if (!acc[playerId]) {
-      acc[playerId] = 0;
-    }
-
-    acc[playerId]++;
+    acc[playerId] = (acc[playerId] ?? 0) + 1;
 
     return acc;
   }, Object.fromEntries(Object.entries(scores).map(([key]) => [key, 0])));

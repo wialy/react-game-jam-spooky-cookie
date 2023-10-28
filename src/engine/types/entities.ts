@@ -72,3 +72,13 @@ export type Crate = Omit<Movable, "type"> &
 
 export const isCrate = (entity: Entity): entity is Crate =>
   entity.type === "crate";
+
+export type Ghost = Entity & {
+  type: "ghost";
+  frequency: number;
+  timer: number;
+  isVisible: boolean;
+};
+
+export const isGhost = (entity: Entity): entity is Ghost =>
+  entity.type === "ghost";

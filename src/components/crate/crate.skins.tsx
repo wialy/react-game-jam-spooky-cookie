@@ -104,3 +104,55 @@ export const coffin = (
     />
   </>
 );
+
+export const woodenGreen = (
+  <>
+    <rect y="24.548" width="64" height="56" rx="8" fill="#0A451E" />
+    <rect
+      x="1"
+      y="1.54785"
+      width="62"
+      height="62"
+      rx="7"
+      fill="#1E681C"
+      stroke="#0A451E"
+      stroke-width="2"
+    />
+    <rect
+      x="8"
+      y="8.54785"
+      width="16"
+      height="48"
+      rx="4"
+      fill="#1E681C"
+      stroke="#0A451E"
+      stroke-width="2"
+    />
+    <rect
+      x="24"
+      y="8.54785"
+      width="16"
+      height="48"
+      rx="4"
+      fill="#1E681C"
+      stroke="#0A451E"
+      stroke-width="2"
+    />
+    <rect
+      x="40"
+      y="8.54785"
+      width="16"
+      height="48"
+      rx="4"
+      fill="#1E681C"
+      stroke="#0A451E"
+      stroke-width="2"
+    />
+    <circle cx="16.0438" cy="16.618" r="2" fill="#0A451E" />
+    <circle cx="16.0438" cy="48.4755" r="2" fill="#0A451E" />
+    <circle cx="32" cy="16.618" r="2" fill="#0A451E" />
+    <circle cx="32" cy="48.4755" r="2" fill="#0A451E" />
+    <circle cx="47.9561" cy="16.618" r="2" fill="#0A451E" />
+    <circle cx="47.9561" cy="48.4755" r="2" fill="#0A451E" />
+  </>
+);

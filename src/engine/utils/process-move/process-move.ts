@@ -161,7 +161,9 @@ export const processMove = ({
       continue;
     }
 
-    space.playerId = character.id;
+    if (space.playerId === undefined) {
+      space.playerId = character.id;
+    }
   }
 
   return { entities: result };

@@ -6,7 +6,8 @@ import { Character } from "./components/character";
 import { Collectible } from "./components/collectible";
 import { Crate } from "./components/crate";
 import { Damage } from "./components/damage";
-import { Explosive } from "./components/explosive/explosive.component";
+import { Explosive } from "./components/explosive";
+import { Ghost } from "./components/ghost";
 import { Level } from "./components/level";
 import { ScoreUi } from "./components/score-ui";
 import { Wall } from "./components/wall";
@@ -25,11 +26,13 @@ import {
   isCrate,
   isDamage,
   isExplosive,
-  isMovable,
+  isGhost,
   isSpace,
   isWall,
   type Character as ICharacter,
+  isMovable,
 } from "./engine/types/entities";
+import { getLights } from "./engine/utils/get-lights/get-lights";
 
 const actionNames = new Set(Object.keys(actions));
 
@@ -110,18 +113,27 @@ function App() {
     "crate",
     "explosive",
     "character",
+    "ghost",
     "damage",
   ];
+
   const displayEntities = displayLayers
     .map((layer) => layers[layer])
     .flat()
     .filter(Boolean);
+
+  const { lights } = getLights({ entities, maxDistance: 2 });
 
   return (
     <>
       <Level>
         {displayEntities.map((entity) => {
           const [x, y] = entity.position;
+
+          const lightness = isSpace(entity) ? lights[entity.id] : 0;
+          const backgroundColor = isSpace(entity)
+            ? `hsl(180, 50%, ${Math.max(0, 8 + lightness * 2)}%)`
+            : undefined;
 
           return (
             <div
@@ -133,17 +145,19 @@ function App() {
                 }vw)`,
                 width: `${TILE_SIZE_VW}vw`,
                 height: `${TILE_SIZE_VW}vw`,
-                backgroundColor:
-                  isSpace(entity) || isWall(entity) ? "#1E3231" : undefined,
-                transition: isMovable(entity)
-                  ? `all ${UPDATE_DURATION}ms linear`
-                  : undefined,
+                backgroundColor,
+                transition:
+                  isMovable(entity) || isSpace(entity)
+                    ? `all ${UPDATE_DURATION}ms linear`
+                    : undefined,
                 zIndex: isCharacter(entity)
                   ? y * MAZE_WIDTH + x
                   : isDamage(entity) || isExplosive(entity)
                   ? y * MAZE_WIDTH + x + 1
                   : isWall(entity) || isCrate(entity)
                   ? Math.max(0, (y - 1) * MAZE_WIDTH + x + 3)
+                  : isGhost(entity)
+                  ? y * MAZE_WIDTH + x + 1
                   : 0,
               }}
             >
@@ -162,6 +176,7 @@ function App() {
               {isDamage(entity) && <Damage />}
               {isWall(entity) && <Wall />}
               {isCrate(entity) && <Crate health={entity.health} />}
+              {isGhost(entity) && <Ghost isVisible={entity.isVisible} />}
             </div>
           );
         })}

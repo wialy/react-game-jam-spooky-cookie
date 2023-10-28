@@ -1,5 +1,5 @@
 import { TILE_SIZE_VW } from "../../engine";
-import { grave } from "./wall.skins";
+import { bricks } from "./wall.skins";
 
 export const Wall = () => {
   return (
@@ -16,7 +16,7 @@ export const Wall = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      {grave}
+      {bricks}
     </svg>
   );
 };

@@ -1,6 +1,6 @@
 import { TILE_SIZE_VW } from "../../engine";
 import { Destroyable } from "../../engine/types/entities";
-import { coffin } from "./crate.skins";
+import { woodenGreen } from "./crate.skins";
 
 import styles from "./crate.styles.module.css";
 
@@ -21,7 +21,7 @@ export const Crate = ({ health }: Pick<Destroyable, "health">) => {
         }}
         className={health <= 0 ? styles.blink : undefined}
       >
-        {coffin}
+        {woodenGreen}
       </svg>
     </>
   );

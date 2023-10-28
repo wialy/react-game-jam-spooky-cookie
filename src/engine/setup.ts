@@ -74,6 +74,14 @@ export const setup = (allPlayerIds: string[]): GameState => {
     });
   });
 
+  entities.push(
+    createEntity({
+      type: "ghost",
+      id: "ghost",
+      position: [0, 0],
+    })
+  );
+
   return {
     entitiesCounter: 0,
     isEnded: false,
