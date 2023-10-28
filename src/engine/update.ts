@@ -85,15 +85,20 @@ export const update: InitLogicUpdate<GameState> = (state) => {
 
     state.game.isEnded = true;
 
+    const scoresAmount = Object.keys(state.game.scores).length;
+
     // Determine WIN or LOST
-    Rune.gameOver({
-      players: Object.fromEntries(
-        Object.entries(state.game.scores).map(([key, value]) => [
-          key,
-          value === maxScore ? "WON" : "LOST",
-        ])
-      ),
-      delayPopUp: true,
-    });
+    Rune.gameOver(
+      scoresAmount > 1
+        ? {
+            players: Object.fromEntries(
+              Object.entries(state.game.scores).map(([key, value]) => [
+                key,
+                value === maxScore ? "WON" : "LOST",
+              ])
+            ),
+          }
+        : undefined
+    );
   }
 };
