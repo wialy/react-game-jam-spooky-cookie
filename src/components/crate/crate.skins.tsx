@@ -116,7 +116,7 @@ export const woodenGreen = (
       rx="7"
       fill="#1E681C"
       stroke="#0A451E"
-      stroke-width="2"
+      strokeWidth="2"
     />
     <rect
       x="8"
@@ -126,7 +126,7 @@ export const woodenGreen = (
       rx="4"
       fill="#1E681C"
       stroke="#0A451E"
-      stroke-width="2"
+      strokeWidth="2"
     />
     <rect
       x="24"
@@ -136,7 +136,7 @@ export const woodenGreen = (
       rx="4"
       fill="#1E681C"
       stroke="#0A451E"
-      stroke-width="2"
+      strokeWidth="2"
     />
     <rect
       x="40"
@@ -146,7 +146,7 @@ export const woodenGreen = (
       rx="4"
       fill="#1E681C"
       stroke="#0A451E"
-      stroke-width="2"
+      strokeWidth="2"
     />
     <circle cx="16.0438" cy="16.618" r="2" fill="#0A451E" />
     <circle cx="16.0438" cy="48.4755" r="2" fill="#0A451E" />
@@ -168,7 +168,7 @@ export const woodenPurple = (
       rx="7"
       fill="#5C0088"
       stroke="#40045C"
-      stroke-width="2"
+      strokeWidth="2"
     />
     <rect
       x="8"
@@ -178,7 +178,7 @@ export const woodenPurple = (
       rx="4"
       fill="#5C0088"
       stroke="#40045C"
-      stroke-width="2"
+      strokeWidth="2"
     />
     <rect
       x="24"
@@ -188,7 +188,7 @@ export const woodenPurple = (
       rx="4"
       fill="#5C0088"
       stroke="#40045C"
-      stroke-width="2"
+      strokeWidth="2"
     />
     <rect
       x="40"
@@ -198,7 +198,7 @@ export const woodenPurple = (
       rx="4"
       fill="#5C0088"
       stroke="#40045C"
-      stroke-width="2"
+      strokeWidth="2"
     />
     <circle cx="16.0438" cy="16.618" r="2" fill="#40045C" />
     <circle cx="16.0438" cy="48.4755" r="2" fill="#40045C" />

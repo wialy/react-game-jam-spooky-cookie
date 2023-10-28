@@ -8,6 +8,7 @@ export const setup = (allPlayerIds: string[]): GameState => {
   const entities: Entity[] = [];
 
   let playersCounter = 0;
+  const spawns: Entity[] = [];
 
   MAZE.forEach((row, y) => {
     row.split("").forEach((cell, x) => {
@@ -61,13 +62,13 @@ export const setup = (allPlayerIds: string[]): GameState => {
             );
             playersCounter++;
           }
-          entities.push(
-            createEntity({
-              type: "space",
-              position: [x, y],
-              id: `space-${x}-${y}`,
-            })
-          );
+          const spawn = createEntity({
+            type: "space",
+            position: [x, y],
+            id: `space-${x}-${y}`,
+          });
+          entities.push(spawn);
+          spawns.push(spawn);
           break;
         }
       }
@@ -81,6 +82,17 @@ export const setup = (allPlayerIds: string[]): GameState => {
       position: [0, 0],
     })
   );
+
+  if (playersCounter === 1) {
+    entities.push(
+      createEntity({
+        type: "character",
+        position: spawns[1]?.position ?? [0, 0],
+        id: "bot",
+        skin: SKINS[1],
+      })
+    );
+  }
 
   return {
     entitiesCounter: 0,
