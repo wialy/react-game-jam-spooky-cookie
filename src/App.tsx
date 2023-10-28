@@ -45,9 +45,22 @@ function App() {
 
   const isEnded = game?.isEnded;
 
+  const lastTick = useRef(0);
+
   useEffect(() => {
     Rune.initClient({
       onChange: ({ game, players, yourPlayerId, event, action }) => {
+        if (game.isEnded && !isPopupVisible.current) {
+          Rune.showGameOverPopUp();
+          isPopupVisible.current = true;
+        }
+
+        if (game.tick && game.tick < lastTick.current) {
+          return;
+        }
+
+        lastTick.current = game.tick ?? 0;
+
         setRunePlayers(players);
         setPlayerId(yourPlayerId);
 

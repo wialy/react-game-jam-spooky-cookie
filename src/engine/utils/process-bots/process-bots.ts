@@ -73,12 +73,7 @@ export const processBots = ({
       RIGHT: 0,
     };
 
-    const potentialDirections =
-      previousPosition && isEqualPosition(position, previousPosition)
-        ? Object.entries(VELOCITIES).filter(
-            ([, v]) => !isEqualPosition(v, velocity)
-          )
-        : Object.entries(VELOCITIES);
+    const potentialDirections = Object.entries(VELOCITIES);
 
     const currentDistanceToCharacter = characters.length
       ? Math.abs(position[0] - characters[0].position[0]) +
