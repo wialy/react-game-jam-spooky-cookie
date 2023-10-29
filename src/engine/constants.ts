@@ -19,14 +19,8 @@ export const ZERO_COORDINATES: Coordinates = [0, 0];
 // '#  - wall
 // '@' - player spawn
 
-// @ moves on dots and can't move on walls
-// movement mechanics is dash-like: @ cant's stop in the middle of the cell
-// @ can't move diagonally
-// @ can't move through walls
-// @ can't move through other players
-
 export const HALF_MAZE = [
-  ".........",
+  ".$.$.$.$.",
   ".#.$#$.#.",
   ".$..@..$.",
   ".###.###.",
@@ -34,34 +28,6 @@ export const HALF_MAZE = [
   "#$#$$$#$#",
   "$$#$$$#$$",
 ];
-// export const HALF_MAZE = [
-//   ".........",
-//   ".#$#$#$#.",
-//   ".$..@..$.",
-//   "....#..#.",
-//   "$#.......",
-//   "$##$#$##$",
-// ];
-
-// ".$.$.$.",
-// ".#$#$#$",
-// ".$.@.$.",
-// "$#$#$#$",
-// ".$.$.$.",
-// ".......",
-// ".#$#$#.",
-// ".$...$.",
-// ".#.@.#.",
-// ".$.$.$.",
-
-// export const HALF_MAZE = [
-//   ".........",
-//   ".#..#....",
-//   ".#..@..#.",
-//   "...#.#.#.",
-//   ".........",
-//   "#.#...#.#",
-// ];
 
 export const MAZE = [...HALF_MAZE];
 
@@ -72,7 +38,7 @@ for (let i = HALF_MAZE.length - 2; i >= 0; i--) {
 export const MAZE_WIDTH = MAZE[0].length;
 export const MAZE_HEIGHT = MAZE.length;
 
-export const TILE_SIZE_VW = 100 / (MAZE_WIDTH + 1);
+export const TILE_SIZE_VW = 100 / (MAZE_WIDTH + 0.5);
 
 export const CELL_SIZE = 1;
 
@@ -81,7 +47,7 @@ export const DAMAGE_TIMER = 1;
 
 export const DAMAGE_DISTANCE = 3;
 
-export const FREEZE_TIMER = 3;
+export const FREEZE_TIMER = 2;
 
 export const GHOST_TIMER = 3;
 export const GHOST_FREQUENCY = 10 * UPDATES_PER_SECOND;
@@ -99,3 +65,5 @@ export const SKIN_COLORS: Record<string, string[]> = {
 };
 
 export const BOT_ID = "bot";
+
+export const START_DELAY = 1 * UPDATES_PER_SECOND;

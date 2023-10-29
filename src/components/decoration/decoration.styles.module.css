@@ -1,0 +1,54 @@
+@keyframes torch {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes flame {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1, 1.2);
+  }
+  50% {
+    transform: scale(1);
+  }
+  75% {
+    transform: scale(1.2, 1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes spider {
+  0% {
+    transform: translate(0, -25%);
+  }
+  95% {
+    transform: translate(0, -75%);
+  }
+  100% {
+    transform: translate(0, -25%);
+  }
+}
+
+.torch {
+  animation: torch 2s infinite linear;
+}
+
+.flame {
+  animation: flame 0.5s infinite linear;
+  transform-origin: 50% 25%;
+}
+
+.spider {
+  animation: spider 8s infinite linear;
+}

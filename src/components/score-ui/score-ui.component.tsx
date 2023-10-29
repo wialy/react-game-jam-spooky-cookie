@@ -21,7 +21,7 @@ export const ScoreUi = ({
           id,
           {
             avatarUrl: "bot-avatar.png",
-            displayName: "Mensa",
+            displayName: "Trainer",
             playerId: id,
           } as Player,
         ])

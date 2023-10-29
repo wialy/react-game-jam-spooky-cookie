@@ -9,8 +9,8 @@ export const Wall = () => {
       style={{
         position: "absolute",
         bottom: 0,
-        width: `${TILE_SIZE_VW * 1.01}vw`,
-        height: `${TILE_SIZE_VW * 1.55}vw`,
+        width: `calc(${TILE_SIZE_VW * 1.0}vw + 1px)`,
+        height: `calc(${TILE_SIZE_VW * 1.55}vw + 1px)`,
       }}
       viewBox="0 0 64 97"
       fill="none"

@@ -32,11 +32,11 @@
   5% {
     transform: scale(0.9);
   }
-  98% {
+  80% {
     transform: scale(0.8);
   }
-  99% {
-    transform: scale(0.75);
+  81% {
+    transform: scale(1);
   }
   100% {
     transform: scale(1);
@@ -49,6 +49,9 @@
   }
   80% {
     color: red;
+  }
+  90% {
+    color: yellow;
   }
   100% {
     color: white;

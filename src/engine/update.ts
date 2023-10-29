@@ -1,17 +1,27 @@
 import { InitLogicUpdate } from "rune-games-sdk";
-import { type GameState } from ".";
+import { START_DELAY, type GameState } from ".";
 import { isSpace } from "./types/entities";
+import { processBots } from "./utils/process-bots";
 import { processDamage } from "./utils/process-damage/process-damage";
 import { processExplosives } from "./utils/process-explosives";
 import { processGhosts } from "./utils/process-ghosts";
 import { processHealth } from "./utils/process-health/process-health";
 import { processMove } from "./utils/process-move";
-import { processBots } from "./utils/process-bots";
 
 export const update: InitLogicUpdate<GameState> = (state) => {
-  if (!state.game.isRunning || state.game.isEnded) {
+  if (state.game.isEnded) {
     return;
   }
+
+  const tick = state.game.tick ?? 0;
+
+  state.game.tick = tick + 1;
+
+  if (!state.game.isRunning && tick < START_DELAY) {
+    return;
+  }
+
+  state.game.isRunning = true;
 
   const { entities, entitiesCounter, scores } = state.game;
 
@@ -34,12 +44,12 @@ export const update: InitLogicUpdate<GameState> = (state) => {
 
   const { entities: processedGhosts } = processGhosts({
     entities: processedDamage,
-    tick: state.game.tick,
+    tick,
   });
 
   const { entities: processedBots } = processBots({
     entities: processedGhosts,
-    tick: state.game.tick ?? 0,
+    tick,
   });
 
   const processedEntities = processedBots;
@@ -77,8 +87,6 @@ export const update: InitLogicUpdate<GameState> = (state) => {
   state.game.entities = processedEntities;
   state.game.entitiesCounter += entitiesAdded;
 
-  state.game.tick = (state.game.tick ?? 0) + 1;
-
   if (!shouldContinue && !state.game.isEnded) {
     const maxScore = Object.values(state.game.scores).reduce(
       (acc, value) => (value > acc ? value : acc),
@@ -99,7 +107,6 @@ export const update: InitLogicUpdate<GameState> = (state) => {
 
     Rune.gameOver({
       players: playerScores,
-      delayPopUp: true,
     });
   }
 };
