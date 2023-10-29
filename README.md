@@ -1,3 +1,5 @@
+<img src="src/assets/splash.png" width=300 height=300 />
+
 # Spooky Cookie
 
 Welcome to Spooky Cookie, a thrilling multiplayer game inspired by such classic hits as Pac-Man and Bomberman, but with a Halloween twist! Control your character through the eerie maze, collect cookies, and compete with other players in this spooktacular adventure!
