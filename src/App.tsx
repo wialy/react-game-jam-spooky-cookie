@@ -33,11 +33,13 @@ import {
   isMovable,
 } from "./engine/types/entities";
 import { getLights } from "./engine/utils/get-lights/get-lights";
+import { useSound } from "./sound";
 
 const actionNames = new Set(Object.keys(actions));
 
 function App() {
   const [game, setGame] = useState<GameState>();
+  const [previousGame, setPreviousGame] = useState<GameState>();
   const [runePlayers, setRunePlayers] = useState<Players>();
   const [playerId, setPlayerId] = useState<string>();
 
@@ -49,13 +51,24 @@ function App() {
 
   useEffect(() => {
     Rune.initClient({
-      onChange: ({ game, players, yourPlayerId, event, action }) => {
+      onChange: ({
+        game,
+        players,
+        yourPlayerId,
+        event,
+        action,
+        previousGame,
+      }) => {
         if (game.isEnded && !isPopupVisible.current) {
           Rune.showGameOverPopUp();
           isPopupVisible.current = true;
         }
 
-        if (game.tick && game.tick < lastTick.current) {
+        if (
+          game.tick !== undefined &&
+          game.tick < lastTick.current &&
+          game.tick !== 0
+        ) {
           return;
         }
 
@@ -72,6 +85,7 @@ function App() {
           (actionName && actionNames.has(actionName))
         ) {
           setGame(game);
+          setPreviousGame(previousGame);
         }
       },
     });
@@ -93,6 +107,11 @@ function App() {
   const { swipeProps } = useControls({
     character: playerCharacter as ICharacter,
     disabled: game?.isEnded || isSpectator,
+  });
+
+  useSound({
+    game,
+    previousGame,
   });
 
   if (!game) {
