@@ -192,5 +192,17 @@ export const useSound = ({
     if (isExplosivePushed) {
       sound.explosivePush.play();
     }
+
+    const isReady = !game?.isRunning && !game?.isEnded;
+
+    if (isReady && !sound.ready.playing()) {
+      sound.ready.play();
+    }
+
+    const isGameOver = game?.isEnded && !previousGame?.isEnded;
+
+    if (isGameOver && !sound.gameOver.playing()) {
+      sound.gameOver.play();
+    }
   });
 };

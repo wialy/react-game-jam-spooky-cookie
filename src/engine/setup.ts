@@ -97,7 +97,7 @@ export const setup = (allPlayerIds: string[]): GameState => {
   return {
     entitiesCounter: 0,
     isEnded: false,
-    isRunning: true,
+    isRunning: false,
     scores: Object.fromEntries(allPlayerIds.map((id) => [id, 0])),
     entities,
     tick: 0,
