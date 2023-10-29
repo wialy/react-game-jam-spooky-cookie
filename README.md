@@ -48,7 +48,7 @@ We welcome contributions from the open-source community. If you'd like to contri
 
 ## Credits
 
-All in-game graphic content, including characters, was created by the author and is protected as their intellectual property. Game cover was done in [Midjourney](https://www.midjourney.com/). Sounds from [freesound.org](https://freesound.org/)
+All in-game graphic content, including characters, was created by the author and is protected as their intellectual property. Sounds from [freesound.org](https://freesound.org/)
 
 ## License
 
