@@ -1,4 +1,11 @@
-import { DAMAGE_TIMER, EXPLOSIVE_TIMER, UPDATES_PER_SECOND } from "../..";
+import {
+  DAMAGE_TIMER,
+  EXPLOSIVE_TIMER,
+  GHOST_FREQUENCY,
+  GHOST_TIMER,
+  MAZE_HEIGHT,
+  MAZE_WIDTH,
+} from "../..";
 import {
   Character,
   Crate,
@@ -116,10 +123,10 @@ export function createEntity(entity: any) {
 
     case "ghost": {
       return {
-        position: [0, 0],
-        frequency: 10 * UPDATES_PER_SECOND,
-        isVisible: false,
-        timer: 4,
+        position: [Math.round(MAZE_WIDTH / 2), Math.round(MAZE_HEIGHT / 2)],
+        frequency: GHOST_FREQUENCY,
+        isVisible: true,
+        timer: GHOST_TIMER,
         ...entity,
       } as Ghost;
     }

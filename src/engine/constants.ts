@@ -27,7 +27,7 @@ export const ZERO_COORDINATES: Coordinates = [0, 0];
 
 export const HALF_MAZE = [
   ".........",
-  ".#..#..#.",
+  ".#.$#$.#.",
   ".$..@..$.",
   ".###.###.",
   ".........",
@@ -82,6 +82,9 @@ export const DAMAGE_TIMER = 1;
 export const DAMAGE_DISTANCE = 3;
 
 export const FREEZE_TIMER = 3;
+
+export const GHOST_TIMER = 3;
+export const GHOST_FREQUENCY = 10 * UPDATES_PER_SECOND;
 
 export const VELOCITIES: Record<Direction, Coordinates> = {
   UP: [0, -1],

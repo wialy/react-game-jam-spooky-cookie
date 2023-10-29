@@ -1,4 +1,4 @@
-import { Players } from "rune-games-sdk";
+import { Player, Players } from "rune-games-sdk";
 import { GameState, MAZE_HEIGHT, MAZE_WIDTH, SKIN_COLORS } from "../../engine";
 import { Character } from "../../engine/types/entities";
 
@@ -12,8 +12,24 @@ export const ScoreUi = ({
   playerId: string;
   playerSkins: Array<Pick<Character, "id" | "skin">>;
 } & Pick<GameState, "scores">) => {
+  const mergedPlayers = {
+    ...players,
+    ...Object.fromEntries(
+      Object.entries(scores)
+        .filter(([id]) => id === "bot")
+        .map(([id]) => [
+          id,
+          {
+            avatarUrl: "bot-avatar.png",
+            displayName: "Mensa",
+            playerId: id,
+          } as Player,
+        ])
+    ),
+  };
+
   // Sort players to show playerId first
-  const sortedPlayers = Object.entries(players).sort(
+  const sortedPlayers = Object.entries(mergedPlayers).sort(
     ([id1], [id2]) => (id1 === playerId ? -1 : 1) - (id2 === playerId ? -1 : 1)
   );
 

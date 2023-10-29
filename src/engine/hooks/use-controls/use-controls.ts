@@ -74,15 +74,12 @@ export const useControls = ({
   );
 
   const position = character?.position;
-  // const previousPosition = character?.previousPosition;
 
-  const velocity = character?.velocity;
-  const isMoving = velocity && (velocity[0] !== 0 || velocity[1] !== 0);
   const isDamaged = character?.timer && character.timer > 0;
 
   const isPlacementLocked = character?.isPlacementLocked;
 
-  const explosivePosition = isMoving ? position : position;
+  const explosivePosition = position;
 
   const swipeProps = useSwipeable({
     onSwiped: ({ dir }) => {
