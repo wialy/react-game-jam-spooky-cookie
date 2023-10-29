@@ -6,6 +6,7 @@ import {
   isCrate,
   isDamage,
   isExplosive,
+  isMovable,
   isSpace,
   isWall,
 } from "../../types/entities";
@@ -49,121 +50,171 @@ export const processBots = ({
     return { entities };
   }
 
+  const explosives: Entity[] = [];
+
   const updatedBots = bots.map((bot) => {
-    const { position, velocity, previousPosition, timer } = bot;
+    const { position, timer, previousPosition } = bot;
 
     if (timer > 0) {
       return bot;
     }
 
-    const neighbors = other.filter((entity) => {
-      const { position: entityPosition } = entity;
+    const isAtSamePosition = previousPosition
+      ? isEqualPosition(position, previousPosition)
+      : true;
 
-      return (
-        Math.abs(position[0] - entityPosition[0]) +
-          Math.abs(position[1] - entityPosition[1]) ===
-        1
-      );
-    });
+    const isExplosiveAllowed = !entities.some(
+      (entity) =>
+        isExplosive(entity) && isEqualPosition(entity.position, position)
+    );
 
-    const rate: Record<Direction, number> = {
-      UP: 0,
-      DOWN: 0,
-      LEFT: 0,
-      RIGHT: 0,
-    };
-
-    const potentialDirections = Object.entries(VELOCITIES);
-
-    const currentDistanceToCharacter = characters.length
-      ? Math.abs(position[0] - characters[0].position[0]) +
-        Math.abs(position[1] - characters[0].position[1])
-      : 0;
-
-    potentialDirections.forEach(([direction, velocity]) => {
-      const newPosition = [
+    const neighbors = Object.entries(VELOCITIES).reduce<
+      Partial<Record<Direction, Entity[]>>
+    >((acc, [direction, velocity]) => {
+      const newPosition: Coordinates = [
         position[0] + velocity[0],
         position[1] + velocity[1],
-      ] as Coordinates;
+      ];
 
-      const newDistanceToCharacter = characters.length
-        ? Math.abs(
-            newPosition[0] -
-              characters[0].position[0] +
-              newPosition[1] -
-              characters[0].position[1]
-          )
-        : 0;
+      const entitiesAtNewPosition = entities.filter((entity) =>
+        isEqualPosition(entity.position, newPosition)
+      );
 
-      rate[direction as Direction] = neighbors
-        .filter((entity) => isEqualPosition(entity.position, newPosition))
-        .reduce((acc, entity) => {
-          if (isSpace(entity)) {
-            if (entity.playerId === undefined) {
-              return acc + 50;
-            } else {
-              return acc + 25;
-            }
-          }
-
-          if (isCharacter(entity)) {
-            return acc - 100;
-          }
-
-          if (isCrate(entity)) {
-            return acc - 100;
-          }
-
-          if (isWall(entity)) {
-            return acc - 100;
-          }
-
-          if (isExplosive(entity) || isDamage(entity)) {
-            return acc - 200;
-          }
-
-          return acc;
-        }, 0);
-
-      if (newDistanceToCharacter > currentDistanceToCharacter) {
-        rate[direction as Direction] += 1;
-      }
-    });
-
-    const maxRatedDirection = Object.entries(rate).reduce(
-      (acc, [direction, rate]) => {
-        if (rate > acc.rate) {
-          return { direction: direction as Direction, rate };
-        }
-
+      if (!entitiesAtNewPosition) {
         return acc;
-      },
-      { direction: Object.keys(potentialDirections)[0] ?? "DOWN", rate: 0 }
-    ).direction as Direction;
+      }
+
+      if (
+        entitiesAtNewPosition.some(
+          (entity) => isWall(entity) || isDamage(entity)
+        )
+      ) {
+        return acc;
+      }
+
+      return {
+        ...acc,
+        [direction]: [
+          ...(acc[direction as Direction] ?? []),
+          ...entitiesAtNewPosition,
+        ],
+      };
+    }, {});
+
+    const cookieAndMovableDirections = isAtSamePosition
+      ? []
+      : Object.entries(neighbors)
+          .filter(([, entities]) => {
+            return (
+              entities.some(
+                (entity) => isSpace(entity) && entity.playerId === undefined
+              ) &&
+              entities.some((entity) => isCrate(entity) || isExplosive(entity))
+            );
+          })
+          .map(([direction]) => direction as Direction);
+
+    if (cookieAndMovableDirections.length) {
+      return {
+        ...bot,
+        velocity:
+          VELOCITIES[
+            cookieAndMovableDirections[tick % cookieAndMovableDirections.length]
+          ],
+      };
+    }
+
+    const cookieFreeDirections = Object.entries(neighbors)
+      .filter(([, entities]) => {
+        return (
+          entities.some(
+            (entity) => isSpace(entity) && entity.playerId === undefined
+          ) && !entities.some((entity) => isMovable(entity))
+        );
+      })
+      .map(([direction]) => direction as Direction);
+
+    if (cookieFreeDirections.length) {
+      return {
+        ...bot,
+        velocity:
+          VELOCITIES[cookieFreeDirections[tick % cookieFreeDirections.length]],
+      };
+    }
+
+    const isNearCrateOrPlayer = Object.values(neighbors).some((entities) =>
+      entities.some((entity) => isCrate(entity) || isCharacter(entity))
+    );
+
+    const freeDirections = Object.entries(neighbors)
+      .filter(([, entities]) => {
+        return entities.some((entity) => isSpace(entity) && !isWall(entity));
+      })
+      .map(([direction]) => direction as Direction);
+
+    if (freeDirections.length) {
+      if (isNearCrateOrPlayer && isExplosiveAllowed) {
+        explosives.push(
+          createEntity({
+            type: "explosive",
+            position: [...bot.position],
+            id: `explosive-${bot.id}-${tick}`,
+          })
+        );
+      }
+
+      const notPreviousDirections = previousPosition
+        ? freeDirections.filter(
+            (direction) =>
+              !isEqualPosition(
+                [
+                  position[0] + VELOCITIES[direction][0],
+                  position[1] + VELOCITIES[direction][1],
+                ],
+                previousPosition
+              )
+          )
+        : freeDirections;
+
+      if (notPreviousDirections.length) {
+        return {
+          ...bot,
+          velocity:
+            VELOCITIES[
+              tick % 3
+                ? notPreviousDirections[tick % notPreviousDirections.length]
+                : notPreviousDirections[0]
+            ],
+        };
+      }
+
+      return {
+        ...bot,
+        velocity: VELOCITIES[freeDirections[tick % freeDirections.length]],
+      };
+    }
+
+    const isNextPositionDamage = entities.some(
+      (entity) =>
+        isDamage(entity) &&
+        isEqualPosition(
+          [position[0] + bot.velocity[0], position[1] + bot.velocity[1]],
+          entity.position
+        )
+    );
+
+    if (isNextPositionDamage) {
+      return {
+        ...bot,
+        velocity: [-bot.velocity[0], -bot.velocity[1]],
+      };
+    }
 
     return {
       ...bot,
-      velocity: VELOCITIES[maxRatedDirection] ?? VELOCITIES.DOWN,
+      velocity: bot.velocity,
     };
   });
-
-  const explosives: Entity[] = [];
-
-  if (tick > 0 && (tick % 17 === 0 || tick % 13 === 0)) {
-    updatedBots.forEach((bot) => {
-      if (bot.timer > 0) {
-        return;
-      }
-
-      explosives.push(
-        createEntity({
-          type: "explosive",
-          position: [...bot.position],
-          id: `explosive-${bot.id}-${tick}`,
-        })
-      );
-    });
-  }
 
   return {
     entities: [...other, ...characters, ...explosives, ...updatedBots],

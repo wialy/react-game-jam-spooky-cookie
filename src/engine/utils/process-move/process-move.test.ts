@@ -21,16 +21,18 @@ describe("processMove", () => {
 
     expect(entities).toHaveLength(2);
     expect(entities).toContainEqual(
-      createEntity({
-        id: "a",
-        type: "movable",
-        position: [0, 0],
-      })
+      expect.objectContaining(
+        createEntity({
+          id: "a",
+          type: "movable",
+          position: [0, 0],
+        })
+      )
     );
   });
 
   it.each([Object.values(VELOCITIES)])(
-    "shold stop moving entity when there is no space",
+    "should stop moving entity when there is no space",
     (velocity) => {
       const { entities } = processMove({
         entities: [
@@ -46,12 +48,14 @@ describe("processMove", () => {
 
       expect(entities).toHaveLength(2);
       expect(entities).toContainEqual(
-        createEntity({
-          id: "a",
-          type: "movable",
-          position: [0, 0],
-          velocity: [0, 0],
-        })
+        expect.objectContaining(
+          createEntity({
+            id: "a",
+            type: "movable",
+            position: [0, 0],
+            velocity: [0, 0],
+          })
+        )
       );
     }
   );
@@ -114,12 +118,14 @@ describe("processMove", () => {
 
     expect(entities).toHaveLength(4);
     expect(entities).toContainEqual(
-      createEntity({
-        id: "a",
-        type: "movable",
-        position: [0, 0],
-        velocity: [0, 0],
-      })
+      expect.objectContaining(
+        createEntity({
+          id: "a",
+          type: "movable",
+          position: [0, 0],
+          velocity: [0, 0],
+        })
+      )
     );
   });
 

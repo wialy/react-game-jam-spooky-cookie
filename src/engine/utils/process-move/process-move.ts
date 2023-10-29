@@ -36,6 +36,7 @@ export const processMove = ({
     }
 
     const entity = { ...toResolve.shift() } as Movable;
+    entity.previousPosition = [...entity.position];
 
     const isResolved = resolved.some((e) => e.id === entity.id);
 
